@@ -1,5 +1,11 @@
-* add cx.mark/sweep fns
+* add bool cx.mark(int max_ns = -1)/sweep(int max_ns = -1) fns
+** get cidk timer
+** return true if all vals processed
+** add cx.marked_vals, cx.unmarked_vals
+** start mark by moving vals to unmarked_vals
 ** add val.mark fn
+*** move to marked_vals
+** process unmarked_vals in sweep
 ** mark all envs/stacks
 * add reader
 ** use .: for dup, :. for drop and :: for swap
