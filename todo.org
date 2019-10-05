@@ -4,6 +4,9 @@
 * add reader
 ** use .: for dup, :. for drop and :: for swap
 ** read () and {} as separate tokens
+* add quote
+** '(1 2 3) 'foo
+** handle in reader
 * add stack literals
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack/expr
