@@ -1,0 +1,33 @@
+* add cx.mark/sweep fns
+** add val.mark fn
+** mark all envs/stacks
+* add reader
+** use .: for dup, :. for drop and :: for swap
+** read () and {} as separate tokens
+* add stack literals
+** (1 2 3; 4 5)
+** parse suffix as separate stack/expr
+* add pair literals
+** 1,2
+* add Meta type
+* add type.derive/is_a
+* add /ops
+** add Op base class like Val
+** link using Node for easy transformation
+* add generic dispatch
+** add call op
+** add dispatch op
+** add type dispatch_weight
+** sort by weight & pick first match
+* add cx.call
+** add Call struct with prev ptr
+* add Val move constructors
+** also add to critical types
+* perform stack analysis on compile
+** convert dispatch to call
+* add C++ emit
+** emit as nested switch
+*** each expr gets its own switch
+** add string Sym.emit_id
+*** lazy gen from name
+** add -build mode

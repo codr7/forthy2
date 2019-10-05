@@ -1,0 +1,7 @@
+N    20 let
+REPS 10 let
+
+fib (Int;Int) {.: 2 < _ {.: -1 fib -1 fib +} if} method
+
+N fib dump
+REPS {N fib} clock dump
