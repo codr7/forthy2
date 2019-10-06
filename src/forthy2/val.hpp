@@ -13,7 +13,7 @@ namespace forthy2 {
   struct Type;
   
   struct Val: Node<Val> {
-    bool marked = false;
+    bool marked = true;
 
     virtual ~Val() {}
     virtual Cmp cmp(Val &other) = 0;

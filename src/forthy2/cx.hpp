@@ -53,7 +53,7 @@ namespace forthy2 {
       stack(&root_stack) { }
     
     void deinit() {
-      unmark_vals();
+      unmarked_vals = move(marked_vals);
       sweep_vals();
 
       for (auto &s: syms) { sym_pool.put(s.second); }
@@ -61,7 +61,14 @@ namespace forthy2 {
     
     bool mark_vals(optional<uint64_t> max_ns = {}) {
       Timer t;
-      if (!unmarked_vals) { unmark_vals(); }
+
+      if (!unmarked_vals) {
+        for (auto i(marked_vals.next); i != &marked_vals; i = i->next) {
+          i->get().unmark();
+        }
+        
+        unmarked_vals = move(marked_vals);
+      }
       
       for (Env *e(env); e; e = e->prev) {
         if (max_ns && t.ns() >= *max_ns) { return false; }
@@ -79,7 +86,7 @@ namespace forthy2 {
     bool sweep_vals(optional<uint64_t> max_ns = {}) {
       Timer t;
 
-      for (auto i(unmarked_vals.prev); i != &unmarked_vals; i = i->prev) {
+      for (auto i(unmarked_vals.prev); i != &unmarked_vals;) {
         if (max_ns && t.ns() >= *max_ns) { return false; }
         Val &v(i->get());
         i = i->prev;
@@ -97,14 +104,6 @@ namespace forthy2 {
       Sym *s(sym_pool.get(name));
       syms.emplace(make_pair(name, s));
       return s;
-    }
-
-    void unmark_vals() {
-      for (auto i(marked_vals.next); i != &marked_vals; i = i->next) {
-        i->get().unmark();
-      }
-      
-      unmarked_vals = move(marked_vals);
     }
 
     template <typename T, typename...Args>

@@ -8,13 +8,13 @@ namespace forthy2 {
 
     Node(): prev(this), next(this) {}
 
-    operator bool() { return next == this; }
+    operator bool() { return next != this; }
     
     Node<T, TagT> &operator =(Node<T, TagT> &&src) {
       if (src.next != &src) {
         prev->next = src.next;
+        src.next->prev = prev;
         prev = src.prev;
-        src.next->prev = this;
         src.prev->next = this;
         src.prev = src.next = &src;
       }

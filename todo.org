@@ -1,7 +1,3 @@
-* bypass Pool alloc unless USE_POOL
-** put const in forthy2.hpp
-** check cidk history
-* --
 * add reader
 ** use .: for dup, :. for drop and :: for swap
 ** read () and {} as separate tokens

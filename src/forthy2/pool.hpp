@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "forthy2/forthy2.hpp"
+
 namespace forthy2 {  
   using namespace std;
   
@@ -26,10 +28,12 @@ namespace forthy2 {
     
     template <typename...Args>
     T *get(Args &&...args) {
+      if constexpr(!USE_POOL) { return new T(forward<Args>(args)...); }
       return new (alloc()) T(forward<Args>(args)...);
     }
 
     T *alloc() {
+      if constexpr(!USE_POOL) { return reinterpret_cast<T *>(new Slot()); }
       T *p(nullptr);
       
       if (free.empty()) {
@@ -54,8 +58,12 @@ namespace forthy2 {
     }
 
     void put(T *item) {
-      item->~T();
-      free.push_back(item);
+      if constexpr(USE_POOL) {
+          item->~T();
+          free.push_back(item);
+      } else {
+        delete item;
+      }
     }
   };
 }
