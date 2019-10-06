@@ -9,10 +9,7 @@
   }
 ```
 
-### syntax
-Forth doesn't really have any syntax worth mentioning, which means that any other language looks bloated in comparison. [forthy2](https://github.com/codr7/forthy2) trades some flexibility for generic dispatch, code blocks and pair/stack literals.
-
-#### stacks
+### stacks
 The holy trinity of stack operations; `dup`, `drop` and `swap`; finally get their own two char pictograms.
 
 `dup` turns one value into two,
