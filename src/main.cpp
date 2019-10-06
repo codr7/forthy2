@@ -20,9 +20,10 @@ int main(int argc, char *argv[]) {
   Cx cx;
   Mode mode(Mode::repl);
 
-  cx.env->bind(Pos::_, cx.sym("foo"), int_type.get(cx, 42));
-  cx.stack->push(pair_type.get(cx, int_type.get(cx, 1), int_type.get(cx, 2)));
-  MethodVal *m(method_type.get(cx, "let", Args({{sym_type}}), Rets({}), true));
+  cx.env->bind(Pos::_, cx.sym("foo"), cx.int_type.get(cx, 42));
+  cx.stack->push(cx.pair_type.get(cx, cx.int_type.get(cx, 1),
+                                  cx.int_type.get(cx, 2)));
+  MethodVal *m(cx.method_type.get(cx, "let", Args({{cx.sym_type}}), Rets({}), true));
   cx.stack->push(m);
   
   while (--argc && ++argv) {

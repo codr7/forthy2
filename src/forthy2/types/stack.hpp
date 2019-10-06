@@ -1,9 +1,8 @@
 #ifndef FORTHY2_TYPE_STACK_HPP
 #define FORTHY2_TYPE_STACK_HPP
 
-#include "forthy2/pool_type.hpp"
-#include "forthy2/prim_val.hpp"
 #include "forthy2/stack.hpp"
+#include "forthy2/val.hpp"
 
 namespace forthy2 {
   struct StackVal: TVal<Stack> {
@@ -25,6 +24,8 @@ namespace forthy2 {
       return forthy2::cmp(v.len(), other_v.len());
     }
 
+    Type &get_type(Cx &cx) override;
+
     bool is(Val &other) override {
       Stack &other_v(dynamic_cast<StackVal &>(other).v);
       if (v.len() != other_v.len()) { return false; }
@@ -38,14 +39,9 @@ namespace forthy2 {
       return true;
     }
 
-    Type &type() override;
+    bool mark(Cx &cx) override;
+    void sweep(Cx &cx) override;
   };
-
-  struct StackType: PoolType<StackVal> {
-    StackType(const string &id): PoolType(id) {}
-  };
-
-  extern StackType stack_type;
 }
 
 #endif

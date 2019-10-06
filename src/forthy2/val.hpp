@@ -1,19 +1,29 @@
 #ifndef FORTHY2_VAL_HPP
 #define FORTHY2_VAL_HPP
 
+#include <utility>
+
 #include "forthy2/cmp.hpp"
 #include "forthy2/node.hpp"
 
 namespace forthy2 {
+  using namespace std;
+
+  struct Cx;
   struct Type;
   
-  struct Val {
-    Node<Val> gc_node;
+  struct Val: Node<Val> {
+    bool marked = false;
 
+    virtual ~Val() {}
     virtual Cmp cmp(Val &other) = 0;
+    virtual Type &get_type(Cx &cx) = 0;
     virtual bool is(Val &other) = 0;
-    virtual void sweep() { gc_node.del(); }
-    virtual Type &type() = 0;
+    virtual bool mark(Cx &cx);
+    
+    virtual void sweep(Cx &cx) { Node<Val>::del(); }
+
+    virtual void unmark() { marked = false; }
   };
 
   template <typename T>

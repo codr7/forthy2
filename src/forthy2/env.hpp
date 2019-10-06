@@ -9,6 +9,7 @@
 namespace forthy2 {
   using namespace std;
 
+  struct Cx;
   struct Pos;
   struct Sym;
   struct Val;
@@ -53,6 +54,8 @@ namespace forthy2 {
     Iter insert(Iter i, const Sym *id, Val *val) {
       return items.emplace(i, this, id, val);
     }
+
+    bool mark_items(Cx &cx);
   };
 }
 

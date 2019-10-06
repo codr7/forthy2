@@ -6,6 +6,7 @@
 namespace forthy2 {
   using namespace std;
   
+  struct Cx;
   struct Val;
   
   struct Stack {
@@ -21,8 +22,13 @@ namespace forthy2 {
     Stack(T beg, T end): items(beg, end) {}
 
     Iter begin() { return items.begin(); }
+
     Iter end() { return items.end(); }
+
     size_t len() { return items.size(); }
+
+    bool mark_items(Cx &cx);
+    
     Val *&peek(size_t offs = 0) { return items[items.size() - offs -1]; }
 
     Val *pop() {

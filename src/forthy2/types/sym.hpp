@@ -9,14 +9,9 @@ namespace forthy2 {
   
   struct SymVal: PrimVal<const Sym *> {
     SymVal(const Sym *v): PrimVal<const Sym *>(v) {}
-    Type &type() override;
+    Type &get_type(Cx &cx) override;
+    void sweep(Cx &cx) override;
   };
-
-  struct SymType: PoolType<SymVal> {
-    SymType(const string &id): PoolType(id) {}
-  };
-
-  extern SymType sym_type;
 }
 
 #endif

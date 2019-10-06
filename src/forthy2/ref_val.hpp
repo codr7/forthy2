@@ -9,11 +9,11 @@ namespace forthy2 {
     template <typename...Args>
     RefVal(Args &&...args): TVal<T>(forward<Args>(args)...) {}
 
-    Cmp cmp(Val &other) override {
+    virtual Cmp cmp(Val &other) override {
       return forthy2::cmp<Val *>(this, &other);
     }
 
-    bool is(Val &other) override { return this == &other; }
+    virtual bool is(Val &other) override { return this == &other; }
   };
 }
 
