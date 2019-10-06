@@ -11,6 +11,23 @@ namespace forthy2 {
     template <typename T>
     StackVal(T beg, T end): TVal<Stack>(beg, end) {}
 
+    void dump(ostream &out) override {
+      out << '(';
+      bool first(true);
+      
+      for (Val *v: v.items) {
+        if (first) {
+          first = false;
+        } else {
+          out << ' ';
+        }
+            
+        v->dump(out);
+      }
+
+      out << ')';
+    }
+
     Cmp cmp(Val &other) override {
       Stack &other_v(dynamic_cast<StackVal &>(other).v);
         

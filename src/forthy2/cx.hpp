@@ -7,6 +7,8 @@
 #include "forthy2/defer.hpp"
 #include "forthy2/env.hpp"
 #include "forthy2/node.hpp"
+#include "forthy2/ops/bind.hpp"
+#include "forthy2/ops/push.hpp"
 #include "forthy2/pool.hpp"
 #include "forthy2/pool_type.hpp"
 #include "forthy2/stack.hpp"
@@ -32,12 +34,15 @@ namespace forthy2 {
     Pool<Sym> sym_pool;
     unordered_map<string, Sym *> syms;
 
+    Pool<BindOp> bind_op;
+    Pool<PushOp> push_op;
+
     PoolType<IntVal> int_type;
     PoolType<MethodVal> method_type;
     PoolType<PairVal> pair_type;
     PoolType<StackVal> stack_type;
     PoolType<SymVal> sym_type;
-
+    
     Node<Val> marked_vals, unmarked_vals;
     
     Env root_env, *env;
@@ -57,6 +62,10 @@ namespace forthy2 {
       sweep_vals();
 
       for (auto &s: syms) { sym_pool.put(s.second); }
+    }
+
+    void eval(Node<Op> &root) {
+      for (Node<Op> *op(root.next); op != &root;) { op = op->get().eval(*this); }
     }
     
     bool mark_vals(optional<uint64_t> max_ns = {}) {

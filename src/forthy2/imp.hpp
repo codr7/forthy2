@@ -9,7 +9,7 @@ namespace forthy2 {
   struct Call;
   struct Cx;
   
-  using Imp = function<bool (Cx &cx, Call &call)>;
+  using Imp = function<bool (Cx &cx)>;
 }
 
 #endif

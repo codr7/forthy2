@@ -1,12 +1,14 @@
-* add bind op
-** /ops
-** add Op base class like Val
-** link using Node for easy transformation
-** take id val on stack
-** use for method/const macros
+* add Block struct
+** add Op.dealloc
+*** put back in pool
+** Node<Op> body
+** call dealloc for body ops
+** use in main
+* --
 * add reader
 ** use .: for dup, :. for drop and :: for swap
 ** read () and {} as separate tokens
+* add method/const macros
 * add quote
 ** '(1 2 3) 'foo
 ** handle in reader

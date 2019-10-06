@@ -10,6 +10,12 @@ namespace forthy2 {
     PairVal(const V &v): TVal<V>(v) {}
     PairVal(Val *first, Val *second): TVal<V>(first, second) {}
 
+    void dump(ostream &out) override {
+      v.first->dump(out);
+      out << ',';
+      v.second->dump(out);
+    }
+
     Cmp cmp(Val &other) override {
       V &other_v(dynamic_cast<PairVal &>(other).v);
       Cmp first(v.first->cmp(*other_v.first));

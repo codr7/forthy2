@@ -10,6 +10,8 @@ namespace forthy2 {
   struct MethodVal: RefVal<Method> {
     template <typename...Args>
     MethodVal(Args &&...args): RefVal<Method>(forward<Args>(args)...) {}
+
+    void dump(ostream &out) override { out << "Method@" << this; }
     Type &get_type(Cx &cx) override;
     void sweep(Cx &cx) override;
   };

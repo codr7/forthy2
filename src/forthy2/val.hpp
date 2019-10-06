@@ -1,6 +1,7 @@
 #ifndef FORTHY2_VAL_HPP
 #define FORTHY2_VAL_HPP
 
+#include <iostream>
 #include <utility>
 
 #include "forthy2/cmp.hpp"
@@ -17,6 +18,7 @@ namespace forthy2 {
 
     virtual ~Val() {}
     virtual Cmp cmp(Val &other) = 0;
+    virtual void dump(ostream &out) = 0;
     virtual Type &get_type(Cx &cx) = 0;
     virtual bool is(Val &other) = 0;
     virtual bool mark(Cx &cx);
@@ -31,7 +33,7 @@ namespace forthy2 {
     T v;
 
     template <typename...Args>
-    TVal(Args &&...args): v(forward<Args>(args)...) {}     
+    TVal(Args &&...args): v(forward<Args>(args)...) {}
   };
 }
 
