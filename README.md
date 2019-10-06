@@ -17,7 +17,7 @@ The holy trinity of stack operations; `dup`, `drop` and `swap`; finally get thei
 ```
   42 .:
   
-42 42
+...42 42
 ```
 
 while `drop` removes the last,
@@ -25,7 +25,7 @@ while `drop` removes the last,
 ```
   1 2 3 :.
   
-1 2
+...1 2
 ```
 
 and `swap` leaves both.
@@ -33,7 +33,7 @@ and `swap` leaves both.
 ```
   1 2 3 ::
   
-1 3 2
+...1 3 2
 ```
 
 Combining operations allows skipping redundant chars.
@@ -41,7 +41,19 @@ Combining operations allows skipping redundant chars.
 ```
   1 2 3 ::.
   
-1 3
+...1 3
+```
+
+### macros
+Macros are regular methods which are called at compile time and potentially parse arguments from the input stream. `|` triggers compile time evaluation for the next form, which is how macros are made.
+
+The following example pushes `1` and `5` on the compile time stack, which are added and printed when compiling the final expression. `3` and `7` are pushed on the run time stack as usual and added.
+
+```
+  |1 3 |5 7 + |{+ dump}
+
+6
+...10
 ```
 
 ### license
