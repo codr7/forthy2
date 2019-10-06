@@ -10,7 +10,7 @@ namespace forthy2 {
 
     operator bool() { return next != this; }
     
-    Node<T, TagT> &operator =(Node<T, TagT> &&src) {
+    void extend(Node<T, TagT> &src) {
       if (src.next != &src) {
         prev->next = src.next;
         src.next->prev = prev;
@@ -18,8 +18,6 @@ namespace forthy2 {
         src.prev->next = this;
         src.prev = src.next = &src;
       }
-
-      return *this;
     }
 
     void append(Node<T, TagT> &node) {
@@ -29,13 +27,14 @@ namespace forthy2 {
       next = &node;
     }
 
-    void del() {
+    T &get() { return static_cast<T &>(*this); }
+
+    void push(Node<T, TagT> &node) { prev->append(node); }
+    
+    void unlink() {
       prev->next = next;
       next->prev = prev;
     }
-
-    void push(Node<T, TagT> &node) { prev->append(node); }
-    T &get() { return static_cast<T &>(*this); }
   };
 }
 

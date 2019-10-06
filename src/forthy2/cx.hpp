@@ -58,7 +58,7 @@ namespace forthy2 {
       stack(&root_stack) { }
     
     void deinit() {
-      unmarked_vals = move(marked_vals);
+      unmarked_vals.extend(marked_vals);
       sweep_vals();
 
       for (auto &s: syms) { sym_pool.put(s.second); }
@@ -76,7 +76,7 @@ namespace forthy2 {
           i->get().unmark();
         }
         
-        unmarked_vals = move(marked_vals);
+        unmarked_vals.extend(marked_vals);
       }
       
       for (Env *e(env); e; e = e->prev) {

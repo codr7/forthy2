@@ -23,7 +23,7 @@ namespace forthy2 {
     virtual bool is(Val &other) = 0;
     virtual bool mark(Cx &cx);
     
-    virtual void sweep(Cx &cx) { Node<Val>::del(); }
+    virtual void sweep(Cx &cx) { Node<Val>::unlink(); }
 
     virtual void unmark() { marked = false; }
   };

@@ -1,4 +1,3 @@
-* change Node operator= to extend
 * add Node<Op> cx.ops
 * add Op.dealloc
 ** put back in pool
