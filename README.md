@@ -47,7 +47,7 @@ Combining operations allows skipping redundant chars.
 1 3
 ```
 
-It might help to think of them as a terser, more graphical version of Lisp's [`CADR`-functions](http://www.lispworks.com/documentation/HyperSpec/Front/X_Mast_C.htm).
+It might help to think of them as a terser, more graphical version of Lisp's [`CADR`](http://www.lispworks.com/documentation/HyperSpec/Front/X_Mast_C.htm)-functions.
 
 ### license
 [MIT](https://github.com/codr7/forthy2/blob/master/LICENSE.txt)
