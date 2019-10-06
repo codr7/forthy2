@@ -1,9 +1,11 @@
-* add Block struct
-** add Op.dealloc
-*** put back in pool
-** Node<Op> body
-** call dealloc for body ops
-** use in main
+* change Node operator= to extend
+* add Node<Op> cx.ops
+* add Op.dealloc
+** put back in pool
+** dealloc in ops in cx deinit
+* add prev-arg to Op constructor
+** push this
+* update main
 * --
 * add reader
 ** use .: for dup, :. for drop and :: for swap
