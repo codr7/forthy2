@@ -1,7 +1,7 @@
-N    20 let
-REPS 10 let
+@const N    20
+@const REPS 10
 
-fib (Int;Int) {.: 2 < _ {.: -1 fib -1 fib +} if} method
+@method fib (Int;Int) {.: 2 <_ @else {.: -1 fib -1 fib +}}
 
 N fib dump
-REPS {N fib} clock dump
+@clock REPS {N fib}
