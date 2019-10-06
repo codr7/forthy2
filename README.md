@@ -53,6 +53,6 @@ It might help to think of them as a terser, more graphical version of Lisp's [`C
 [MIT](https://github.com/codr7/forthy2/blob/master/LICENSE.txt)
 
 ### support
-Please consider donating if you would like to help [forthy2](https://github.com/codr7/forthy2) evolve and improve.
+Please consider donating if you would like to help the project evolve and improve.
 
 <a href="https://liberapay.com/codr7/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
