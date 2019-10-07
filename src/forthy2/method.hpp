@@ -14,15 +14,13 @@ namespace forthy2 {
   struct Method {
     using Imp = function<void (Cx &cx)>;
 
-    string id;
+    const Sym *id;
     Args args;
     Rets rets;
-    Imp imp;
-    
-    MethodVal val;
-    
-    Method(const string &id, const Args &args, const Rets &rets, bool macro):
-      id(id), args(args), rets(rets), val(*this) {}
+    Imp imp;    
+
+    Method(const Sym *id, const Args &args, const Rets &rets):
+      id(id), args(args), rets(rets) {}
   };
 }
 

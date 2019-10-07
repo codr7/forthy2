@@ -2,7 +2,8 @@
 #include "forthy2/types/method.hpp"
 
 namespace forthy2 {
-  MethodVal::MethodVal(Method &m): TVal<Method &>(m) {}
+  MethodVal::MethodVal(const Sym *id, const Args &args, const Rets &rets):
+    TVal<Method>(id, args, rets) {}
 
   Cmp MethodVal::cmp(Val &other) {
     return forthy2::cmp(&v, &dynamic_cast<MethodVal &>(other).v);

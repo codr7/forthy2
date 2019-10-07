@@ -38,26 +38,29 @@ namespace forthy2 {
     Pool<BindOp> Bind;
     Pool<PushOp> Push;
 
-    PoolType<IntVal> int_type;
-    PoolType<MetaVal> meta_type;
-    PoolType<MethodVal> method_type;
-    PoolType<PairVal> pair_type;
-    PoolType<StackVal> stack_type;
-    PoolType<SymVal> sym_type;
-    
+    Pool<MetaVal> type_pool;
     Node<Val> marked_vals, unmarked_vals;
-    
+
+    Type &any_type;
+    PoolType<IntVal> &int_type;
+    Type &meta_type;
+    PoolType<MethodVal> &method_type;
+    PoolType<PairVal> &pair_type;
+    PoolType<StackVal> &stack_type;
+    PoolType<SymVal> &sym_type;
+        
     Env root_env, *env;
     Stack root_stack, *stack;
     Node<Op> ops;
     
     Cx():
-      int_type("Int"),
-      meta_type("Meta"),
-      method_type("Method"),
-      pair_type("Pair"),
-      stack_type("Stack"),
-      sym_type("Sym"),
+      any_type(*new Type(*this, sym("Any"))),
+      int_type(*new PoolType<IntVal>(*this, sym("Int"))),
+      meta_type(*new Type(*this, sym("Meta"))),
+      method_type(*new PoolType<MethodVal>(*this, sym("Method"))),
+      pair_type(*new PoolType<PairVal>(*this, sym("Pair"))),
+      stack_type(*new PoolType<StackVal>(*this, sym("Stack"))),
+      sym_type(*new PoolType<SymVal>(*this, sym("Sym"))),
       env(&root_env),
       stack(&root_stack) {
     }

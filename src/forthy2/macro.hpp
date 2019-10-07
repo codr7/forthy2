@@ -11,17 +11,17 @@ namespace forthy2 {
   using namespace std;
 
   struct Macro {
-    using Imp = function<void (Cx &cx,
-                               Stack::Iter &in,
-                               Stack::Iter end,
-                               Node<Op> &prev)>;
+    using Imp = function<Node<Op> &(Cx &cx,
+                                    Stack::Iter &in,
+                                    Stack::Iter end,
+                                    Node<Op> &out)>;
 
-    string id;
+    const Sym *id;
     Args args;
     Rets rets;
     Imp imp;
 
-    Macro(const string &id, const Args &args, const Rets &rets, bool macro):
+    Macro(const Sym *id, const Args &args, const Rets &rets):
       id(id), args(args), rets(rets) {}
   };
 }

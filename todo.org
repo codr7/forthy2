@@ -1,5 +1,8 @@
-* add env.bind_macro(args...)
-* add method/const macros
+* add env.add_macro(args...)
+* add Val.clone(Cx &)
+** call from push op
+* add else macro
+* add method macro
 * add reader
 ** use .: for dup, :. for drop and :: for swap
 ** read () and {} as separate tokens
