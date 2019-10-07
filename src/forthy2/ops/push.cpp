@@ -11,7 +11,7 @@ namespace forthy2 {
   }
 
   Node<Op> *PushOp::eval(Cx &cx) {
-    cx.stack->push(val);
+    cx.stack->push(val.clone(cx));
     return Node<Op>::next;
   }
 

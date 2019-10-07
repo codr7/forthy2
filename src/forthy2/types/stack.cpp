@@ -2,6 +2,8 @@
 #include "forthy2/types/stack.hpp"
 
 namespace forthy2 {
+  Val &StackVal::clone(Cx &cx) { return cx.stack_type.get(cx, val); }
+
   Type &StackVal::get_type(Cx &cx) { return cx.stack_type; }
 
   bool StackVal::mark(Cx &cx) {

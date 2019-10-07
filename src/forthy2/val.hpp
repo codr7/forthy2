@@ -17,6 +17,7 @@ namespace forthy2 {
     bool marked = true;
 
     virtual ~Val() {}
+    virtual Val &clone(Cx &cx) { return *this; }
     virtual Cmp cmp(Val &other) = 0;
     virtual void dump(ostream &out) = 0;
     virtual Type &get_type(Cx &cx) = 0;

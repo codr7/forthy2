@@ -8,8 +8,12 @@ namespace forthy2 {
   struct StackVal: TVal<Stack> {
     StackVal() {}
 
+    StackVal(const Stack &src): TVal<Stack>(src) {}
+
     template <typename T>
     StackVal(T beg, T end): TVal<Stack>(beg, end) {}
+
+    Val &clone(Cx &cx) override;
 
     void dump(ostream &out) override {
       out << '(';

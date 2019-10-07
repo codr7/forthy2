@@ -1,5 +1,3 @@
-* add Val.clone(Cx &)
-** call from push op
 * add else macro
 * add method macro
 * add reader
