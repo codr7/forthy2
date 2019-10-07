@@ -36,8 +36,8 @@ namespace forthy2 {
     Pool<Sym> sym_pool;
     unordered_map<string, Sym *> syms;
 
-    Pool<BindOp> Bind;
-    Pool<PushOp> Push;
+    Pool<BindOp> bind_op;
+    Pool<PushOp> push_op;
 
     Pool<MetaVal> type_pool;
     Node<Val> marked_vals, unmarked_vals;
@@ -113,11 +113,6 @@ namespace forthy2 {
       return true;
     }
 
-    template <typename OpT, typename...Args>
-    OpT &op(Pool<OpT> &pool, const Pos &pos, Args &&...args) {
-      return *pool.get(*ops.prev, pos, forward<Args>(args)...);
-    }
-            
     bool sweep_vals(optional<uint64_t> max_ns = {}) {
       Timer t;
 

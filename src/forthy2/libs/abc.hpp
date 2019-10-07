@@ -5,10 +5,15 @@
 
 namespace forthy2 {
   static Node<Op> &const_imp(Cx &cx,
+                             Pos &pos,
                              Stack::Iter &in,
                              Stack::Iter end,
                              Node<Op> &out) {
-    return out;
+    Val &id(**in++), &val(**in++);
+    Node<Op> *op(&out);
+    op = cx.push_op.get(*op, pos, id);
+    op = cx.push_op.get(*op, pos, val);
+    return *cx.bind_op.get(*op, pos);
   }
   
   void init_abc(Cx &cx, const Pos &pos, Env &env) {

@@ -12,6 +12,7 @@ namespace forthy2 {
 
   struct Macro {
     using Imp = function<Node<Op> &(Cx &cx,
+                                    Pos &pos,
                                     Stack::Iter &in,
                                     Stack::Iter end,
                                     Node<Op> &out)>;

@@ -1,12 +1,6 @@
 #include "forthy2/cx.hpp"
-#include "forthy2/env.hpp"
 #include "forthy2/forthy2.hpp"
 #include "forthy2/libs/abc.hpp"
-#include "forthy2/stack.hpp"
-#include "forthy2/types/int.hpp"
-#include "forthy2/types/method.hpp"
-#include "forthy2/types/pair.hpp"
-#include "forthy2/types/sym.hpp"
 
 using namespace std;
 using namespace forthy2;
@@ -23,11 +17,6 @@ int main(int argc, char *argv[]) {
   
   Mode mode(Mode::repl);
 
-  cx.op(cx.Push, Pos::_, cx.sym_type.get(cx, cx.sym("foo")));
-  cx.op(cx.Push, Pos::_, cx.int_type.get(cx, 42));
-  cx.op(cx.Bind, Pos::_);
-  cx.eval(cx.ops);
-  
   while (--argc && ++argv) {
     string a(*argv);
     
