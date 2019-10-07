@@ -10,7 +10,8 @@ namespace forthy2 {
     const Sym *file;
     int row, col;
 
-    Pos(const Sym *file, int row, int col): file(file), row(row), col(col) {}
+    Pos(const Sym *file = nullptr, int row = 1, int col = 0):
+      file(file), row(row), col(col) {}
   };
 }
 

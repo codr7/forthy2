@@ -8,7 +8,7 @@ namespace forthy2 {
     using P = pair<Val *, Val *>;
 
     PairVal(const P &v): TVal<P>(v) {}
-    PairVal(Val *first, Val *second): TVal<P>(first, second) {}
+    PairVal(Val &first, Val &second): TVal<P>(&first, &second) {}
 
     void dump(ostream &out) override {
       val.first->dump(out);

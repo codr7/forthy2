@@ -5,7 +5,7 @@
 #include <iomanip>
 
 #include "forthy2/cmp.hpp"
-#include "forthy2/math.hpp"
+#include "forthy2/util.hpp"
 
 namespace forthy2::fix {
   const uint8_t SCALE_BITS(3);
@@ -45,10 +45,10 @@ namespace forthy2::fix {
   
   constexpr int64_t frac(T f) { return get(f) - trunc(f); }
   
-  inline int cmp(const Pos &pos, T x, T y) {
+  inline Cmp cmp(T x, T y) {
     const int64_t xv(get(x)), yv(get(y));
     const uint8_t xs(scale(x)), ys(scale(y));
-    return forthy2::cmp(pos, xv, (xs == ys) ? yv : yv / pow(ys) * pow(xs));
+    return forthy2::cmp(xv, (xs == ys) ? yv : yv / pow(ys) * pow(xs));
   }
 
   constexpr void dump(T f, ostream &out) {

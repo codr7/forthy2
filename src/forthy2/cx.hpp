@@ -1,6 +1,7 @@
 #ifndef FORTHY2_CX_HPP
 #define FORTHY2_CX_HPP
 
+#include <fstream>
 #include <iostream>
 #include <unordered_map>
 
@@ -9,11 +10,14 @@
 #include "forthy2/node.hpp"
 #include "forthy2/ops/bind.hpp"
 #include "forthy2/ops/push.hpp"
+#include "forthy2/path.hpp"
 #include "forthy2/pool.hpp"
 #include "forthy2/pool_type.hpp"
+#include "forthy2/read.hpp"
 #include "forthy2/stack.hpp"
 #include "forthy2/sym.hpp"
 #include "forthy2/timer.hpp"
+#include "forthy2/types/fix.hpp"
 #include "forthy2/types/int.hpp"
 #include "forthy2/types/macro.hpp"
 #include "forthy2/types/meta.hpp"
@@ -43,6 +47,7 @@ namespace forthy2 {
     Node<Val> marked_vals, unmarked_vals;
 
     Type &any_type;
+    PoolType<FixVal> &fix_type;
     PoolType<IntVal> &int_type;
     PoolType<MacroVal> &macro_type;
     Type &meta_type;
@@ -54,9 +59,14 @@ namespace forthy2 {
     Env root_env, *env;
     Stack root_stack, *stack;
     Node<Op> ops;
+
+    Path load_path;
+    istream *stdin;
+    ostream *stdout, *stderr;
     
     Cx():
       any_type(*new Type(*this, sym("Any"))),
+      fix_type(*new PoolType<FixVal>(*this, sym("Fix"))),
       int_type(*new PoolType<IntVal>(*this, sym("Int"))),
       macro_type(*new PoolType<MacroVal>(*this, sym("Macro"))),
       meta_type(*new Type(*this, sym("Meta"))),
@@ -65,8 +75,10 @@ namespace forthy2 {
       stack_type(*new PoolType<StackVal>(*this, sym("Stack"))),
       sym_type(*new PoolType<SymVal>(*this, sym("Sym"))),
       env(&root_env),
-      stack(&root_stack) {
-    }
+      stack(&root_stack),
+      stdin(&cin),
+      stdout(&cout),
+      stderr(&cerr) { }
     
     void deinit() {
       for (Node<Op> *op(ops.next); op != &ops;) {
@@ -83,6 +95,21 @@ namespace forthy2 {
 
     void eval(Node<Op> &root) {
       for (Node<Op> *op(root.next); op != &root;) { op = op->get().eval(*this); }
+    }
+
+    void load(const Pos &pos, const Path &path) {
+      auto in_path(path.is_absolute() ? path : load_path/path);
+      ifstream in(in_path);
+      if (in.fail()) { throw ESys(pos, "File not found: ", in_path); }
+      
+      auto prev_load_path(load_path);
+      load_path = path.parent_path();
+      auto restore_load_path(defer([&]() { load_path = prev_load_path; }));
+
+      Stack out;
+      read(in, out);
+
+      load_path = prev_load_path;
     }
     
     bool mark_vals(optional<uint64_t> max_ns = {}) {
@@ -111,6 +138,17 @@ namespace forthy2 {
       }
       
       return true;
+    }
+
+    void read(istream &in, Stack &out) {
+      Pos p;
+      Val *v(nullptr);
+      while ((v = read_val(*this, p, in))) {
+        v->dump(cout);
+        cout << endl;
+        
+        out.push(*v);
+      }
     }
 
     bool sweep_vals(optional<uint64_t> max_ns = {}) {

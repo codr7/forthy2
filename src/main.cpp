@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
     if (a == "-debug") {
       cx.debug = not cx.debug;
     } else {
+      cx.load(Pos::_, a);
       mode = Mode::run;
     }
   }

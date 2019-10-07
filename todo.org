@@ -1,6 +1,10 @@
+* add Val.compile()
+** default push_op
+* add Val.eval()
+** default push on stack
+* --
 * add else macro
 * add method macro
-* add reader
 ** use .: for dup, :. for drop and :: for swap
 ** read () and {} as separate tokens
 * add generic dispatch
