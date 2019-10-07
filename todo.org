@@ -1,9 +1,4 @@
-* add Meta type
-** add libs/abc.hpp/init_abc
-*** bind cx types
-*** call from main
 * add env.bind_macro(args...)
-* ---
 * add method/const macros
 * add reader
 ** use .: for dup, :. for drop and :: for swap

@@ -15,6 +15,7 @@
 #include "forthy2/sym.hpp"
 #include "forthy2/timer.hpp"
 #include "forthy2/types/int.hpp"
+#include "forthy2/types/meta.hpp"
 #include "forthy2/types/method.hpp"
 #include "forthy2/types/pair.hpp"
 #include "forthy2/types/stack.hpp"
@@ -38,6 +39,7 @@ namespace forthy2 {
     Pool<PushOp> Push;
 
     PoolType<IntVal> int_type;
+    PoolType<MetaVal> meta_type;
     PoolType<MethodVal> method_type;
     PoolType<PairVal> pair_type;
     PoolType<StackVal> stack_type;
@@ -51,6 +53,7 @@ namespace forthy2 {
     
     Cx():
       int_type("Int"),
+      meta_type("Meta"),
       method_type("Method"),
       pair_type("Pair"),
       stack_type("Stack"),
@@ -104,9 +107,9 @@ namespace forthy2 {
       return true;
     }
 
-    template <typename OpT, typename...ArgsT>
-    OpT &op(Pool<OpT> &pool, const Pos &pos, ArgsT &&...args) {
-      return *pool.get(*ops.prev, pos, forward<ArgsT>(args)...);
+    template <typename OpT, typename...Args>
+    OpT &op(Pool<OpT> &pool, const Pos &pos, Args &&...args) {
+      return *pool.get(*ops.prev, pos, forward<Args>(args)...);
     }
             
     bool sweep_vals(optional<uint64_t> max_ns = {}) {
@@ -123,7 +126,7 @@ namespace forthy2 {
     }
     
     template <typename...Args>
-    const Sym *sym(const string &spec, Args &&...args) {
+    const Sym *sym(Args &&...args) {
       string name(str(forward<Args>(args)...));
       auto ok(syms.find(name));
       if (ok != syms.end()) { return ok->second; }    

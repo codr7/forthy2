@@ -1,6 +1,7 @@
-#include "forthy2/forthy2.hpp"
 #include "forthy2/cx.hpp"
 #include "forthy2/env.hpp"
+#include "forthy2/forthy2.hpp"
+#include "forthy2/libs/abc.hpp"
 #include "forthy2/stack.hpp"
 #include "forthy2/types/int.hpp"
 #include "forthy2/types/method.hpp"
@@ -18,6 +19,8 @@ void repl(Cx &cx) {
 
 int main(int argc, char *argv[]) {  
   Cx cx;
+  init_abc(cx, Pos::_, cx.root_env);
+  
   Mode mode(Mode::repl);
 
   cx.op(cx.Push, Pos::_, cx.sym_type.get(cx, cx.sym("foo")));

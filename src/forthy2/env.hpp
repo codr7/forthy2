@@ -12,6 +12,7 @@ namespace forthy2 {
   struct Cx;
   struct Pos;
   struct Sym;
+  struct Type;
   struct Val;
   
   struct Env {
@@ -20,7 +21,7 @@ namespace forthy2 {
       const Sym *id;
       Val *val;
       
-      Item(Env *home, const Sym *id, Val *val = nullptr): home(home), val(val) {}
+      Item(Env *home, const Sym *id, Val *val): home(home), id(id), val(val) {}
     };
       
     using Items = vector<Item>;
@@ -28,7 +29,9 @@ namespace forthy2 {
     
     Env *prev = nullptr;
     Items items;
-    
+
+    void bind_type(Cx &cx, const Pos &pos, Type &type);
+
     void bind(const Pos &pos, const Sym *id, Val *val) {
       Iter i(find(id));
 
