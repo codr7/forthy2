@@ -2,7 +2,7 @@
 #include "forthy2/ops/bind.hpp"
 
 namespace forthy2 {
-  void BindOp::dealloc(Cx &cx) { cx.bind_op.put(this); }
+  void BindOp::dealloc(Cx &cx) { cx.Bind.put(this); }
 
   void BindOp::dump(ostream &out) { out << "bind"; }
 

@@ -34,8 +34,8 @@ namespace forthy2 {
     Pool<Sym> sym_pool;
     unordered_map<string, Sym *> syms;
 
-    Pool<BindOp> bind_op;
-    Pool<PushOp> push_op;
+    Pool<BindOp> Bind;
+    Pool<PushOp> Push;
 
     PoolType<IntVal> int_type;
     PoolType<MethodVal> method_type;

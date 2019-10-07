@@ -20,9 +20,9 @@ int main(int argc, char *argv[]) {
   Cx cx;
   Mode mode(Mode::repl);
 
-  cx.op(cx.push_op, Pos::_, cx.sym_type.get(cx, cx.sym("foo")));
-  cx.op(cx.push_op, Pos::_, cx.int_type.get(cx, 42));
-  cx.op(cx.bind_op, Pos::_);
+  cx.op(cx.Push, Pos::_, cx.sym_type.get(cx, cx.sym("foo")));
+  cx.op(cx.Push, Pos::_, cx.int_type.get(cx, 42));
+  cx.op(cx.Bind, Pos::_);
   cx.eval(cx.ops);
   
   while (--argc && ++argv) {
