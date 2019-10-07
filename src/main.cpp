@@ -25,15 +25,6 @@ int main(int argc, char *argv[]) {
   cx.op(cx.bind_op, Pos::_);
   cx.eval(cx.ops);
   
-  /*
-  cx.env->bind(Pos::_, cx.sym("foo"), cx.int_type.get(cx, 42));
-  cx.stack->push(cx.pair_type.get(cx,
-                                  cx.int_type.get(cx, 1),
-                                  cx.int_type.get(cx, 2)));
-  MethodVal *m(cx.method_type.get(cx, "let", Args({{cx.sym_type}}), Rets({}), true));
-  cx.stack->push(m);
-  */
-  
   while (--argc && ++argv) {
     string a(*argv);
     

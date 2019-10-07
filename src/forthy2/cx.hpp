@@ -56,7 +56,8 @@ namespace forthy2 {
       stack_type("Stack"),
       sym_type("Sym"),
       env(&root_env),
-      stack(&root_stack) { }
+      stack(&root_stack) {
+    }
     
     void deinit() {
       for (Node<Op> *op(ops.next); op != &ops;) {

@@ -45,7 +45,7 @@ Combining operations allows skipping redundant chars.
 ```
 
 ### macros
-Macros are regular methods which are called at compile time and potentially parse arguments from the input stream. `|` triggers compile time evaluation for the next form, which is how macros are made.
+Macros are methods which are called at compile time and potentially parse arguments from the input stream. `|` triggers compile time evaluation for the next form, which is how macros are usually called.
 
 The following example pushes `1` and `5` on the compile time stack, which are added and printed when compiling the final expression. `3` and `7` are pushed on the run time stack as usual and added.
 
