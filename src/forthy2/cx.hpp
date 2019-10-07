@@ -96,6 +96,10 @@ namespace forthy2 {
         s->mark_items(*this);
       }
 
+      for (Node<Op> *op(ops.next); op != &ops; op = op->next) {
+        op->get().mark_vals(*this);
+      }
+      
       return true;
     }
 

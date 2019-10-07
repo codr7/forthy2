@@ -1,5 +1,3 @@
-* mark ops in cx.mark_vals
-* --
 * add reader
 ** use .: for dup, :. for drop and :: for swap
 ** read () and {} as separate tokens

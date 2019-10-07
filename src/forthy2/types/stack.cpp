@@ -5,9 +5,9 @@ namespace forthy2 {
   Type &StackVal::get_type(Cx &cx) { return cx.stack_type; }
 
   bool StackVal::mark(Cx &cx) {
-    bool marked(Val::mark(cx));
-    for (Val *v: v.items) { marked |= v->mark(cx); }
-    return marked;
+    if (!Val::mark(cx)) { return false; }
+    for (Val *v: v.items) { v->mark(cx); }
+    return true;
   }
 
   void StackVal::sweep(Cx &cx) {

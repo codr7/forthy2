@@ -14,4 +14,8 @@ namespace forthy2 {
     cx.stack->push(val);
     return Node<Op>::next;
   }
+
+  void PushOp::mark_vals(Cx &cx) {
+    val->mark(cx);
+  }
 }

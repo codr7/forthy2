@@ -5,10 +5,10 @@ namespace forthy2 {
   Type &PairVal::get_type(Cx &cx) { return cx.pair_type; }
 
   bool PairVal::mark(Cx &cx) {
-    Val::mark(cx);
-    bool marked(v.first->mark(cx));
-    marked |= v.second->mark(cx);
-    return marked;
+    if (!Val::mark(cx)) { return false; }
+    v.first->mark(cx);
+    v.second->mark(cx);
+    return true;
   }
 
   void PairVal::sweep(Cx &cx) {

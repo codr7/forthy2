@@ -20,6 +20,7 @@ namespace forthy2 {
     virtual void dealloc(Cx &cx) = 0;
     virtual void dump(ostream &out) = 0;
     virtual Node<Op> *eval(Cx &cx) { return Node<Op>::next; }
+    virtual void mark_vals(Cx &cx) {} 
   };
 }
 
