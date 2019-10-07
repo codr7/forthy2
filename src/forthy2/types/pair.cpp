@@ -6,8 +6,8 @@ namespace forthy2 {
 
   bool PairVal::mark(Cx &cx) {
     if (!Val::mark(cx)) { return false; }
-    v.first->mark(cx);
-    v.second->mark(cx);
+    val.first->mark(cx);
+    val.second->mark(cx);
     return true;
   }
 

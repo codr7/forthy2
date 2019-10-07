@@ -6,7 +6,7 @@ namespace forthy2 {
 
   bool StackVal::mark(Cx &cx) {
     if (!Val::mark(cx)) { return false; }
-    for (Val *v: v.items) { v->mark(cx); }
+    for (Val *v: val.items) { v->mark(cx); }
     return true;
   }
 

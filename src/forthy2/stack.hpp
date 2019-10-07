@@ -27,17 +27,17 @@ namespace forthy2 {
 
     size_t len() { return items.size(); }
 
-    bool mark_items(Cx &cx);
+    void mark_items(Cx &cx);
     
     Val *&peek(size_t offs = 0) { return items[items.size() - offs -1]; }
 
-    Val *pop() {
+    Val &pop() {
       Val *v(items.back());
       items.pop_back();
-      return v;
+      return *v;
     }
 
-    void push(Val *v) { items.push_back(v); }
+    void push(Val &v) { items.push_back(&v); }
   };
 
   

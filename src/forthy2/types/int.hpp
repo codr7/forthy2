@@ -7,7 +7,7 @@
 namespace forthy2 {
   struct IntVal: PrimVal<Int> {
     IntVal(Int v): PrimVal<Int>(v) {}
-    void dump(ostream &out) override { out << v; }
+    void dump(ostream &out) override { out << val; }
     Type &get_type(Cx &cx) override;
     void sweep(Cx &cx) override;
   };

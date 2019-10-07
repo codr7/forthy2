@@ -4,12 +4,15 @@
 #include <algorithm>
 #include <vector>
 
+#include "forthy2/arg.hpp"
+#include "forthy2/ret.hpp"
 #include "forthy2/e.hpp"
 
 namespace forthy2 {
   using namespace std;
 
   struct Cx;
+  struct Macro;
   struct Pos;
   struct Sym;
   struct Type;
@@ -30,16 +33,18 @@ namespace forthy2 {
     Env *prev = nullptr;
     Items items;
 
+    Macro &add_macro(Cx &cx, const Pos &pos, const Sym *id, Args args, Rets rets);
+
     void bind_type(Cx &cx, const Pos &pos, Type &type);
 
-    void bind(const Pos &pos, const Sym *id, Val *val) {
+    void bind(const Pos &pos, const Sym *id, Val &val) {
       Iter i(find(id));
 
       if (i == items.end() || i->id != id) {
         insert(i, id, val);
       } else {
         if (i->home == this) { throw ESys(pos, "Dup binding: ", id); }
-        i->val = val;
+        i->val = &val;
       }      
     }
 
@@ -54,11 +59,11 @@ namespace forthy2 {
       return *i->val;
     }
     
-    Iter insert(Iter i, const Sym *id, Val *val) {
-      return items.emplace(i, this, id, val);
+    Iter insert(Iter i, const Sym *id, Val &val) {
+      return items.emplace(i, this, id, &val);
     }
 
-    bool mark_items(Cx &cx);
+    void mark_items(Cx &cx);
   };
 }
 

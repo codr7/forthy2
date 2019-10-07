@@ -30,10 +30,10 @@ namespace forthy2 {
 
   template <typename T>
   struct TVal: Val {
-    T v;
+    T val;
 
     template <typename...Args>
-    TVal(Args &&...args): v(forward<Args>(args)...) {}
+    TVal(Args &&...args): val(forward<Args>(args)...) {}
   };
 }
 

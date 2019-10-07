@@ -12,7 +12,7 @@ namespace forthy2 {
     PoolType(Cx &cx, const Sym *id): Type(cx, id) {}
 
     template <typename...Args>
-    T *get(Cx &cx, Args &&...args);
+    T &get(Cx &cx, Args &&...args);
   };
 }
 

@@ -1,4 +1,3 @@
-* add env.add_macro(args...)
 * add Val.clone(Cx &)
 ** call from push op
 * add else macro
@@ -6,6 +5,13 @@
 * add reader
 ** use .: for dup, :. for drop and :: for swap
 ** read () and {} as separate tokens
+* add generic dispatch
+** add call op
+** add dispatch op
+** add type weight
+*** sum derived types + 1
+** add unordered_map<Type *, Type *> parents
+** sort by reverse weight & pick first match
 * add quote
 ** '(1 2 3) 'foo
 ** handle in reader
@@ -15,11 +21,6 @@
 * add pair literals
 ** 1,2
 * add type.derive/is_a
-* add generic dispatch
-** add call op
-** add dispatch op
-** add type dispatch_weight
-** sort by weight & pick first match
 * add cx.call
 ** add Call struct with prev ptr
 * add Val move constructors

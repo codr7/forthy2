@@ -8,8 +8,8 @@ namespace forthy2 {
   struct Sym;
   
   struct SymVal: PrimVal<const Sym *> {
-    SymVal(const Sym *v): PrimVal<const Sym *>(v) {}
-    void dump(ostream &out) override { out << v->name; }
+    SymVal(const Sym *val): PrimVal<const Sym *>(val) {}
+    void dump(ostream &out) override { out << val->name; }
     Type &get_type(Cx &cx) override;
     void sweep(Cx &cx) override;
   };

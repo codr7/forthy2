@@ -15,7 +15,7 @@ namespace forthy2 {
       out << '(';
       bool first(true);
       
-      for (Val *v: v.items) {
+      for (Val *v: val.items) {
         if (first) {
           first = false;
         } else {
@@ -29,26 +29,26 @@ namespace forthy2 {
     }
 
     Cmp cmp(Val &other) override {
-      Stack &other_v(dynamic_cast<StackVal &>(other).v);
+      Stack &other_val(dynamic_cast<StackVal &>(other).val);
         
-      for (auto i(v.begin()), j(other_v.begin());
-           i != v.end() && j != other_v.end();
+      for (auto i(val.begin()), j(other_val.begin());
+           i != val.end() && j != other_val.end();
            i++, j++) {
         Cmp res((*i)->cmp(**j));
         if (res != Cmp::Eq) { return res; }
       }
 
-      return forthy2::cmp(v.len(), other_v.len());
+      return forthy2::cmp(val.len(), other_val.len());
     }
 
     Type &get_type(Cx &cx) override;
 
     bool is(Val &other) override {
-      Stack &other_v(dynamic_cast<StackVal &>(other).v);
-      if (v.len() != other_v.len()) { return false; }
+      Stack &other_val(dynamic_cast<StackVal &>(other).val);
+      if (val.len() != other_val.len()) { return false; }
 
-      for (auto i(v.begin()), j(other_v.begin());
-           i != v.end() && j != other_v.end();
+      for (auto i(val.begin()), j(other_val.begin());
+           i != val.end() && j != other_val.end();
            i++, j++) {
         if (!(*i)->is(**j)) { return false; }
       }

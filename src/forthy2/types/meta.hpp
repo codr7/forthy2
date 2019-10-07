@@ -16,7 +16,7 @@ namespace forthy2 {
     Type &get_type(Cx &cx) override;
     void sweep(Cx &cx) override;
   private:
-    MetaVal(Type &v);
+    MetaVal(Type &val);
   };
 }
 

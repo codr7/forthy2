@@ -4,13 +4,17 @@
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
-  void Env::bind_type(Cx &cx, const Pos &pos, Type &type) {
-    bind(pos, type.id, &type.val);
+  Macro &Env::add_macro(Cx &cx, const Pos &pos, const Sym *id, Args args, Rets rets) {
+    MacroVal &m(cx.macro_type.get(cx, id, args, rets));
+    bind(pos, id, m);
+    return m.val;
   }
 
-  bool Env::mark_items(Cx &cx) {
-    bool marked(false);
-    for (Item it: items) { marked |= it.val->mark(cx); }
-    return marked;
+  void Env::bind_type(Cx &cx, const Pos &pos, Type &type) {
+    bind(pos, type.id, type.val);
+  }
+
+  void Env::mark_items(Cx &cx) {
+    for (Item it: items) { it.val->mark(cx); }
   }
 }

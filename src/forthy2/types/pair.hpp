@@ -5,28 +5,28 @@
 
 namespace forthy2 {
   struct PairVal: TVal<pair<Val *, Val *>> {
-    using V = pair<Val *, Val *>;
+    using P = pair<Val *, Val *>;
 
-    PairVal(const V &v): TVal<V>(v) {}
-    PairVal(Val *first, Val *second): TVal<V>(first, second) {}
+    PairVal(const P &v): TVal<P>(v) {}
+    PairVal(Val *first, Val *second): TVal<P>(first, second) {}
 
     void dump(ostream &out) override {
-      v.first->dump(out);
+      val.first->dump(out);
       out << ',';
-      v.second->dump(out);
+      val.second->dump(out);
     }
 
     Cmp cmp(Val &other) override {
-      V &other_v(dynamic_cast<PairVal &>(other).v);
-      Cmp first(v.first->cmp(*other_v.first));
-      return (first == Cmp::Eq) ? v.second->cmp(*other_v.second) : first;
+      P &other_val(dynamic_cast<PairVal &>(other).val);
+      Cmp first(val.first->cmp(*other_val.first));
+      return (first == Cmp::Eq) ? val.second->cmp(*other_val.second) : first;
     }
 
     Type &get_type(Cx &cx) override;
 
     bool is(Val &other) override {
-      V &other_v(dynamic_cast<PairVal &>(other).v);
-      return other_v.first->is(*v.first) && other_v.second->is(*v.second);
+      P &other_val(dynamic_cast<PairVal &>(other).val);
+      return other_val.first->is(*val.first) && other_val.second->is(*val.second);
     }
 
     bool mark(Cx &cx) override;

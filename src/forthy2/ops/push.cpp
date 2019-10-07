@@ -7,7 +7,7 @@ namespace forthy2 {
 
   void PushOp::dump(ostream &out) {
     out << "push ";
-    val->dump(out);
+    val.dump(out);
   }
 
   Node<Op> *PushOp::eval(Cx &cx) {
@@ -16,6 +16,6 @@ namespace forthy2 {
   }
 
   void PushOp::mark_vals(Cx &cx) {
-    val->mark(cx);
+    val.mark(cx);
   }
 }

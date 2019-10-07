@@ -15,6 +15,7 @@
 #include "forthy2/sym.hpp"
 #include "forthy2/timer.hpp"
 #include "forthy2/types/int.hpp"
+#include "forthy2/types/macro.hpp"
 #include "forthy2/types/meta.hpp"
 #include "forthy2/types/method.hpp"
 #include "forthy2/types/pair.hpp"
@@ -43,6 +44,7 @@ namespace forthy2 {
 
     Type &any_type;
     PoolType<IntVal> &int_type;
+    PoolType<MacroVal> &macro_type;
     Type &meta_type;
     PoolType<MethodVal> &method_type;
     PoolType<PairVal> &pair_type;
@@ -56,6 +58,7 @@ namespace forthy2 {
     Cx():
       any_type(*new Type(*this, sym("Any"))),
       int_type(*new PoolType<IntVal>(*this, sym("Int"))),
+      macro_type(*new PoolType<MacroVal>(*this, sym("Macro"))),
       meta_type(*new Type(*this, sym("Meta"))),
       method_type(*new PoolType<MethodVal>(*this, sym("Method"))),
       pair_type(*new PoolType<PairVal>(*this, sym("Pair"))),
@@ -159,9 +162,9 @@ namespace forthy2 {
 
   template <typename T>
   template <typename...Args>
-  T *PoolType<T>::get(Cx &cx, Args &&...args) {
-    T *v(pool.get(forward<Args>(args)...));
-    cx.marked_vals.push(*v);
+  T &PoolType<T>::get(Cx &cx, Args &&...args) {
+    T &v(*pool.get(forward<Args>(args)...));
+    cx.marked_vals.push(v);
     return v;
   }
 }

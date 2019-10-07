@@ -2,9 +2,7 @@
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
-  bool Stack::mark_items(Cx &cx) {
-    bool marked(false);
-    for (Val *v: items) { marked |= v->mark(cx); }
-    return marked;
+  void Stack::mark_items(Cx &cx) {
+    for (Val *v: items) { v->mark(cx); }
   }
 }
