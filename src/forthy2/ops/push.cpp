@@ -3,6 +3,8 @@
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
+  void PushOp::dealloc(Cx &cx) { cx.push_op.put(this); }
+
   void PushOp::dump(ostream &out) {
     out << "push ";
     val->dump(out);

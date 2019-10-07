@@ -20,11 +20,10 @@ int main(int argc, char *argv[]) {
   Cx cx;
   Mode mode(Mode::repl);
 
-  Node<Op> ops;
-  ops.push(*cx.push_op.get(Pos::_, cx.sym_type.get(cx, cx.sym("foo"))));
-  ops.push(*cx.push_op.get(Pos::_, cx.int_type.get(cx, 42)));
-  ops.push(*cx.bind_op.get(Pos::_));
-  cx.eval(ops);
+  cx.op(cx.push_op, Pos::_, cx.sym_type.get(cx, cx.sym("foo")));
+  cx.op(cx.push_op, Pos::_, cx.int_type.get(cx, 42));
+  cx.op(cx.bind_op, Pos::_);
+  cx.eval(cx.ops);
   
   /*
   cx.env->bind(Pos::_, cx.sym("foo"), cx.int_type.get(cx, 42));

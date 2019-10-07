@@ -1,10 +1,4 @@
-* add Node<Op> cx.ops
-* add Op.dealloc
-** put back in pool
-** dealloc in ops in cx deinit
-* add prev-arg to Op constructor
-** push this
-* update main
+* mark ops in cx.mark_vals
 * --
 * add reader
 ** use .: for dup, :. for drop and :: for swap

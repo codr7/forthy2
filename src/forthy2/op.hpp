@@ -14,8 +14,10 @@ namespace forthy2 {
   struct Op: Node<Op> {
     Pos pos;
     
-    Op(const Pos &pos): pos(pos) {}
-
+    Op(Node<Op> &prev, const Pos &pos): pos(pos) { prev.append(*this); }
+    virtual ~Op() {}
+    
+    virtual void dealloc(Cx &cx) = 0;
     virtual void dump(ostream &out) = 0;
     virtual Node<Op> *eval(Cx &cx) { return Node<Op>::next; }
   };

@@ -9,7 +9,8 @@ namespace forthy2 {
   struct PushOp: Op {
     Val *val;
     
-    PushOp(const Pos &pos, Val *val): Op(pos), val(val) {}
+    PushOp(Node<Op> &prev, const Pos &pos, Val *val): Op(prev, pos), val(val) {}
+    void dealloc(Cx &cx) override;
     void dump(ostream &out) override;
     Node<Op> *eval(Cx &cx) override;
   };

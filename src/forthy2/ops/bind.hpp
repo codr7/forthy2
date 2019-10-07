@@ -5,7 +5,8 @@
 
 namespace forthy2 {
   struct BindOp: Op {
-    BindOp(const Pos &pos): Op(pos) {}
+    BindOp(Node<Op> &prev, const Pos &pos): Op(prev, pos) {}
+    void dealloc(Cx &cx) override;
     void dump(ostream &out) override;
     Node<Op> *eval(Cx &cx) override;
   };

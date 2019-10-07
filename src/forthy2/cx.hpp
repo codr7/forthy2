@@ -47,7 +47,8 @@ namespace forthy2 {
     
     Env root_env, *env;
     Stack root_stack, *stack;
-
+    Node<Op> ops;
+    
     Cx():
       int_type("Int"),
       method_type("Method"),
@@ -58,10 +59,16 @@ namespace forthy2 {
       stack(&root_stack) { }
     
     void deinit() {
+      for (Node<Op> *op(ops.next); op != &ops;) {
+        Node<Op> *next(op->next);
+        op->get().dealloc(*this);
+        op = next;
+      }
+
       unmarked_vals.extend(marked_vals);
       sweep_vals();
 
-      for (auto &s: syms) { sym_pool.put(s.second); }
+      for (auto &s: syms) { sym_pool.put(s.second); }      
     }
 
     void eval(Node<Op> &root) {
@@ -92,6 +99,11 @@ namespace forthy2 {
       return true;
     }
 
+    template <typename OpT, typename...ArgsT>
+    OpT &op(Pool<OpT> &pool, const Pos &pos, ArgsT &&...args) {
+      return *pool.get(*ops.prev, pos, forward<ArgsT>(args)...);
+    }
+            
     bool sweep_vals(optional<uint64_t> max_ns = {}) {
       Timer t;
 
