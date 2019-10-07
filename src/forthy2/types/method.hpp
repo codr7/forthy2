@@ -7,9 +7,7 @@ namespace forthy2 {
   struct Method;
   
   struct MethodVal: TVal<Method &> {
-    template <typename...Args>
-    MethodVal(Args &&...args): TVal<Method>(forward<Args>(args)...) {}
-
+    MethodVal(Method &m);
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
     Type &get_type(Cx &cx) override;
