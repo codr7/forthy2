@@ -23,9 +23,6 @@
 * add generic dispatch
 ** add call op
 ** add dispatch op
-** add type weight
-*** sum derived types + 1
-** add unordered_map<Type *, Type *> parents
 ** sort by reverse weight & pick first match
 * add quote
 ** '(1 2 3) 'foo
