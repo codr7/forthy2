@@ -88,6 +88,18 @@ namespace forthy2 {
       stdin(&cin),
       stdout(&cout),
       stderr(&cerr) { }
+
+    Node<Op> &compile(Forms &in, Node<Op> &out) {
+      Node<Op> *op(&out);
+
+      for (auto i(in.begin()); i != in.end();) {
+        op = &(*i)->compile(*this, i, in.end(), *op);
+        op->get().dump(cout);
+        cout << endl;
+      }
+
+      return *op;
+    }
     
     void deinit() {
       for (Node<Op> *op(ops.next); op != &ops;) {
@@ -124,8 +136,10 @@ namespace forthy2 {
 
       Forms forms;
       read(in, forms);
+      Node<Op> &pc(*ops.prev);
+      compile(forms, pc);
       deref(forms);
-      load_path = prev_load_path;
+      eval(pc);
     }
     
     bool mark_vals(optional<uint64_t> max_ns = {}) {

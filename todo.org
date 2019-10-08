@@ -1,4 +1,3 @@
-* add Form.compile()
 * add |-support in reader
 ** break read_id on |
 ** add bool Form.eval(false)

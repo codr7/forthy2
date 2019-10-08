@@ -10,6 +10,7 @@ namespace forthy2 {
     const Sym *val;
     
     IdForm(const Pos &pos, const Sym *val);
+    Node<Op> &compile(Cx &cx, FormIter &in, FormIter end, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
     void dump(ostream &out) override;
   };

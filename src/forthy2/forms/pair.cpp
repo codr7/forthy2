@@ -5,6 +5,13 @@ namespace forthy2 {
   PairForm::PairForm(const Pos &pos, Form &left, Form &right):
     Form(pos), left(left.ref()), right(right.ref()) {}
 
+  Node<Op> &PairForm::compile(Cx &cx, FormIter &in, FormIter end, Node<Op> &out) {
+    Node<Op> *op(&out);
+    op = &left.compile(cx, end, end, *op);
+    op = &right.compile(cx, end, end, *op);
+    return *cx.pair_op.get(*this, *op);
+  }
+
   void PairForm::dealloc(Cx &cx) {
     left.deref(cx);
     right.deref(cx);
