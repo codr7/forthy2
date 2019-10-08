@@ -12,18 +12,14 @@ namespace forthy2 {
   using namespace std;
 
   struct Macro {
-    using Imp = function<Node<Op> &(Cx &cx,
-                                    FormIter &in,
-                                    FormIter end,
-                                    Node<Op> &out)>;
+    using Imp = function<Node<Op> &(Cx &cx, FormIter &in, Node<Op> &out)>;
 
     const Sym *id;
     Args args;
     Rets rets;
     Imp imp;
 
-    Macro(const Sym *id, const Args &args, const Rets &rets):
-      id(id), args(args), rets(rets) {}
+    Macro(const Sym *id, const Args &args, const Rets &rets);
   };
 }
 
