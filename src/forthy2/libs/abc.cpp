@@ -2,12 +2,16 @@
 #include "forthy2/libs/abc.hpp"
 
 namespace forthy2 {
-  static Node<Op> &const_imp(Cx &cx, Form &form, FormIter &in, Node<Op> &out) {
+  static Node<Op> &const_imp(Cx &cx,
+                             Form &form,
+                             FormIter &in,
+                             FormIter end,
+                             Node<Op> &out) {
     Form &id(**in++), &val(**in++);
     Node<Op> *op(&out);
+    op = &val.compile(cx, end, end, *op);
     Val &id_val(cx.sym_type.get(cx, dynamic_cast<IdForm &>(id).val));
     op = cx.push_op.get(form, *op, id_val);
-    op = cx.push_op.get(form, *op, dynamic_cast<LitForm &>(val).val);
     return *cx.bind_op.get(form, *op);
   }
   

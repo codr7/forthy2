@@ -94,7 +94,7 @@ namespace forthy2 {
 
       for (auto i(in.begin()); i != in.end();) {
         auto j(i++);
-        op = &(*j)->compile(*this, j, in.end(), *op);
+        op = &(*j)->compile(*this, i, in.end(), *op);
         op->get().dump(cout);
         cout << endl;
       }

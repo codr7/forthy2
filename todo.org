@@ -1,15 +1,11 @@
 * finish |-support
-** if IdForm.cte
-*** expand macros
-**** add call op
-***** get method from stack
-**** add Macro.expand()
-**** add Macro.method
-***** wrap macro imp in method
-***** call if not cte
-*** eval on compile stack in Form.compile
+** add call op
+*** get method from stack
+** add Macro.method
+** wrap macro imp in method
+** call instead of expand if not cte in IdForm.compile
+** eval on compile stack in Lit.compile if cte
 *** wrap separate stack around cx.compile
-**** delegate if cte in id/lit/pair
 * --
 * rename add_macro to add_op_macro
 ** add imp arg
