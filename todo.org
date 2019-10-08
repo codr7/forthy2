@@ -11,6 +11,12 @@
 *** wrap separate stack around cx.compile
 **** delegate if cte in id/lit/pair
 * --
+* rename add_macro to add_op_macro
+** add imp arg
+* add Env.add_form_macro
+** build on top of add_op_macro
+*** compile returned form as result
+* --
 * add else macro
 * add method macro
 ** use .: for dup, :. for drop and :: for swap
@@ -38,8 +44,7 @@
 * perform stack analysis on compile
 ** convert dispatch to call
 * add C++ emit
-** emit as nested switch
-*** each expr gets its own switch
+** use labels/goto
 ** add string Sym.emit_id
 *** lazy gen from name
 ** add -build mode
