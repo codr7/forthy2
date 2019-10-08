@@ -1,6 +1,7 @@
 #include "forthy2/cx.hpp"
 #include "forthy2/forthy2.hpp"
 #include "forthy2/libs/abc.hpp"
+#include "forthy2/libs/math.hpp"
 
 using namespace std;
 using namespace forthy2;
@@ -14,6 +15,7 @@ void repl(Cx &cx) {
 int main(int argc, char *argv[]) {  
   Cx cx;
   init_abc(cx, Pos::_, cx.root_env);
+  init_math(cx, Pos::_, cx.root_env);
   
   Mode mode(Mode::repl);
 

@@ -5,14 +5,15 @@
 #include <vector>
 
 #include "forthy2/arg.hpp"
-#include "forthy2/ret.hpp"
 #include "forthy2/e.hpp"
+#include "forthy2/ret.hpp"
 
 namespace forthy2 {
   using namespace std;
 
   struct Cx;
   struct Macro;
+  struct Method;
   struct Pos;
   struct Sym;
   struct Type;
@@ -33,7 +34,17 @@ namespace forthy2 {
     Env *prev = nullptr;
     Items items;
 
-    Macro &add_macro(Cx &cx, const Pos &pos, const Sym *id, Args args, Rets rets);
+    Macro &add_macro(Cx &cx,
+                     const Pos &pos,
+                     const Sym *id,
+                     Args args,
+                     Rets rets);
+
+    Method &add_method(Cx &cx,
+                       const Pos &pos,
+                       const Sym *id,
+                       Args args,
+                       Rets rets);
 
     void bind_type(Cx &cx, const Pos &pos, Type &type);
 

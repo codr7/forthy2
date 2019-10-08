@@ -1,17 +1,23 @@
+* build/test2.f2
+* add BinSet type
+** same model as env
+* bind BinSet containing methods to raw id
+* bind methods to id[X Y Z]
+* --
+* add call op
+** get method from stack
+* add dispatch op
+** get method list from stack
+* commit
 * finish |-support
-** add call op
-*** get method from stack
-** add Macro.method
-** wrap macro imp in method
-** call instead of expand if not cte in IdForm.compile
 ** eval on compile stack in Lit.compile if cte
 *** wrap separate stack around cx.compile
 * add dispatch_op
-* --
 * add dot notation
 ** any sequence of ./:
 *** move next form before prev
 ** .: for dup, :. for drop and :: for swap
+* --
 * add else macro
 * add method macro
 * add generic dispatch
@@ -43,3 +49,6 @@
 ** add Env.add_form_macro
 *** build on top of add_op_macro
 **** compile returned form as result
+* add Macro.method
+** wrap macro imp in method
+** call instead of expand if not cte in IdForm.compile
