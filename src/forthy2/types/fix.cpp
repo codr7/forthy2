@@ -6,10 +6,10 @@ namespace forthy2 {
 
   void FixVal::dump(ostream &out) { fix::dump(val, out); }
 
-  Type &FixVal::get_type(Cx &cx) { return cx.fix_type; }
+  Type &FixVal::get_type(Cx &cx) { return cx.fix_val; }
 
   void FixVal::sweep(Cx &cx) {
     Val::sweep(cx);
-    cx.fix_type.pool.put(this);
+    cx.fix_val.pool.put(this);
   }
 }

@@ -11,7 +11,7 @@ namespace forthy2 {
 
   Node<Op> *PairOp::eval(Cx &cx) {
     Val &r(cx.stack->pop()), &l(cx.stack->pop());
-    cx.stack->push(cx.pair_type.get(cx, l, r));
+    cx.stack->push(cx.pair_val.get(cx, l, r));
     return Node<Op>::next;
   }
 }

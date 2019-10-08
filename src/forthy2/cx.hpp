@@ -52,18 +52,20 @@ namespace forthy2 {
     Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
 
+    Type::Weight type_weight;
     Pool<MetaVal> type_pool;
     Node<Val> marked_vals, unmarked_vals;
 
     Type &any_type;
-    PoolType<FixVal> &fix_type;
-    PoolType<IntVal> &int_type;
-    PoolType<MacroVal> &macro_type;
     Type &meta_type;
-    PoolType<MethodVal> &method_type;
-    PoolType<PairVal> &pair_type;
-    PoolType<StackVal> &stack_type;
-    PoolType<SymVal> &sym_type;
+
+    PoolType<FixVal> &fix_val;
+    PoolType<IntVal> &int_val;
+    PoolType<MacroVal> &macro_val;
+    PoolType<MethodVal> &method_val;
+    PoolType<PairVal> &pair_val;
+    PoolType<StackVal> &stack_val;
+    PoolType<SymVal> &sym_val;
         
     Env root_env, *env;
     Stack root_stack, *stack;
@@ -74,15 +76,16 @@ namespace forthy2 {
     ostream *stdout, *stderr;
     
     Cx():
+      type_weight(1),
       any_type(*new Type(*this, sym("Any"))),
-      fix_type(*new PoolType<FixVal>(*this, sym("Fix"))),
-      int_type(*new PoolType<IntVal>(*this, sym("Int"))),
-      macro_type(*new PoolType<MacroVal>(*this, sym("Macro"))),
-      meta_type(*new Type(*this, sym("Meta"))),
-      method_type(*new PoolType<MethodVal>(*this, sym("Method"))),
-      pair_type(*new PoolType<PairVal>(*this, sym("Pair"))),
-      stack_type(*new PoolType<StackVal>(*this, sym("Stack"))),
-      sym_type(*new PoolType<SymVal>(*this, sym("Sym"))),
+      meta_type(*new Type(*this, sym("Meta"), {&any_type})),
+      fix_val(*new PoolType<FixVal>(*this, sym("Fix"), {&any_type})),
+      int_val(*new PoolType<IntVal>(*this, sym("Int"), {&any_type})),
+      macro_val(*new PoolType<MacroVal>(*this, sym("Macro"), {&any_type})),
+      method_val(*new PoolType<MethodVal>(*this, sym("Method"), {&any_type})),
+      pair_val(*new PoolType<PairVal>(*this, sym("Pair"), {&any_type})),
+      stack_val(*new PoolType<StackVal>(*this, sym("Stack"), {&any_type})),
+      sym_val(*new PoolType<SymVal>(*this, sym("Sym"), {&any_type})),
       env(&root_env),
       stack(&root_stack),
       stdin(&cin),

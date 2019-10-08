@@ -8,7 +8,7 @@ namespace forthy2 {
     Val &v(cx.env->get(pos, val));
     Type *vt(&v.get_type(cx));
 
-    if (vt == &cx.macro_type) {
+    if (vt == &cx.macro_val) {
       return dynamic_cast<MacroVal &>(v).val.expand(cx, *this, in, end, out);
     }
     

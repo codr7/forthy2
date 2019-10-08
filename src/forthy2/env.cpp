@@ -5,7 +5,7 @@
 
 namespace forthy2 {
   Macro &Env::add_macro(Cx &cx, const Pos &pos, const Sym *id, Args args, Rets rets) {
-    MacroVal &m(cx.macro_type.get(cx, id, args, rets));
+    MacroVal &m(cx.macro_val.get(cx, id, args, rets));
     bind(pos, id, m);
     return m.val;
   }

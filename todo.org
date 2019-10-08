@@ -6,6 +6,7 @@
 ** call instead of expand if not cte in IdForm.compile
 ** eval on compile stack in Lit.compile if cte
 *** wrap separate stack around cx.compile
+* add dispatch_op
 * --
 * rename add_macro to add_op_macro
 ** add imp arg
@@ -13,6 +14,8 @@
 ** build on top of add_op_macro
 *** compile returned form as result
 * --
+* add meta types
+** create automatically in Type unless meta
 * add else macro
 * add method macro
 ** use .: for dup, :. for drop and :: for swap
@@ -29,7 +32,7 @@
 ** handle in reader
 * add stack literals
 ** (1 2 3; 4 5)
-** parse suffix as separate stack/expr
+** parse suffix as separate stack
 * add pair literals
 ** 1,2
 * add type.derive/is_a

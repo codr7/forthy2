@@ -2,7 +2,7 @@
 #include "forthy2/types/pair.hpp"
 
 namespace forthy2 {
-  Type &PairVal::get_type(Cx &cx) { return cx.pair_type; }
+  Type &PairVal::get_type(Cx &cx) { return cx.pair_val; }
 
   bool PairVal::mark(Cx &cx) {
     if (!Val::mark(cx)) { return false; }
@@ -13,6 +13,6 @@ namespace forthy2 {
 
   void PairVal::sweep(Cx &cx) {
     Val::sweep(cx);
-    cx.pair_type.pool.put(this);
+    cx.pair_val.pool.put(this);
   }
 }

@@ -9,12 +9,12 @@ namespace forthy2 {
 
   void MethodVal::dump(ostream &out) { out << "Method@" << this; }
 
-  Type &MethodVal::get_type(Cx &cx) { return cx.method_type; }
+  Type &MethodVal::get_type(Cx &cx) { return cx.method_val; }
 
   bool MethodVal::is(Val &other) { return this == &other; }
 
   void MethodVal::sweep(Cx &cx) {
     Val::sweep(cx);
-    cx.method_type.pool.put(this);
+    cx.method_val.pool.put(this);
   }
 }

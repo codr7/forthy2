@@ -2,9 +2,9 @@
 #include "forthy2/types/stack.hpp"
 
 namespace forthy2 {
-  Val &StackVal::clone(Cx &cx) { return cx.stack_type.get(cx, val); }
+  Val &StackVal::clone(Cx &cx) { return cx.stack_val.get(cx, val); }
 
-  Type &StackVal::get_type(Cx &cx) { return cx.stack_type; }
+  Type &StackVal::get_type(Cx &cx) { return cx.stack_val; }
 
   bool StackVal::mark(Cx &cx) {
     if (!Val::mark(cx)) { return false; }
@@ -14,6 +14,6 @@ namespace forthy2 {
 
   void StackVal::sweep(Cx &cx) {
     Val::sweep(cx);
-    cx.stack_type.pool.put(this);
+    cx.stack_val.pool.put(this);
   }
 }

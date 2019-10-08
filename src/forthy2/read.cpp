@@ -137,7 +137,7 @@ namespace forthy2 {
         auto f(read_frac(cx, pos, in));
         int64_t v(i.first * fix::pow(f.second) + f.first);
 
-        FixVal &fv(cx.fix_type.get(cx, fix::make((i.first || !i.second) ? v : -v,
+        FixVal &fv(cx.fix_val.get(cx, fix::make((i.first || !i.second) ? v : -v,
                                                  f.second)));
         
         return *cx.lit_form.get(p, fv);
@@ -146,7 +146,7 @@ namespace forthy2 {
       in.unget();
     }
 
-    return *cx.lit_form.get(p, cx.int_type.get(cx, i.first));
+    return *cx.lit_form.get(p, cx.int_val.get(cx, i.first));
   }
   
   void skip_ws(Pos &pos, istream &in) {

@@ -11,7 +11,7 @@ namespace forthy2 {
 
   void MacroVal::dump(ostream &out) { out << "Macro@" << this; }
 
-  Type &MacroVal::get_type(Cx &cx) { return cx.macro_type; }
+  Type &MacroVal::get_type(Cx &cx) { return cx.macro_val; }
 
   bool MacroVal::is(Val &other) {
     return &val == &dynamic_cast<MacroVal &>(other).val;
@@ -19,6 +19,6 @@ namespace forthy2 {
 
   void MacroVal::sweep(Cx &cx) {
     Val::sweep(cx);
-    cx.macro_type.pool.put(this);
+    cx.macro_val.pool.put(this);
   }
 }
