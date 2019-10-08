@@ -19,6 +19,7 @@ namespace forthy2 {
 
   struct Form {
     Pos pos;
+    bool cte;
     int nrefs;
     
     Form(const Pos &pos);

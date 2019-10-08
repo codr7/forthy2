@@ -12,7 +12,7 @@ namespace forthy2 {
   using namespace std;
 
   struct Macro {
-    using Imp = function<Node<Op> &(Cx &cx, FormIter &in, Node<Op> &out)>;
+    using Imp = function<Node<Op> &(Cx &cx, Form &form, FormIter &in, Node<Op> &out)>;
 
     const Sym *id;
     Args args;

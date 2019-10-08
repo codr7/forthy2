@@ -8,9 +8,15 @@ namespace forthy2 {
     skip_ws(pos, in);
     Pos p(pos);
     Form *f;
+    bool cte(false);
     
     if (char c(0); in.get(c)) {
       switch (c) {
+      case '|':
+        f = read_form(cx, pos, in);
+        if (!f) { throw ESys(p, "Missing form"); }
+        cte = true;
+        break;
       default:
         in.unget();
         
@@ -33,6 +39,7 @@ namespace forthy2 {
         }
       }
 
+      f->cte = cte;
       return f;
     }
     
@@ -62,6 +69,7 @@ namespace forthy2 {
     
     for (;;) {  
       if (!in.get(c) || (!arg_depth && (!isgraph(c) ||
+                                        c == '|' ||
                                         c == '(' || c == ')' ||
                                         c == '{' || c == '}'))) {
         break;

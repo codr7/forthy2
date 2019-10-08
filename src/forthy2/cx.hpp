@@ -93,7 +93,8 @@ namespace forthy2 {
       Node<Op> *op(&out);
 
       for (auto i(in.begin()); i != in.end();) {
-        op = &(*i)->compile(*this, i, in.end(), *op);
+        auto j(i++);
+        op = &(*j)->compile(*this, j, in.end(), *op);
         op->get().dump(cout);
         cout << endl;
       }
