@@ -1,7 +1,9 @@
 |const N    20
 |const REPS 10
 
-|method fib (Int;Int) {.: 2 < |else {.: -1 fib -1 fib +}}
+|method fib (Int;Int) {
+  .:< 2 |else {.: -1 fib.+; -1 fib}
+}
 
 N fib dump
 |clock REPS {N fib}

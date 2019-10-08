@@ -8,18 +8,12 @@
 *** wrap separate stack around cx.compile
 * add dispatch_op
 * --
-* rename add_macro to add_op_macro
-** add imp arg
-* add Env.add_form_macro
-** build on top of add_op_macro
-*** compile returned form as result
-* --
-* add meta types
-** create automatically in Type unless meta
+* add dot notation
+** any sequence of ./:
+*** move next form before prev
+** .: for dup, :. for drop and :: for swap
 * add else macro
 * add method macro
-** use .: for dup, :. for drop and :: for swap
-** read () and {} as separate tokens
 * add generic dispatch
 ** add call op
 ** add dispatch op
@@ -44,3 +38,8 @@
 ** add string Sym.emit_id
 *** lazy gen from name
 ** add -build mode
+* rename add_macro to add_op_macro
+** add imp arg
+** add Env.add_form_macro
+*** build on top of add_op_macro
+**** compile returned form as result
