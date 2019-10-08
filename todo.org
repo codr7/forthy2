@@ -1,7 +1,10 @@
-* add Val.compile()
-** default push_op
-* add Val.eval()
-** default push on stack
+* add Form.compile()
+* add |-support in reader
+** break read_id on |
+** add bool Form.eval(false)
+** set eval = true on next form
+** expand if macro
+** otherwise eval on separate stack & replace with push
 * --
 * add else macro
 * add method macro

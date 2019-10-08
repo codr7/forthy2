@@ -4,6 +4,41 @@
 #include "forthy2/read.hpp"
 
 namespace forthy2 {
+  Form *read_form(Cx &cx, Pos &pos, istream &in) {
+    skip_ws(pos, in);
+    Pos p(pos);
+    Form *f;
+    
+    if (char c(0); in.get(c)) {
+      switch (c) {
+      default:
+        in.unget();
+        
+        if (isdigit(c)) {
+          f = &read_num(cx, pos, in);
+        } else if (isgraph(c)) {
+          f = &read_id(cx, pos, in);
+        } else {
+          throw ESys(pos, "Invalid input: ", c);
+        }
+      };
+
+      if (in.get(c)) {
+        if (c == ',') {
+          Form *right(read_form(cx, pos, in));
+          if (!right) { throw ESys(p, "Invalid pair"); }
+          f = cx.pair_form.get(p, *f, *right);
+        } else {
+          in.unget();
+        }
+      }
+
+      return f;
+    }
+    
+    return nullptr;
+  }
+
   pair<uint64_t, uint8_t> read_frac(Cx &cx, Pos &pos, istream &in) {
     char c(0);    
     uint64_t v(0);
@@ -19,7 +54,8 @@ namespace forthy2 {
     return make_pair(v, s);
   }
 
-  Val &read_id(Cx &cx, Pos &pos, istream &in) {
+  IdForm &read_id(Cx &cx, Pos &pos, istream &in) {
+    Pos p(pos);
     stringstream out;
     int arg_depth(0);
     char c(0);
@@ -48,7 +84,7 @@ namespace forthy2 {
     }
 
     if (!in.eof()) { in.unget(); }
-    return cx.sym_type.get(cx, cx.sym(out.str()));
+    return *cx.id_form.get(p, cx.sym(out.str()));
   }
   
   pair<Int, bool> read_int(Cx &cx, Pos &pos, istream &in, bool is_hex) {
@@ -66,7 +102,8 @@ namespace forthy2 {
     return make_pair(v, is_neg);
   }
   
-  Val &read_num(Cx &cx, Pos &pos, istream &in) {
+  LitForm &read_num(Cx &cx, Pos &pos, istream &in) {
+    Pos p(pos);
     bool is_hex(false);
     char c(0);
       
@@ -91,51 +128,19 @@ namespace forthy2 {
       if (c == '.') {
         auto f(read_frac(cx, pos, in));
         int64_t v(i.first * fix::pow(f.second) + f.first);
-        return cx.fix_type.get(cx, fix::make((i.first || !i.second) ? v : -v,
-                                             f.second));
+
+        FixVal &fv(cx.fix_type.get(cx, fix::make((i.first || !i.second) ? v : -v,
+                                                 f.second)));
+        
+        return *cx.lit_form.get(p, fv);
       }
       
       in.unget();
     }
 
-    return cx.int_type.get(cx, i.first);
+    return *cx.lit_form.get(p, cx.int_type.get(cx, i.first));
   }
   
-  Val *read_val(Cx &cx, Pos &pos, istream &in) {
-    skip_ws(pos, in);
-    Pos vp(pos);
-    Val *v;
-    
-    if (char c(0); in.get(c)) {
-      switch (c) {
-      default:
-        in.unget();
-        
-        if (isdigit(c)) {
-          v = &read_num(cx, pos, in);
-        } else if (isgraph(c)) {
-          v = &read_id(cx, pos, in);
-        } else {
-          throw ESys(pos, "Invalid input: ", c);
-        }
-      };
-
-      if (in.get(c)) {
-        if (c == ',') {
-          Val *right(read_val(cx, pos, in));
-          if (!right) { throw ESys(vp, "Invalid pair"); }
-          v = &cx.pair_type.get(cx, *v, *right);
-        } else {
-          in.unget();
-        }
-      }
-
-      return v;
-    }
-    
-    return {};
-  }
-
   void skip_ws(Pos &pos, istream &in) {
     char c(0);
     

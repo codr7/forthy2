@@ -7,14 +7,16 @@
 
 namespace forthy2 {
   struct Cx;
+  struct IdForm;
+  struct LitForm;
   struct Pos;
   struct Val;
 
+  Form *read_form(Cx &cx, Pos &pos, istream &in);
   pair<uint64_t, uint8_t> read_frac(Cx &cx, Pos &pos, istream &in);
-  Val &read_id(Cx &cx, Pos &pos, istream &in);
+  IdForm &read_id(Cx &cx, Pos &pos, istream &in);
   pair<Int, bool> read_int(Cx &cx, Pos &pos, istream &in, bool is_hex);
-  Val &read_num(Cx &cx, Pos &pos, istream &in);
-  Val *read_val(Cx &cx, Pos &pos, istream &in);
+  LitForm &read_num(Cx &cx, Pos &pos, istream &in);
   void skip_ws(Pos &pos, istream &in);
 }
 

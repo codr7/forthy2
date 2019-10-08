@@ -5,6 +5,7 @@
 #include <string>
 
 #include "forthy2/arg.hpp"
+#include "forthy2/form.hpp"
 #include "forthy2/ret.hpp"
 
 namespace forthy2 {
@@ -13,8 +14,8 @@ namespace forthy2 {
   struct Macro {
     using Imp = function<Node<Op> &(Cx &cx,
                                     Pos &pos,
-                                    Stack::Iter &in,
-                                    Stack::Iter end,
+                                    FormIter &in,
+                                    FormIter end,
                                     Node<Op> &out)>;
 
     const Sym *id;

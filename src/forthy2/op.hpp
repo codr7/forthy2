@@ -3,8 +3,8 @@
 
 #include <iostream>
 
+#include "forthy2/form.hpp"
 #include "forthy2/node.hpp"
-#include "forthy2/pos.hpp"
 
 namespace forthy2 {
   using namespace std;
@@ -12,15 +12,15 @@ namespace forthy2 {
   struct Cx;
   
   struct Op: Node<Op> {
-    Pos pos;
+    Form &form;
     
-    Op(Node<Op> &prev, const Pos &pos): pos(pos) { prev.append(*this); }
+    Op(Form &form, Node<Op> &prev): form(form.ref()) { prev.append(*this); }
     virtual ~Op() {}
     
-    virtual void dealloc(Cx &cx) = 0;
+    virtual void dealloc(Cx &cx) { form.deref(cx); }
     virtual void dump(ostream &out) = 0;
     virtual Node<Op> *eval(Cx &cx) { return Node<Op>::next; }
-    virtual void mark_vals(Cx &cx) {} 
+    virtual void mark_vals(Cx &cx) { form.mark_vals(cx); } 
   };
 }
 

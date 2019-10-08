@@ -7,8 +7,12 @@
 
 #include "forthy2/defer.hpp"
 #include "forthy2/env.hpp"
+#include "forthy2/forms/id.hpp"
+#include "forthy2/forms/lit.hpp"
+#include "forthy2/forms/pair.hpp"
 #include "forthy2/node.hpp"
 #include "forthy2/ops/bind.hpp"
+#include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/push.hpp"
 #include "forthy2/path.hpp"
 #include "forthy2/pool.hpp"
@@ -40,7 +44,12 @@ namespace forthy2 {
     Pool<Sym> sym_pool;
     unordered_map<string, Sym *> syms;
 
+    Pool<IdForm> id_form;
+    Pool<LitForm> lit_form;
+    Pool<PairForm> pair_form;
+
     Pool<BindOp> bind_op;
+    Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
 
     Pool<MetaVal> type_pool;
@@ -93,6 +102,13 @@ namespace forthy2 {
       for (auto &s: syms) { sym_pool.put(s.second); }      
     }
 
+    void deref(Forms &in) {
+      for (auto i(in.begin()); i != in.end();) {
+        Form *f(*i++);
+        f->deref(*this);
+      }
+    }
+
     void eval(Node<Op> &root) {
       for (Node<Op> *op(root.next); op != &root;) { op = op->get().eval(*this); }
     }
@@ -106,9 +122,9 @@ namespace forthy2 {
       load_path = path.parent_path();
       auto restore_load_path(defer([&]() { load_path = prev_load_path; }));
 
-      Stack out;
-      read(in, out);
-
+      Forms forms;
+      read(in, forms);
+      deref(forms);
       load_path = prev_load_path;
     }
     
@@ -140,14 +156,14 @@ namespace forthy2 {
       return true;
     }
 
-    void read(istream &in, Stack &out) {
+    void read(istream &in, Forms &out) {
       Pos p;
-      Val *v(nullptr);
-      while ((v = read_val(*this, p, in))) {
-        v->dump(cout);
+      Form *f(nullptr);
+      
+      while ((f = read_form(*this, p, in))) {
+        f->dump(cout);
         cout << endl;
-        
-        out.push(*v);
+        out.push_back(f);
       }
     }
 

@@ -19,6 +19,9 @@ target_link_libraries(forthy2 dl stdc++fs)
 file(GLOB root_inc src/forthy2/*.hpp)
 install(FILES ${root_inc} DESTINATION include/forthy2)
 
+file(GLOB form_inc src/forthy2/forms/*.hpp)
+install(FILES ${form_inc} DESTINATION include/forthy2/forms)
+
 file(GLOB op_inc src/forthy2/ops/*.hpp)
 install(FILES ${op_inc} DESTINATION include/forthy2/ops)
 
