@@ -17,6 +17,9 @@
 *** move next form before prev
 ** .: for dup, :. for drop and :: for swap
 * --
+* unwrap Stack type
+** use alias instead of struct
+* unwrap Env type
 * add else macro
 * add method macro
 * add generic dispatch
