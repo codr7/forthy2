@@ -1,6 +1,7 @@
 #ifndef FORTHY2_ARG_HPP
 #define FORTHY2_ARG_HPP
 
+#include <iostream>
 #include <vector>
 
 namespace forthy2 {
@@ -18,6 +19,9 @@ namespace forthy2 {
   };
   
   using Args = vector<Arg>;
+
+  void dump(Args &args, ostream &out);
+  uint64_t get_weight(Args &args);
 }
 
 #endif

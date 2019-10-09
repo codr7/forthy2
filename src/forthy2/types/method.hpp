@@ -8,7 +8,7 @@
 
 namespace forthy2 {
   struct MethodVal: TVal<Method> {
-    MethodVal(const Sym *id, const Args &args, const Rets &rets);
+    MethodVal(const Sym *id, uint64_t weight, const Args &args, const Rets &rets);
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
     Type &get_type(Cx &cx) override;

@@ -10,10 +10,8 @@ namespace forthy2 {
   struct Sym;
   
   struct Type {
-    using Weight = uint64_t;
-    
     const Sym *id;
-    Weight weight;
+    uint64_t weight;
     unordered_map<Type *, Type *> parents;
     MetaVal &val;
     

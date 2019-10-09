@@ -26,6 +26,7 @@
 #include "forthy2/types/macro.hpp"
 #include "forthy2/types/meta.hpp"
 #include "forthy2/types/method.hpp"
+#include "forthy2/types/method_set.hpp"
 #include "forthy2/types/pair.hpp"
 #include "forthy2/types/stack.hpp"
 #include "forthy2/types/sym.hpp"
@@ -52,7 +53,7 @@ namespace forthy2 {
     Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
 
-    Type::Weight type_weight;
+    uint64_t type_weight;
     Pool<MetaVal> type_pool;
     Node<Val> marked_vals, unmarked_vals;
 
@@ -62,6 +63,7 @@ namespace forthy2 {
     PoolType<FixVal> &fix_val;
     PoolType<IntVal> &int_val;
     PoolType<MacroVal> &macro_val;
+    PoolType<MethodSetVal> &method_set_val;
     PoolType<MethodVal> &method_val;
     PoolType<PairVal> &pair_val;
     PoolType<StackVal> &stack_val;
@@ -82,6 +84,8 @@ namespace forthy2 {
       fix_val(*new PoolType<FixVal>(*this, sym("Fix"), {&any_type})),
       int_val(*new PoolType<IntVal>(*this, sym("Int"), {&any_type})),
       macro_val(*new PoolType<MacroVal>(*this, sym("Macro"), {&any_type})),
+      method_set_val(*new PoolType<MethodSetVal>
+                     (*this, sym("MethodSet"), {&any_type})),
       method_val(*new PoolType<MethodVal>(*this, sym("Method"), {&any_type})),
       pair_val(*new PoolType<PairVal>(*this, sym("Pair"), {&any_type})),
       stack_val(*new PoolType<StackVal>(*this, sym("Stack"), {&any_type})),
@@ -127,6 +131,23 @@ namespace forthy2 {
 
     void eval(Node<Op> &root) {
       for (Node<Op> *op(root.next); op != &root;) { op = op->get().eval(*this); }
+    }
+
+    const Sym *get_id(const Sym *set_id, Args &args) {
+      stringstream buf;
+      buf << set_id->name;
+      dump(args, buf);
+      return sym(buf.str());
+    }
+
+    uint64_t get_weight(Args &args) {
+      uint64_t weight(0);
+      
+      for (Arg &a: args) {
+        weight += a.val ? a.val->get_type(*this).weight + 1 : a.type->weight;
+      }
+      
+      return weight;
     }
 
     void load(const Pos &pos, const Path &path) {

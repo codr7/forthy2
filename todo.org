@@ -1,8 +1,7 @@
 * build/test2.f2
-* add BinSet type
-** same model as env
-* bind BinSet containing methods to raw id
-* bind methods to id[X Y Z]
+** update read-id to break on ']'
+** break out of frac read if not .is-digit
+*** unget dot
 * --
 * add call op
 ** get method from stack

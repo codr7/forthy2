@@ -21,6 +21,7 @@ namespace forthy2 {
 
     env.bind_type(cx, pos, cx.int_val);
     env.bind_type(cx, pos, cx.macro_val);
+    env.bind_type(cx, pos, cx.method_set_val);
     env.bind_type(cx, pos, cx.method_val);
     env.bind_type(cx, pos, cx.pair_val);
     env.bind_type(cx, pos, cx.stack_val);
