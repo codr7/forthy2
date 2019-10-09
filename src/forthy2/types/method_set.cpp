@@ -15,7 +15,7 @@ namespace forthy2 {
         out << ' ';
       }
             
-      forthy2::dump(i->get().args, out);
+      out << i->get().id->name;
     }
 
     out << ')';
