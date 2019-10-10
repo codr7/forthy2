@@ -43,6 +43,14 @@ Combining operations allows skipping redundant chars.
   
 ...1 3
 ```
+### dot-notation
+Methods and macros may be called infix by putting a `.` between first argument and operation.
+
+```
+  35.+ 7
+
+...42
+```
 
 ### macros
 Macros are methods which are called at compile time and potentially parse arguments from the input stream. `|` may be used to trigger compile time evaluation, which is how macros are usually called.
