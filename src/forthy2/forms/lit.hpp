@@ -9,7 +9,7 @@ namespace forthy2 {
   struct LitForm: Form {
     Val &val;
     
-    LitForm(const Pos &pos, Val &val);
+    LitForm(Pos pos, Val &val);
     Node<Op> &compile(Cx &cx, FormIter &in, FormIter end, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
     void dump(ostream &out) override;

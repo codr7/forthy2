@@ -9,7 +9,7 @@ namespace forthy2 {
   struct PoolType: Type {
     Pool<T> pool;
 
-    PoolType(Cx &cx, const Sym *id, vector<Type *> parents = {}):
+    PoolType(Cx &cx, Sym &id, vector<Type *> parents = {}):
       Type(cx, id, parents) {}
 
     template <typename...Args>

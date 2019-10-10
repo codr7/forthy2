@@ -7,6 +7,8 @@
 namespace forthy2 {
   using namespace std;
 
+  struct Cx;
+  struct Sym;
   struct Type;
   struct Val;
   
@@ -17,11 +19,18 @@ namespace forthy2 {
     Arg(Type &type): type(&type) {}
     Arg(Val *val): val(val) {}
   };
-  
-  using Args = vector<Arg>;
 
-  void dump(Args &args, ostream &out);
-  uint64_t get_weight(Args &args);
+  struct Args {
+    static Sym &get_id(Cx &cx, Sym &root, const vector<Arg> &args);
+    static uint64_t get_weight(Cx &cx, const vector<Arg> &args);
+
+    vector<Arg> items;
+    
+    Args(const vector<Arg> &items);
+    void dump(ostream &out);
+    int len();
+    void mark_items(Cx &cx);
+  };
 }
 
 #endif

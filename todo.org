@@ -1,56 +1,35 @@
-* build/test2.f2
-** update read-id to break on ']'
-** break out of frac read if not .is-digit
-*** unget dot
-* --
-* add call op
-** get method from stack
-* add dispatch op
-** get method list from stack
-* commit
-* finish |-support
+* add |-support for values
 ** eval on compile stack in Lit.compile if cte
 *** wrap separate stack around cx.compile
-* add dispatch_op
-* add dot notation
-** any sequence of ./:
-*** move next form before prev
-** .: for dup, :. for drop and :: for swap
+* add stack ops
+** .: dup
+** :. drop 
+** :: swap
+** extract bool is_id(char) from read_id
+** return DotForm if followed by is_id
 * --
-* unwrap Stack type
-** use alias instead of struct
-* unwrap Env type
+* switch Pool.get() to return ref
+** grep ".get("
+* move Val imps to val.cpp
+* add cx.cpp
+** move includes/imps
+* add cx.push/pop
+** grep "cx.stack"
+* --
+* add ScopeForm
+** {...}
+** add support for ;
 * add else macro
 * add method macro
-* add generic dispatch
-** add call op
-** add dispatch op
-** sort by reverse weight & pick first match
 * add quote
 ** '(1 2 3) 'foo
 ** handle in reader
 * add stack literals
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack
-* add pair literals
-** 1,2
-* add type.derive/is_a
-* add cx.call
-** add Call struct with prev ptr
-* add Val move constructors
-** also add to critical types
-* perform stack analysis on compile
-** convert dispatch to call
 * add C++ emit
-** use labels/goto
-** add string Sym.emit_id
-*** lazy gen from name
+** use label/goto
 ** add -build mode
-* rename add_macro to add_op_macro
-** add imp arg
-** add Env.add_form_macro
-*** build on top of add_op_macro
-**** compile returned form as result
 * add Macro.method
 ** wrap macro imp in method
 ** call instead of expand if not cte in IdForm.compile

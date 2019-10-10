@@ -17,24 +17,19 @@ namespace forthy2 {
     bool marked = true;
 
     virtual ~Val() {}
+
     virtual Val &clone(Cx &cx) { return *this; }
-    virtual Cmp cmp(Val &other) = 0;
+    virtual void call(Cx &cx, Pos pos);
+    virtual Cmp cmp(Val &other) { return forthy2::cmp<Val *>(this, &other); }
     virtual void dump(ostream &out) = 0;
+    virtual bool eq(Val &other) { return is(other); }
     virtual Type &get_type(Cx &cx) = 0;
-    virtual bool is(Val &other) = 0;
+    virtual bool is(Val &other) { return this == &other; }
     virtual bool mark(Cx &cx);
     
     virtual void sweep(Cx &cx) { Node<Val>::unlink(); }
 
     virtual void unmark() { marked = false; }
-  };
-
-  template <typename T>
-  struct TVal: Val {
-    T val;
-
-    template <typename...Args>
-    TVal(Args &&...args): val(forward<Args>(args)...) {}
   };
 }
 

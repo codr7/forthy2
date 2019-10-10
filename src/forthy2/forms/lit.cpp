@@ -2,7 +2,7 @@
 #include "forthy2/forms/lit.hpp"
 
 namespace forthy2 {
-  LitForm::LitForm(const Pos &pos, Val &val): Form(pos), val(val) {}
+  LitForm::LitForm(Pos pos, Val &val): Form(pos), val(val) {}
 
   Node<Op> &LitForm::compile(Cx &cx, FormIter &in, FormIter end, Node<Op> &out) {
     return *cx.push_op.get(*this, out, val);

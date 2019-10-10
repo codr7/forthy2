@@ -13,9 +13,9 @@ namespace forthy2 {
     val.dump(out);
   }
 
-  Node<Op> *PushOp::eval(Cx &cx) {
+  Node<Op> &PushOp::eval(Cx &cx) {
     cx.stack->push(val.clone(cx));
-    return Node<Op>::next;
+    return *Node<Op>::next;
   }
 
   void PushOp::mark_vals(Cx &cx) {

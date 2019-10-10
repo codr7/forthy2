@@ -19,7 +19,7 @@ namespace forthy2 {
     
     virtual void dealloc(Cx &cx) { form.deref(cx); }
     virtual void dump(ostream &out) = 0;
-    virtual Node<Op> *eval(Cx &cx) { return Node<Op>::next; }
+    virtual Node<Op> &eval(Cx &cx) { return *Node<Op>::next; }
     virtual void mark_vals(Cx &cx) { form.mark_vals(cx); } 
   };
 }

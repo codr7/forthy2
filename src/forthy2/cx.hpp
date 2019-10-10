@@ -7,13 +7,21 @@
 
 #include "forthy2/defer.hpp"
 #include "forthy2/env.hpp"
+#include "forthy2/fix.hpp"
+#include "forthy2/forms/dot.hpp"
 #include "forthy2/forms/id.hpp"
 #include "forthy2/forms/lit.hpp"
 #include "forthy2/forms/pair.hpp"
+#include "forthy2/int.hpp"
+#include "forthy2/macro.hpp"
+#include "forthy2/method.hpp"
+#include "forthy2/method_set.hpp"
 #include "forthy2/node.hpp"
 #include "forthy2/ops/bind.hpp"
+#include "forthy2/ops/call.hpp"
 #include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/push.hpp"
+#include "forthy2/pair.hpp"
 #include "forthy2/path.hpp"
 #include "forthy2/pool.hpp"
 #include "forthy2/pool_type.hpp"
@@ -21,15 +29,7 @@
 #include "forthy2/stack.hpp"
 #include "forthy2/sym.hpp"
 #include "forthy2/timer.hpp"
-#include "forthy2/types/fix.hpp"
-#include "forthy2/types/int.hpp"
-#include "forthy2/types/macro.hpp"
-#include "forthy2/types/meta.hpp"
-#include "forthy2/types/method.hpp"
-#include "forthy2/types/method_set.hpp"
-#include "forthy2/types/pair.hpp"
-#include "forthy2/types/stack.hpp"
-#include "forthy2/types/sym.hpp"
+#include "forthy2/type.hpp"
 #include "forthy2/util.hpp"
 #include "forthy2/val.hpp"
 
@@ -45,29 +45,30 @@ namespace forthy2 {
     Pool<Sym> sym_pool;
     unordered_map<string, Sym *> syms;
 
+    Pool<DotForm> dot_form;
     Pool<IdForm> id_form;
     Pool<LitForm> lit_form;
     Pool<PairForm> pair_form;
 
     Pool<BindOp> bind_op;
+    Pool<CallOp> call_op;
     Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
 
     uint64_t type_weight;
-    Pool<MetaVal> type_pool;
     Node<Val> marked_vals, unmarked_vals;
 
     Type &any_type;
-    Type &meta_type;
 
-    PoolType<FixVal> &fix_val;
-    PoolType<IntVal> &int_val;
-    PoolType<MacroVal> &macro_val;
-    PoolType<MethodSetVal> &method_set_val;
-    PoolType<MethodVal> &method_val;
-    PoolType<PairVal> &pair_val;
-    PoolType<StackVal> &stack_val;
-    PoolType<SymVal> &sym_val;
+    PoolType<Fix> &fix_type;
+    PoolType<Int> &int_type;
+    PoolType<Macro> &macro_type;
+    Type &meta_type;
+    PoolType<MethodSet> &method_set_type;
+    PoolType<Method> &method_type;
+    PoolType<Pair> &pair_type;
+    PoolType<Stack> &stack_type;
+    Type &sym_type;
         
     Env root_env, *env;
     Stack root_stack, *stack;
@@ -80,16 +81,15 @@ namespace forthy2 {
     Cx():
       type_weight(1),
       any_type(*new Type(*this, sym("Any"))),
+      fix_type(*new PoolType<Fix>(*this, sym("Fix"), {&any_type})),
+      int_type(*new PoolType<Int>(*this, sym("Int"), {&any_type})),
+      macro_type(*new PoolType<Macro>(*this, sym("Macro"), {&any_type})),
       meta_type(*new Type(*this, sym("Meta"), {&any_type})),
-      fix_val(*new PoolType<FixVal>(*this, sym("Fix"), {&any_type})),
-      int_val(*new PoolType<IntVal>(*this, sym("Int"), {&any_type})),
-      macro_val(*new PoolType<MacroVal>(*this, sym("Macro"), {&any_type})),
-      method_set_val(*new PoolType<MethodSetVal>
-                     (*this, sym("MethodSet"), {&any_type})),
-      method_val(*new PoolType<MethodVal>(*this, sym("Method"), {&any_type})),
-      pair_val(*new PoolType<PairVal>(*this, sym("Pair"), {&any_type})),
-      stack_val(*new PoolType<StackVal>(*this, sym("Stack"), {&any_type})),
-      sym_val(*new PoolType<SymVal>(*this, sym("Sym"), {&any_type})),
+      method_set_type(*new PoolType<MethodSet>(*this, sym("MethodSet"), {&any_type})),
+      method_type(*new PoolType<Method>(*this, sym("Method"), {&any_type})),
+      pair_type(*new PoolType<Pair>(*this, sym("Pair"), {&any_type})),
+      stack_type(*new PoolType<Stack>(*this, sym("Stack"), {&any_type})),
+      sym_type(*new Type(*this, sym("Sym"), {&any_type})),
       env(&root_env),
       stack(&root_stack),
       stdin(&cin),
@@ -130,27 +130,10 @@ namespace forthy2 {
     }
 
     void eval(Node<Op> &root) {
-      for (Node<Op> *op(root.next); op != &root;) { op = op->get().eval(*this); }
+      for (Node<Op> *op(root.next); op != &root;) { op = &op->get().eval(*this); }
     }
 
-    const Sym *get_id(const Sym *set_id, Args &args) {
-      stringstream buf;
-      buf << set_id->name;
-      dump(args, buf);
-      return sym(buf.str());
-    }
-
-    uint64_t get_weight(Args &args) {
-      uint64_t weight(0);
-      
-      for (Arg &a: args) {
-        weight += a.val ? a.val->get_type(*this).weight + 1 : a.type->weight;
-      }
-      
-      return weight;
-    }
-
-    void load(const Pos &pos, const Path &path) {
+    void load(Pos pos, const Path &path) {
       auto in_path(path.is_absolute() ? path : load_path/path);
       ifstream in(in_path);
       if (in.fail()) { throw ESys(pos, "File not found: ", in_path); }
@@ -220,13 +203,13 @@ namespace forthy2 {
     }
     
     template <typename...Args>
-    const Sym *sym(Args &&...args) {
+    Sym &sym(Args &&...args) {
       string name(str(forward<Args>(args)...));
       auto ok(syms.find(name));
-      if (ok != syms.end()) { return ok->second; }    
+      if (ok != syms.end()) { return *ok->second; }    
       Sym *s(sym_pool.get(name));
       syms.emplace(make_pair(name, s));
-      return s;
+      return *s;
     }
 
     template <typename T, typename...Args>

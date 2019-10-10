@@ -22,10 +22,10 @@ namespace forthy2 {
   struct Env {
     struct Item {
       Env *home;
-      const Sym *id;
+      Sym *id;
       Val *val;
       
-      Item(Env *home, const Sym *id, Val *val): home(home), id(id), val(val) {}
+      Item(Env *home, Sym &id, Val &val);
     };
       
     using Items = vector<Item>;
@@ -35,45 +35,22 @@ namespace forthy2 {
     Items items;
 
     Macro &add_macro(Cx &cx,
-                     const Pos &pos,
-                     const Sym *id,
-                     Args args,
-                     Rets rets);
+                     Pos pos,
+                     Sym &id,
+                     const vector<Arg> &args,
+                     const vector<Ret> &rets);
 
     Method &add_method(Cx &cx,
-                       const Pos &pos,
-                       const Sym *id,
-                       Args args,
-                       Rets rets);
+                       Pos pos,
+                       Sym &id,
+                       const vector<Arg> &args,
+                       const vector<Ret> &rets);
 
-    void bind_type(Cx &cx, const Pos &pos, Type &type);
-
-    void bind(const Pos &pos, const Sym *id, Val &val) {
-      Iter i(find(id));
-
-      if (i == items.end() || i->id != id) {
-        insert(i, id, val);
-      } else {
-        if (i->home == this) { throw ESys(pos, "Dup binding: ", id); }
-        i->val = &val;
-      }      
-    }
-
-    Iter find(const Sym *id) {
-      return lower_bound(items.begin(), items.end(), id,
-                         [&](auto &x, auto &y) { return x.id < y; });
-    }
-    
-    Val &get(const Pos &pos, const Sym *id) {
-      auto i(find(id));
-      if (i == items.end() || i->id != id) { throw ESys(pos, "Unknown id: ", id); }
-      return *i->val;
-    }
-    
-    Iter insert(Iter i, const Sym *id, Val &val) {
-      return items.emplace(i, this, id, &val);
-    }
-
+    void bind(Pos pos, Sym &id, Val &val);
+    void bind_type(Cx &cx, Pos pos, Type &type);
+    Iter find(Sym &id);
+    Val &get(Pos pos, Sym &id);
+    Iter insert(Iter i, Sym &id, Val &val);
     void mark_items(Cx &cx);
   };
 }

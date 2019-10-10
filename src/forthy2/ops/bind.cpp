@@ -9,9 +9,9 @@ namespace forthy2 {
 
   void BindOp::dump(ostream &out) { out << "bind"; }
 
-  Node<Op> *BindOp::eval(Cx &cx) {
+  Node<Op> &BindOp::eval(Cx &cx) {
     Val &id(cx.stack->pop()), &val(cx.stack->pop());
-    cx.env->bind(form.pos, dynamic_cast<SymVal &>(id).val, val);
-    return Node<Op>::next;
+    cx.env->bind(form.pos, dynamic_cast<Sym &>(id), val);
+    return *Node<Op>::next;
   }
 }

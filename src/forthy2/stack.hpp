@@ -3,44 +3,41 @@
 
 #include <vector>
 
+#include "forthy2/val.hpp"
+
 namespace forthy2 {
   using namespace std;
   
   struct Cx;
-  struct Val;
   
-  struct Stack {
+  struct Stack: Val {
     using Items = vector<Val *>;
     using Iter = Items::iterator;
     
     Stack *prev = nullptr;
     Items items;
-    
-    Stack() {}
-    
+
+    Stack();
+    Stack(const Stack &in);
+
     template <typename T>
     Stack(T beg, T end): items(beg, end) {}
 
-    Iter begin() { return items.begin(); }
-
-    Iter end() { return items.end(); }
-
-    size_t len() { return items.size(); }
-
+    Iter begin();
+    Val &clone(Cx &cx) override;
+    Cmp cmp(Val &other) override;
+    void dump(ostream &out) override;
+    Iter end();
+    Type &get_type(Cx &cx) override;
+    bool is(Val &other) override;
+    size_t len();
+    bool mark(Cx &cx) override;
     void mark_items(Cx &cx);
-    
-    Val *&peek(size_t offs = 0) { return items[items.size() - offs -1]; }
-
-    Val &pop() {
-      Val *v(items.back());
-      items.pop_back();
-      return *v;
-    }
-
-    void push(Val &v) { items.push_back(&v); }
-  };
-
-  
+    Val *&peek(size_t offs = 0);
+    Val &pop();
+    void push(Val &v);
+    void sweep(Cx &cx) override;
+  };  
 }
 
 #endif

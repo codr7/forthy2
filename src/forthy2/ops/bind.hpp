@@ -8,7 +8,7 @@ namespace forthy2 {
     BindOp(Form &form, Node<Op> &prev): Op(form, prev) {}
     void dealloc(Cx &cx) override;
     void dump(ostream &out) override;
-    Node<Op> *eval(Cx &cx) override;
+    Node<Op> &eval(Cx &cx) override;
   };
 }
 

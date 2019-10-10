@@ -25,9 +25,6 @@ install(FILES ${form_inc} DESTINATION include/forthy2/forms)
 file(GLOB op_inc src/forthy2/ops/*.hpp)
 install(FILES ${op_inc} DESTINATION include/forthy2/ops)
 
-file(GLOB type_inc src/forthy2/types/*.hpp)
-install(FILES ${type_inc} DESTINATION include/forthy2/types)
-
 install(FILES build/forthy2 DESTINATION bin PERMISSIONS WORLD_EXECUTE)
 install(FILES build/libforthy2.a DESTINATION lib)
 

@@ -13,9 +13,14 @@ namespace forthy2 {
     if (char c(0); in.get(c)) {
       switch (c) {
       case '|':
+        pos.col++;
         f = read_form(cx, pos, in);
         if (!f) { throw ESys(p, "Missing form"); }
         cte = true;
+        break;
+      case '.':
+        pos.col++;
+        f = &read_dot(cx, pos, in);
         break;
       default:
         in.unget();
@@ -46,6 +51,18 @@ namespace forthy2 {
     return nullptr;
   }
 
+  DotForm &read_dot(Cx &cx, Pos &pos, istream &in) {
+    Pos p(pos);
+    Form *z = read_form(cx, pos, in);
+    if (!z) { throw ESys(p, "Missing z-form"); }
+    Form *y = read_form(cx, pos, in);
+    if (!y) { throw ESys(p, "Missing y-form"); }
+    DotForm &d(*cx.dot_form.get(p, *y, *z));
+    d.y.deref(cx);
+    d.z.deref(cx);
+    return d;
+  }  
+  
   pair<uint64_t, uint8_t> read_frac(Cx &cx, Pos &pos, istream &in) {
     char c(0);    
     uint64_t v(0);
@@ -69,7 +86,7 @@ namespace forthy2 {
     
     for (;;) {  
       if (!in.get(c) || (!arg_depth && (!isgraph(c) ||
-                                        c == '|' ||
+                                        c == '|' || c == ']' || c == '.' ||
                                         c == '(' || c == ')' ||
                                         c == '{' || c == '}'))) {
         break;
@@ -95,7 +112,7 @@ namespace forthy2 {
     return *cx.id_form.get(p, cx.sym(out.str()));
   }
   
-  pair<Int, bool> read_int(Cx &cx, Pos &pos, istream &in, bool is_hex) {
+  pair<Int::Imp, bool> read_int(Cx &cx, Pos &pos, istream &in, bool is_hex) {
     Pos p(pos);
     bool is_neg(false);
 
@@ -104,7 +121,7 @@ namespace forthy2 {
       in.unget();
     }
     
-    Int v(0);
+    Int::Imp v(0);
     in >> (is_hex ? hex : dec) >> v;
     if (in.fail()) { throw ESys(p, "Failed reading int"); }
     return make_pair(v, is_neg);
@@ -134,19 +151,23 @@ namespace forthy2 {
     
     if (!is_hex && in.get(c)) {
       if (c == '.') {
-        auto f(read_frac(cx, pos, in));
-        int64_t v(i.first * fix::pow(f.second) + f.first);
+        if (in.get(c)) {
+          in.unget();
 
-        FixVal &fv(cx.fix_val.get(cx, fix::make((i.first || !i.second) ? v : -v,
-                                                 f.second)));
-        
-        return *cx.lit_form.get(p, fv);
+          if (isdigit(c)) {
+            pos.col++;
+            auto f(read_frac(cx, pos, in));
+            int64_t v(i.first * Fix::pow(f.second) + f.first);
+            Fix &fv(cx.fix_type.get(cx, (i.first || !i.second) ? v : -v, f.second));
+            return *cx.lit_form.get(p, fv);
+          }
+        }
       }
       
       in.unget();
     }
 
-    return *cx.lit_form.get(p, cx.int_val.get(cx, i.first));
+    return *cx.lit_form.get(p, cx.int_type.get(cx, i.first));
   }
   
   void skip_ws(Pos &pos, istream &in) {

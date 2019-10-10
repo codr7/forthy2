@@ -13,25 +13,25 @@ namespace forthy2 {
   struct E: exception {
     Pos pos;
     string msg;
-    bool is_cached;
+    bool cached;
 
     template <typename...Args>
-    E(const Pos &pos, Args &&...args):
-      pos(pos), msg(str(forward<Args>(args)...)), is_cached(false) {}
+    E(Pos pos, Args &&...args):
+      pos(pos), msg(str(forward<Args>(args)...)), cached(false) {}
     
-    virtual const char* what() const throw() override {
-      if (!is_cached) {
+    const char* what() const throw() override {
+      if (!cached) {
         stringstream buf;
         print(buf);
         auto *t(const_cast<E *>(this));
         t->msg = buf.str();
-        t->is_cached = true;
+        t->cached = true;
       }
 
       return msg.c_str();
     }
 
-    virtual void print(ostream &out) const {
+    void print(ostream &out) const {
       out << "Error";
       if (pos.file) { out << " in " << pos.file; }
       out << " at row " << pos.row << ", col " << pos.col << ":\n" << msg;
@@ -40,7 +40,7 @@ namespace forthy2 {
   
   struct ESys: E {
     template <typename...Args>
-    ESys(const Pos &pos, Args &&...args): E(pos, forward<Args>(args)...) {}
+    ESys(Pos pos, Args &&...args): E(pos, forward<Args>(args)...) {}
   };
 }
 

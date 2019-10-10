@@ -5,25 +5,38 @@
 #include <string>
 
 #include "forthy2/arg.hpp"
-#include "forthy2/node.hpp"
 #include "forthy2/ret.hpp"
+#include "forthy2/val.hpp"
 
 namespace forthy2 {
   using namespace std;
 
   struct Cx;
+  struct MethodSet;
   struct Sym;
   
-  struct Method: Node<Method> {
-    using Imp = function<void (Cx &cx)>;
-    
-    const Sym *id;
-    uint64_t weight;
+  struct Method: Node<Method>, Val {
+    using Imp = function<void (Cx &cx, Pos pos)>;
+
+    MethodSet &set;
+    Sym &id;
     Args args;
     Rets rets;
+    uint64_t weight;
     Imp imp;
 
-    Method(const Sym *id, uint64_t weight, const Args &args, const Rets &rets);
+    Method(MethodSet &set,
+           Sym &id,
+           const vector<Arg> &args,
+           const vector<Ret> &rets,
+           uint64_t weight);
+
+    bool applicable(Cx &cx);
+    void call(Cx &cx, Pos pos) override;
+    void dump(ostream &out) override;
+    Type &get_type(Cx &cx) override;
+    bool mark(Cx &cx) override;
+    void sweep(Cx &cx) override;    
   };
 }
 

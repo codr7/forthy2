@@ -7,10 +7,10 @@ namespace forthy2 {
   struct Pos {
     static const Pos _;
     
-    const Sym *file;
+    Sym *file;
     int row, col;
 
-    Pos(const Sym *file = nullptr, int row = 1, int col = 0):
+    Pos(Sym *file = nullptr, int row = 1, int col = 0):
       file(file), row(row), col(col) {}
   };
 }

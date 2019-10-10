@@ -12,7 +12,7 @@ namespace forthy2 {
     PushOp(Form &form, Node<Op> &prev, Val &val): Op(form, prev), val(val) {}
     void dealloc(Cx &cx) override;
     void dump(ostream &out) override;
-    Node<Op> *eval(Cx &cx) override;
+    Node<Op> &eval(Cx &cx) override;
     void mark_vals(Cx &cx) override; 
   };
 }

@@ -9,7 +9,7 @@ namespace forthy2 {
   struct PairForm: Form {
     Form &left, &right;
     
-    PairForm(const Pos &pos, Form &left, Form &right);
+    PairForm(Pos pos, Form &left, Form &right);
     Node<Op> &compile(Cx &cx, FormIter &in, FormIter end, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
     void dump(ostream &out) override;

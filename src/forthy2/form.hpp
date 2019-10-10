@@ -22,7 +22,7 @@ namespace forthy2 {
     bool cte;
     int nrefs;
     
-    Form(const Pos &pos);
+    Form(Pos pos);
     virtual ~Form();
     virtual Node<Op> &compile(Cx &cx, FormIter &in, FormIter end, Node<Op> &out) = 0;
     virtual void dealloc(Cx &cx) = 0;

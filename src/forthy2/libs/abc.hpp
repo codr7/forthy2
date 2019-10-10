@@ -4,7 +4,7 @@
 #include "forthy2/cx.hpp"
 
 namespace forthy2 {
-  void init_abc(Cx &cx, const Pos &pos, Env &env);
+  void init_abc(Cx &cx, Pos pos, Env &env);
 }
 
 #endif

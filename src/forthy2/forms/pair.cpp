@@ -2,7 +2,7 @@
 #include "forthy2/forms/pair.hpp"
 
 namespace forthy2 {
-  PairForm::PairForm(const Pos &pos, Form &left, Form &right):
+  PairForm::PairForm(Pos pos, Form &left, Form &right):
     Form(pos), left(left.ref()), right(right.ref()) {}
 
   Node<Op> &PairForm::compile(Cx &cx, FormIter &in, FormIter end, Node<Op> &out) {
@@ -21,7 +21,7 @@ namespace forthy2 {
   void PairForm::dump(ostream &out) {
     out << "pair ";
     left.dump(out);
-    out << ',';
+    out << ' ';
     right.dump(out);
   }
   

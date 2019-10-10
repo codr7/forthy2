@@ -4,22 +4,28 @@
 #include <unordered_map>
 #include <vector>
 
+#include "forthy2/val.hpp"
+
 namespace forthy2 {
   struct Cx;
-  struct MetaVal;
   struct Sym;
   
-  struct Type {
-    const Sym *id;
+  struct Type: Val {
+    Sym &id;
     uint64_t weight;
     unordered_map<Type *, Type *> parents;
-    MetaVal &val;
     
-    Type(Cx &cx, const Sym *id, vector<Type *> parents = {});
+    Type(Cx &cx, Sym &id, vector<Type *> parents = {});
     virtual ~Type();
+    Cmp cmp(Val &other) override;
     void derive(Type &parent);
     void derive(Type &parent, Type &root);
-    Type *is_a(Type &parent);
+    void dump(ostream &out) override;
+    Type &get_type(Cx &cx) override;
+    bool is(Val &other) override;
+    Type *isa(Type &parent);
+    bool mark(Cx &cx) override;
+    void sweep(Cx &cx) override;
   };
 }
 
