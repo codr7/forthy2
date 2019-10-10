@@ -1,9 +1,20 @@
+* rename any_type to a_type
+* add MethodSet.nargs
+** add constructor arg
+** add test in add_method
+** push first instead of set in id compile if !nargs
+* add stack op methods
+** .: dup
+** :. drop 
+** :: swap
+** extract bool id_char(char) from read_id
+** return DotForm if followed by is_id
 * inherit Form from Val
-** add form types to cx/abc
+** add Form type to cx/abc
 * inherit Macro from Method
 ** push forms on stack in expand, then call
 ** return form to compile
-** add rets to add_macro
+** add rets to add_macro/calls
 * --
 * add int math ops
 * add ref-support
@@ -14,12 +25,6 @@
 * add |-support for values
 ** eval on compile stack in Lit.compile if cte
 *** wrap separate stack around cx.compile
-* add stack ops
-** .: dup
-** :. drop 
-** :: swap
-** extract bool id_char(char) from read_id
-** return DotForm if followed by is_id
 * add ScopeForm
 ** {...}
 ** add support for ;
