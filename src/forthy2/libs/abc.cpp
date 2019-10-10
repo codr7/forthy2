@@ -33,8 +33,7 @@ namespace forthy2 {
     env.bind_type(cx, pos, cx.sym_type);
 
     env.add_macro(cx, pos, cx.sym("const"),
-                  {{cx.sym_type}, {cx.any_type}},
-                  {}).imp = const_imp;
+                  {{cx.sym_type}, {cx.any_type}}).imp = const_imp;
 
     env.add_method(cx, pos, cx.sym("dump"),
                    {{cx.any_type}},

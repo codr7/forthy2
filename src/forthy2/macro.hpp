@@ -6,7 +6,6 @@
 
 #include "forthy2/arg.hpp"
 #include "forthy2/form.hpp"
-#include "forthy2/ret.hpp"
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
@@ -21,10 +20,9 @@ namespace forthy2 {
 
     Sym &id;
     Args args;
-    Rets rets;
     Imp imp;
 
-    Macro(Sym &id, const vector<Arg> &args, const vector<Ret> &rets);
+    Macro(Sym &id, const vector<Arg> &args);
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
     Node<Op> &expand(Cx &cx, Form &form, FormIter &in, FormIter end, Node<Op> &out);

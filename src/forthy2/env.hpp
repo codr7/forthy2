@@ -34,11 +34,7 @@ namespace forthy2 {
     Env *prev = nullptr;
     Items items;
 
-    Macro &add_macro(Cx &cx,
-                     Pos pos,
-                     Sym &id,
-                     const vector<Arg> &args,
-                     const vector<Ret> &rets);
+    Macro &add_macro(Cx &cx, Pos pos, Sym &id, const vector<Arg> &args);
 
     Method &add_method(Cx &cx,
                        Pos pos,

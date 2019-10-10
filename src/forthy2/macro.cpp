@@ -4,8 +4,7 @@
 #include "forthy2/sym.hpp"
 
 namespace forthy2 {
-  Macro::Macro(Sym &id, const vector<Arg> &args, const vector<Ret> &rets):
-    id(id), args(args), rets(rets) {}
+  Macro::Macro(Sym &id, const vector<Arg> &args): id(id), args(args) {}
 
   Cmp Macro::cmp(Val &other) { return forthy2::cmp<Val *>(this, &other); }
   

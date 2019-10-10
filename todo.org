@@ -1,5 +1,4 @@
-* remove macro rets
-* --
+* add repl
 * add support for arg index
 ** add Arg.index + constructor
 ** get parent type from stack in Method.applicable()
@@ -8,7 +7,6 @@
 ** use arg index
 * add check macro
 * add /test/run.f2
-* add repl
 * add ref-support
 ** &foo
 ** IdForm or "Invalid ref: "

@@ -8,12 +8,8 @@ namespace forthy2 {
   Env::Item::Item(Env *home, Sym &id, Val &val):
     home(home), id(&id), val(&val) {}
 
-  Macro &Env::add_macro(Cx &cx,
-                        Pos pos,
-                        Sym &id,
-                        const vector<Arg> &args,
-                        const vector<Ret> &rets) {
-    Macro &m(cx.macro_type.get(cx, id, args, rets));
+  Macro &Env::add_macro(Cx &cx, Pos pos, Sym &id, const vector<Arg> &args) {
+    Macro &m(cx.macro_type.get(cx, id, args));
     bind(pos, id, m);
     return m;
   }
