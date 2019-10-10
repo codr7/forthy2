@@ -38,7 +38,10 @@ namespace forthy2 {
         if (c == ',') {
           Form *right(read_form(cx, pos, in));
           if (!right) { throw ESys(p, "Invalid pair"); }
-          f = cx.pair_form.get(p, *f, *right);
+          PairForm *pf(cx.pair_form.get(p, *f, *right));
+          pf->left.deref(cx);
+          pf->right.deref(cx);
+          f = pf;
         } else {
           in.unget();
         }

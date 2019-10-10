@@ -1,3 +1,8 @@
+* add abc/=
+** Val.eq
+* add check macro
+* add /test/run.f2
+* --
 * add |-support for values
 ** eval on compile stack in Lit.compile if cte
 *** wrap separate stack around cx.compile
