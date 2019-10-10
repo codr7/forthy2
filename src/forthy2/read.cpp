@@ -31,6 +31,11 @@ namespace forthy2 {
         }
 
         break;
+
+      case '.':
+        pos.col++;
+        f = &read_dot(cx, pos, nullptr, in);
+        break;
       default:
         in.unget();
         
@@ -46,7 +51,7 @@ namespace forthy2 {
       if (in.get(c)) {
         if (c == '.') {
           pos.col++;
-          f = &read_dot(cx, pos, *f, in);
+          f = &read_dot(cx, pos, f, in);
         } else {
           in.unget();
         }
@@ -59,7 +64,7 @@ namespace forthy2 {
     return nullptr;
   }
 
-  DotForm &read_dot(Cx &cx, Pos &pos, Form &x, istream &in) {
+  DotForm &read_dot(Cx &cx, Pos &pos, Form *x, istream &in) {
     Pos p(pos);
     Form *z = read_form(cx, pos, in);
     if (!z) { throw ESys(p, "Missing z-form"); }

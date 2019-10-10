@@ -7,9 +7,9 @@ namespace forthy2 {
   struct Val;
   
   struct DotForm: Form {
-    Form &x, &y, &z;
+    Form *x, &y, &z;
     
-    DotForm(Pos pos, Form &x, Form &y, Form &z);
+    DotForm(Pos pos, Form *x, Form &y, Form &z);
     Node<Op> &compile(Cx &cx, FormIter &in, FormIter end, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
     void dump(ostream &out) override;
