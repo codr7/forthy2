@@ -27,6 +27,7 @@ namespace forthy2 {
     Val &clone(Cx &cx) override;
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
+    bool empty();
     Iter end();
     bool is(Val &other) override;
     size_t len();

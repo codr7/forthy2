@@ -12,7 +12,7 @@ namespace forthy2 {
   void CallOp::dump(ostream &out) { out << "call"; }
 
   Node<Op> &CallOp::eval(Cx &cx) {
-    cx.stack->pop().call(cx, form.pos);
+    cx.pop(form.pos).call(cx, form.pos);
     return *Node<Op>::next;
   }
 }

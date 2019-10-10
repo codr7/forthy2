@@ -17,7 +17,7 @@ namespace forthy2 {
 
   static void dump_imp(Cx &cx, Pos pos) {
     auto &out(*cx.stdout);
-    cx.stack->pop().dump(out);
+    cx.pop(pos).dump(out);
     out << endl;
   }
 

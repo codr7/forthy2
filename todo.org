@@ -1,7 +1,11 @@
-* add cx.push/pop
-** grep "cx.stack"
+* remove macro rets
+* --
+* add support for arg index
+** add Arg.index + constructor
+** get parent type from stack in Method.applicable()
 * add abc/=
-** Val.eq
+** map to Val.eq
+** use arg index
 * add check macro
 * add /test/run.f2
 * add repl
@@ -10,7 +14,6 @@
 ** IdForm or "Invalid ref: "
 ** add RefForm
 ** resolve at compile time
-* --
 * add |-support for values
 ** eval on compile stack in Lit.compile if cte
 *** wrap separate stack around cx.compile
@@ -18,19 +21,24 @@
 ** .: dup
 ** :. drop 
 ** :: swap
-** extract bool is_id(char) from read_id
+** extract bool id_char(char) from read_id
 ** return DotForm if followed by is_id
 * add ScopeForm
 ** {...}
 ** add support for ;
 * add else macro
 * add method macro
-* add quote
-** '(1 2 3) 'foo
-** handle in reader
 * add stack literals
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack
+* add opt types
+** Int?
+** add nil type / _
+** add Type *Type.opt_type
+*** return this if opt
+* add quote
+** '(1 2 3) 'foo
+** handle in reader
 * add C++ emit
 ** use label/goto
 ** add -build mode

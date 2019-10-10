@@ -41,6 +41,8 @@ namespace forthy2 {
     out << ')';
   }
 
+  bool Stack::empty() { return items.empty(); }
+  
   Stack::Iter Stack::end() { return items.end(); }
 
   bool Stack::is(Val &other) {

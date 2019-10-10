@@ -178,6 +178,13 @@ namespace forthy2 {
       return true;
     }
 
+    Val &pop(Pos pos) {
+      if (stack->empty()) { throw ESys(pos, "Stack is empty"); }
+      return stack->pop();
+    }
+    
+    void push(Val &val) { stack->push(val); }
+    
     void read(istream &in, Forms &out) {
       Pos p;
       Form *f(nullptr);
