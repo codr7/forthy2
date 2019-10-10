@@ -65,7 +65,7 @@ Combining operations allows skipping redundant chars.
 ...1 3
 ```
 ### dot-notation
-Methods may be called infix by adding `.` between first argument and operation.
+Methods and macros may be called infix by adding `.` between first argument and operation.
 
 ```
   35.+ 7

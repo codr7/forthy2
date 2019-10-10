@@ -18,10 +18,6 @@ namespace forthy2 {
         if (!f) { throw ESys(p, "Missing form"); }
         cte = true;
         break;
-      case '.':
-        pos.col++;
-        f = &read_dot(cx, pos, in);
-        break;
       default:
         in.unget();
         
@@ -34,6 +30,15 @@ namespace forthy2 {
         }
       };
 
+      if (in.get(c)) {
+        if (c == '.') {
+          pos.col++;
+          f = &read_dot(cx, pos, *f, in);
+        } else {
+          in.unget();
+        }
+      }
+      
       f->cte = cte;
       return f;
     }
@@ -41,17 +46,18 @@ namespace forthy2 {
     return nullptr;
   }
 
-  DotForm &read_dot(Cx &cx, Pos &pos, istream &in) {
+  DotForm &read_dot(Cx &cx, Pos &pos, Form &x, istream &in) {
     Pos p(pos);
     Form *z = read_form(cx, pos, in);
     if (!z) { throw ESys(p, "Missing z-form"); }
     Form *y = read_form(cx, pos, in);
     if (!y) { throw ESys(p, "Missing y-form"); }
-    DotForm &d(cx.dot_form.get(p, *y, *z));
+    DotForm &d(cx.dot_form.get(p, x, *y, *z));
+    d.x.deref(cx);
     d.y.deref(cx);
     d.z.deref(cx);
     return d;
-  }  
+  }
   
   pair<uint64_t, uint8_t> read_frac(Cx &cx, Pos &pos, istream &in) {
     char c(0);    
