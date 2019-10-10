@@ -25,15 +25,13 @@ forthy2
 Press Return on empty row to evaluate.
 Empty input clears stack and Ctrl+D exits.
 
-  1.+ 2
+  0x2a
   
-3
+42
 ```
 
 ### stacks
 The holy trinity of stack operations; `dup`, `drop` and `swap`; get their own two-char pictograms.
-
-`dup` turns one value into two,
 
 ```
   42 .:
@@ -41,15 +39,11 @@ The holy trinity of stack operations; `dup`, `drop` and `swap`; get their own tw
 ...42 42
 ```
 
-while `drop` removes the last,
-
 ```
   1 2 3 :.
   
 ...1 2
 ```
-
-and `swap` leaves both.
 
 ```
   1 2 3 ::
@@ -57,13 +51,6 @@ and `swap` leaves both.
 ...1 3 2
 ```
 
-Combining operations allows skipping redundant chars.
-
-```
-  1 2 3 ::.
-  
-...1 3
-```
 ### dot-notation
 Methods and macros may be called infix by adding `.` between first argument and operation.
 

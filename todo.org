@@ -1,3 +1,16 @@
+* fix bad cast
+** 6 7 *
+* move ,/,, to reader
+** bring back pair/unpair form/op
+* --
+* inherit Form from Val
+** add form types to cx/abc
+* inherit Macro from Method
+** push forms on stack in expand, then call
+** return form to compile
+** add rets to add_macro
+* --
+* add int math ops
 * add ref-support
 ** &foo
 ** IdForm or "Invalid ref: "
@@ -21,7 +34,6 @@
 * add stack literals
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack
-
 * add support for arg index
 ** add Arg.index + constructor
 ** dump as T0 T1 etc.
