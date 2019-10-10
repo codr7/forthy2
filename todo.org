@@ -2,6 +2,12 @@
 ** Val.eq
 * add check macro
 * add /test/run.f2
+* add repl
+* add ref-support
+** &foo
+** IdForm or "Invalid ref: "
+** add RefForm
+** resolve at compile time
 * --
 * add |-support for values
 ** eval on compile stack in Lit.compile if cte

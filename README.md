@@ -10,7 +10,7 @@
 ```
 
 ### stacks
-The holy trinity of stack operations; `dup`, `drop` and `swap`; finally get their own two char pictograms.
+The holy trinity of stack operations; `dup`, `drop` and `swap`; get their own two-char pictograms.
 
 `dup` turns one value into two,
 
