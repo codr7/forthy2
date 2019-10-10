@@ -1,4 +1,7 @@
 * add repl
+* add ,, to unzip pair
+** 1,3,,
+** add readme/pairs
 * add support for arg index
 ** add Arg.index + constructor
 ** dump as T0 T1 etc.
@@ -27,6 +30,7 @@
 ** add support for ;
 * add else macro
 * add method macro
+* add isa/type-of methods
 * add stack literals
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack
