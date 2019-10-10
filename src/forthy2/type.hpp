@@ -21,11 +21,11 @@ namespace forthy2 {
     void derive(Type &parent);
     void derive(Type &parent, Type &root);
     void dump(ostream &out) override;
-    Type &get_type(Cx &cx) override;
     bool is(Val &other) override;
     Type *isa(Type &parent);
     bool mark(Cx &cx) override;
     void sweep(Cx &cx) override;
+    Type &type(Cx &cx) override;
   };
 }
 

@@ -23,11 +23,12 @@ namespace forthy2 {
     virtual Cmp cmp(Val &other) { return forthy2::cmp<Val *>(this, &other); }
     virtual void dump(ostream &out) = 0;
     virtual bool eq(Val &other) { return is(other); }
-    virtual Type &get_type(Cx &cx) = 0;
     virtual bool is(Val &other) { return this == &other; }
     virtual bool mark(Cx &cx);
     
     virtual void sweep(Cx &cx) { Node<Val>::unlink(); }
+
+    virtual Type &type(Cx &cx) = 0;
 
     virtual void unmark() { marked = false; }
   };

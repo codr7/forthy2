@@ -10,12 +10,12 @@ namespace forthy2 {
 
   void Int::dump(ostream &out) { out << imp; }
 
-  Type &Int::get_type(Cx &cx) { return cx.int_type; }
-
   bool Int::is(Val &other) { return dynamic_cast<Int &>(other).imp == imp; }
 
   void Int::sweep(Cx &cx) {
     Val::sweep(cx);
     cx.int_type.pool.put(this);
   }
+
+  Type &Int::type(Cx &cx) { return cx.int_type; }
 }

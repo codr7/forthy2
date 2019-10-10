@@ -28,7 +28,6 @@ namespace forthy2 {
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
     Iter end();
-    Type &get_type(Cx &cx) override;
     bool is(Val &other) override;
     size_t len();
     bool mark(Cx &cx) override;
@@ -37,6 +36,7 @@ namespace forthy2 {
     Val &pop();
     void push(Val &v);
     void sweep(Cx &cx) override;
+    Type &type(Cx &cx) override;
   };  
 }
 

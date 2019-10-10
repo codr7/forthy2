@@ -18,7 +18,7 @@ namespace forthy2 {
     for (Arg &a: args.items) {
       if (a.val) {
         if (!a.val->eq(**sv)) { return false; }
-      } else if (!(*sv)->get_type(cx).isa(*a.type)) {
+      } else if (!(*sv)->type(cx).isa(*a.type)) {
         return false;
       }
     }
@@ -35,8 +35,6 @@ namespace forthy2 {
 
   void Method::dump(ostream &out) { out << "Method@" << this; }
 
-  Type &Method::get_type(Cx &cx) { return cx.method_type; }
-
   bool Method::mark(Cx &cx) {
     if (!Val::mark(cx)) { return false; }
     set.mark(cx);
@@ -50,4 +48,6 @@ namespace forthy2 {
     set.len--;
     cx.method_type.pool.put(this);
   } 
+
+  Type &Method::type(Cx &cx) { return cx.method_type; }
 }

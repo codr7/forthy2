@@ -39,7 +39,7 @@ namespace forthy2 {
     uint64_t weight(0);
     
     for (auto &a: items) {
-      weight += a.val ? a.val->get_type(cx).weight + 1 : a.type->weight;
+      weight += a.val ? a.val->type(cx).weight + 1 : a.type->weight;
     }
     
     return weight;

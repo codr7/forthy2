@@ -20,10 +20,10 @@ namespace forthy2 {
     void call(Cx &cx, Pos pos) override;
     Method *dispatch(Cx &cx);
     void dump(ostream &out) override;
-    Type &get_type(Cx &cx) override;
     bool mark(Cx &cx) override;
     void push(Method &m);
     void sweep(Cx &cx) override;
+    Type &type(Cx &cx) override;
   };
 }
 

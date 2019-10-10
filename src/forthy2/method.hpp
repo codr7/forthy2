@@ -34,9 +34,9 @@ namespace forthy2 {
     bool applicable(Cx &cx);
     void call(Cx &cx, Pos pos) override;
     void dump(ostream &out) override;
-    Type &get_type(Cx &cx) override;
     bool mark(Cx &cx) override;
     void sweep(Cx &cx) override;    
+    Type &type(Cx &cx) override;
   };
 }
 

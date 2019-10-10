@@ -25,8 +25,6 @@ namespace forthy2 {
     return imp(cx, form, in, end, out);
   }
 
-  Type &Macro::get_type(Cx &cx) { return cx.macro_type; }
-
   bool Macro::is(Val &other) { return this == &other; }
 
   bool Macro::mark(Cx &cx) {
@@ -39,4 +37,6 @@ namespace forthy2 {
     Val::sweep(cx);
     cx.macro_type.pool.put(this);
   }
+
+  Type &Macro::type(Cx &cx) { return cx.macro_type; }
 }

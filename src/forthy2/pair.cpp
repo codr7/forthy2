@@ -17,8 +17,6 @@ namespace forthy2 {
     out << ',';
     imp.second->dump(out);
   }
-
-  Type &Pair::get_type(Cx &cx) { return cx.pair_type; }
   
   bool Pair::is(Val &other) {
     Imp &other_imp(dynamic_cast<Pair &>(other).imp);
@@ -36,4 +34,6 @@ namespace forthy2 {
     Val::sweep(cx);
     cx.pair_type.pool.put(this);
   }
+
+  Type &Pair::type(Cx &cx) { return cx.pair_type; }
 }

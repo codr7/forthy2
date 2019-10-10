@@ -11,11 +11,10 @@ namespace forthy2 {
     out << v << '.' << setw(s) << setfill('0') << (neg ? -f : f);
   }
 
-  Type &Fix::get_type(Cx &cx) { return cx.fix_type; }
-
   void Fix::sweep(Cx &cx) {
     Val::sweep(cx);
     cx.fix_type.pool.put(this);
   }
 
+  Type &Fix::type(Cx &cx) { return cx.fix_type; }
 }

@@ -16,9 +16,9 @@ namespace forthy2 {
     Int(Imp imp);
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
-    Type &get_type(Cx &cx) override;
     bool is(Val &other) override;
     void sweep(Cx &cx) override;
+    Type &type(Cx &cx) override;
   };
 }
 

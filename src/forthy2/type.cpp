@@ -26,8 +26,6 @@ namespace forthy2 {
 
   void Type::dump(ostream &out) { out << id; }
 
-  Type &Type::get_type(Cx &cx) { return cx.meta_type; }
-
   bool Type::is(Val &other) { return this == &other; }
 
   Type *Type::isa(Type &parent) {
@@ -50,4 +48,6 @@ namespace forthy2 {
     Val::sweep(cx);
     delete this;
   }
+
+  Type &Type::type(Cx &cx) { return cx.meta_type; }
 }

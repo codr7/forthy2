@@ -49,8 +49,6 @@ namespace forthy2 {
       return negative() ? -r : r;
     }
 
-    Type &get_type(Cx &cx) override;
-
     bool is(Val &other) override { return dynamic_cast<Fix &>(other).imp == imp; }
 
     bool negative() { return imp << 63; }
@@ -63,6 +61,8 @@ namespace forthy2 {
       const int64_t m(pow(s)), v(get() / m);
       return v * m;
     }
+
+    Type &type(Cx &cx) override;
 
     void sweep(Cx &cx) override;
   };  

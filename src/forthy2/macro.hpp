@@ -28,10 +28,10 @@ namespace forthy2 {
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
     Node<Op> &expand(Cx &cx, Form &form, FormIter &in, FormIter end, Node<Op> &out);
-    Type &get_type(Cx &cx) override;
     bool is(Val &other) override;
     bool mark(Cx &cx) override;
     void sweep(Cx &cx) override;
+    Type &type(Cx &cx) override;
   };
 }
 

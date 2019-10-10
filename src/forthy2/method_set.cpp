@@ -48,8 +48,6 @@ namespace forthy2 {
     out << ')';
   }
   
-  Type &MethodSet::get_type(Cx &cx) { return cx.method_set_type; }
-
   bool MethodSet::mark(Cx &cx) {
     if (!Val::mark(cx)) { return false; }
 
@@ -71,4 +69,6 @@ namespace forthy2 {
     Val::sweep(cx);
     cx.method_set_type.pool.put(this);
   }
+
+  Type &MethodSet::type(Cx &cx) { return cx.method_set_type; }
 }

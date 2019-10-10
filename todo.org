@@ -1,3 +1,7 @@
+* rename get_type
+* switch Pool.get() to return ref
+** grep ".get("
+* --
 * add abc/=
 ** Val.eq
 * add check macro
@@ -18,8 +22,6 @@
 ** :: swap
 ** extract bool is_id(char) from read_id
 ** return DotForm if followed by is_id
-* switch Pool.get() to return ref
-** grep ".get("
 * move Val imps to val.cpp
 * add cx.cpp
 ** move includes/imps

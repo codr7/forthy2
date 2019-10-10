@@ -43,8 +43,6 @@ namespace forthy2 {
 
   Stack::Iter Stack::end() { return items.end(); }
 
-  Type &Stack::get_type(Cx &cx) { return cx.stack_type; }
-
   bool Stack::is(Val &other) {
     Items &other_items(dynamic_cast<Stack &>(other).items);
     if (items.size() != other_items.size()) { return false; }
@@ -84,4 +82,6 @@ namespace forthy2 {
     Val::sweep(cx);
     cx.stack_type.pool.put(this);
   }
+
+  Type &Stack::type(Cx &cx) { return cx.stack_type; }
 }
