@@ -20,9 +20,6 @@
 ** :: swap
 ** extract bool is_id(char) from read_id
 ** return DotForm if followed by is_id
-* move Val imps to val.cpp
-* add cx.cpp
-** move includes/imps
 * add ScopeForm
 ** {...}
 ** add support for ;
