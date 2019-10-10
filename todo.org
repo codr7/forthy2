@@ -1,6 +1,7 @@
 * add repl
 * add support for arg index
 ** add Arg.index + constructor
+** dump as T0 T1 etc.
 ** get parent type from stack in Method.applicable()
 * add abc/=
 ** map to Val.eq
