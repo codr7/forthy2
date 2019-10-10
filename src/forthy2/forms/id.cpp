@@ -14,19 +14,7 @@ namespace forthy2 {
     
     Node<Op> *op(&out);
 
-    if (vt == &cx.method_set_type) {
-      auto &ms(dynamic_cast<MethodSet &>(v));
-
-      if (ms.len == 1) {
-        op = &cx.push_op.get(*this, *op, ms.root.next->get());
-      } else {
-        op = &cx.push_op.get(*this, *op, v);
-      }
-      
-      return cx.call_op.get(*this, *op);
-    }
-
-    if (vt == &cx.method_type) {
+    if (vt == &cx.method_type || vt == &cx.method_set_type) {
       op = &cx.push_op.get(*this, *op, v);
       return cx.call_op.get(*this, *op);
     }
