@@ -65,7 +65,7 @@ Combining operations allows skipping redundant chars.
 ...1 3
 ```
 ### dot-notation
-Methods and macros may be called infix by adding `.` between first argument and operation.
+Methods may be called infix by adding `.` between first argument and operation.
 
 ```
   35.+ 7
@@ -83,6 +83,21 @@ The following example pushes `1` and `5` on the compile time stack, which are ad
 
 6
 ...10
+```
+
+### pairs
+Values may be paired using `,` and unpaired using `,,`. 
+
+```
+  1 2,
+  
+1 2,
+  3 4,
+  
+1 2, 3 4,
+  ,, +
+  
+1 2, 7
 ```
 
 ### license

@@ -1,16 +1,3 @@
-* add ,, to unpair
-** 1,3,,
-** add unpair form/op
-** add readme/pairs
-* add support for arg index
-** add Arg.index + constructor
-** dump as T0 T1 etc.
-** get parent type from stack in Method.applicable()
-* add abc/=
-** map to Val.eq
-** use arg index
-* add check macro
-* add /test/run.f2
 * add ref-support
 ** &foo
 ** IdForm or "Invalid ref: "
@@ -34,6 +21,16 @@
 * add stack literals
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack
+
+* add support for arg index
+** add Arg.index + constructor
+** dump as T0 T1 etc.
+** get parent type from stack in Method.applicable()
+* add abc/=
+** map to Val.eq
+** use arg index
+* add check macro
+* add /test/run.f2
 * add opt types
 ** Int?
 ** add nil type / _

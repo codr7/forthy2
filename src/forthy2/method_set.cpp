@@ -3,7 +3,7 @@
 #include "forthy2/method_set.hpp"
 
 namespace forthy2 {
-  MethodSet::MethodSet() {}
+  MethodSet::MethodSet(): len(0) {}
 
   MethodSet &MethodSet::get(Cx &cx, Pos pos, Env &env, Sym &id) {
     auto i(env.find(id));

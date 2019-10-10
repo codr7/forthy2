@@ -34,19 +34,6 @@ namespace forthy2 {
         }
       };
 
-      if (in.get(c)) {
-        if (c == ',') {
-          Form *right(read_form(cx, pos, in));
-          if (!right) { throw ESys(p, "Invalid pair"); }
-          PairForm &pf(cx.pair_form.get(p, *f, *right));
-          pf.left.deref(cx);
-          pf.right.deref(cx);
-          f = &pf;
-        } else {
-          in.unget();
-        }
-      }
-
       f->cte = cte;
       return f;
     }
@@ -85,11 +72,12 @@ namespace forthy2 {
     Pos p(pos);
     stringstream out;
     int arg_depth(0);
-    char c(0);
+    char c(0), pc(0);
     
     for (;;) {  
       if (!in.get(c) || (!arg_depth && (!isgraph(c) ||
                                         c == '|' || c == ']' || c == '.' ||
+                                        (c == ',' && pc && pc != ',') ||
                                         c == '(' || c == ')' ||
                                         c == '{' || c == '}'))) {
         break;
@@ -108,6 +96,7 @@ namespace forthy2 {
         break;
       }
 
+      pc = c;
       pos.col++;
     }
 

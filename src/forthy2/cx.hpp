@@ -11,7 +11,6 @@
 #include "forthy2/forms/dot.hpp"
 #include "forthy2/forms/id.hpp"
 #include "forthy2/forms/lit.hpp"
-#include "forthy2/forms/pair.hpp"
 #include "forthy2/int.hpp"
 #include "forthy2/macro.hpp"
 #include "forthy2/method.hpp"
@@ -19,7 +18,6 @@
 #include "forthy2/node.hpp"
 #include "forthy2/ops/bind.hpp"
 #include "forthy2/ops/call.hpp"
-#include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/push.hpp"
 #include "forthy2/pair.hpp"
 #include "forthy2/path.hpp"
@@ -47,11 +45,9 @@ namespace forthy2 {
     Pool<DotForm> dot_form;
     Pool<IdForm> id_form;
     Pool<LitForm> lit_form;
-    Pool<PairForm> pair_form;
 
     Pool<BindOp> bind_op;
     Pool<CallOp> call_op;
-    Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
 
     uint64_t type_weight;
@@ -188,11 +184,13 @@ namespace forthy2 {
       return true;
     }
 
+    Val &pop() { return stack->pop(); }
+
     Val &pop(Pos pos) {
       if (stack->empty()) { throw ESys(pos, "Stack is empty"); }
-      return stack->pop();
+      return pop();
     }
-    
+
     void push(Val &val) { stack->push(val); }
     
     void read(istream &in, Forms &out) {
