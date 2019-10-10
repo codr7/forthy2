@@ -1,6 +1,6 @@
-* add repl
-* add ,, to unzip pair
+* add ,, to unpair
 ** 1,3,,
+** add unpair form/op
 ** add readme/pairs
 * add support for arg index
 ** add Arg.index + constructor

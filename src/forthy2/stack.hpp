@@ -24,9 +24,13 @@ namespace forthy2 {
     Stack(T beg, T end): items(beg, end) {}
 
     Iter begin();
+
+    void clear() { items.clear(); }
+    
     Val &clone(Cx &cx) override;
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
+    void dump_items(ostream &out);
     bool empty();
     Iter end();
     bool is(Val &other) override;

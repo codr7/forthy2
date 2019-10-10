@@ -40,7 +40,6 @@ namespace forthy2 {
   
   struct Cx {
     bool debug = false;
-    ostream &out = cout;
     
     Pool<Sym> sym_pool;
     unordered_map<string, Sym *> syms;
@@ -102,8 +101,11 @@ namespace forthy2 {
       for (auto i(in.begin()); i != in.end();) {
         auto j(i++);
         op = &(*j)->compile(*this, i, in.end(), *op);
-        op->get().dump(cout);
-        cout << endl;
+        
+        if (debug) {
+          op->get().dump(cout);
+          cout << endl;
+        }
       }
 
       return *op;
@@ -129,8 +131,22 @@ namespace forthy2 {
       }
     }
 
+    void eval(const string &in) {
+      stringstream in_buf(in);
+      eval(in_buf);
+    }
+
+    void eval(istream &in) {
+      Forms forms;
+      read(in, forms);
+      Node<Op> &pc(*ops.prev);
+      compile(forms, pc);
+      deref(forms);
+      eval(pc);      
+    }
+
     void eval(Node<Op> &root) {
-      for (Node<Op> *op(root.next); op != &root;) { op = &op->get().eval(*this); }
+      for (Node<Op> *op(root.next); op != &ops;) { op = &op->get().eval(*this); }
     }
 
     void load(Pos pos, const Path &path) {
@@ -141,13 +157,7 @@ namespace forthy2 {
       auto prev_load_path(load_path);
       load_path = path.parent_path();
       auto restore_load_path(defer([&]() { load_path = prev_load_path; }));
-
-      Forms forms;
-      read(in, forms);
-      Node<Op> &pc(*ops.prev);
-      compile(forms, pc);
-      deref(forms);
-      eval(pc);
+      eval(in);
     }
     
     bool mark_vals(optional<uint64_t> max_ns = {}) {
@@ -190,9 +200,12 @@ namespace forthy2 {
       Form *f(nullptr);
       
       while ((f = read_form(*this, p, in))) {
-        f->dump(cout);
-        cout << endl;
         out.push_back(f);
+
+        if (debug) {
+          f->dump(cout);
+          cout << endl;
+        }
       }
     }
 

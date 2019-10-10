@@ -28,7 +28,7 @@ namespace forthy2 {
     
     Args(const vector<Arg> &items);
     void dump(ostream &out);
-    int len();
+    unsigned int len();
     void mark_items(Cx &cx);
   };
 }

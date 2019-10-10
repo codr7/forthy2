@@ -9,6 +9,27 @@
   }
 ```
 
+### setup
+[forthy2](https://github.com/codr7/forthy2) requires a C++17-compiler and CMake to build.
+
+```
+$ git clone https://github.com/codr7/forthy2.git
+$ cd forthy2
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+$ rlwrap ./forthy2
+forthy2
+
+Press Return on empty row to evaluate.
+Empty input clears stack and Ctrl+D exits.
+
+  1.+ 2
+  
+3
+```
+
 ### stacks
 The holy trinity of stack operations; `dup`, `drop` and `swap`; get their own two-char pictograms.
 

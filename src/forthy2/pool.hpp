@@ -54,7 +54,7 @@ namespace forthy2 {
 
     void put(T &item) {
       if constexpr(USE_POOL) {
-          item->~T();
+          item.~T();
           free.push_back(&item);
       } else {
         delete &item;

@@ -26,6 +26,11 @@ namespace forthy2 {
 
   void Stack::dump(ostream &out) {
     out << '(';
+    dump_items(out);
+    out << ')';
+  }
+
+  void Stack::dump_items(ostream &out) {
     bool first(true);
       
     for (Val *v: items) {
@@ -37,8 +42,6 @@ namespace forthy2 {
             
       v->dump(out);
     }
-
-    out << ')';
   }
 
   bool Stack::empty() { return items.empty(); }

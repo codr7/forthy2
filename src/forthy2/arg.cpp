@@ -49,7 +49,7 @@ namespace forthy2 {
 
   void Args::dump(ostream &out) { forthy2::dump(items, out); }
 
-  int Args::len() { return items.size(); }
+  unsigned int Args::len() { return items.size(); }
 
   void Args::mark_items(Cx &cx) {
     for (auto &a: items) {

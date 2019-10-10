@@ -3,20 +3,20 @@
 #include "forthy2/method_set.hpp"
 
 namespace forthy2 {
+  MethodSet::MethodSet() {}
+
   MethodSet &MethodSet::get(Cx &cx, Pos pos, Env &env, Sym &id) {
-    auto found(env.find(id));
+    auto i(env.find(id));
     
-    if (found != env.items.end() && *found->id == id) {
-      return *dynamic_cast<MethodSet *>(found->val);
+    if (i != env.items.end() && *i->id == id) {
+      return *dynamic_cast<MethodSet *>(i->val);
     }
     
     MethodSet &s(cx.method_set_type.get(cx));
-    env.bind(pos, id, s);
+    env.insert(i, id, s);
     return s;
   }
   
-  MethodSet::MethodSet(): len(0) {}
-
   void MethodSet::call(Cx &cx, Pos pos) {
     Method *m(dispatch(cx));
     if (!m) { throw ESys(pos, "Method not applicable"); }
@@ -50,11 +50,7 @@ namespace forthy2 {
   
   bool MethodSet::mark(Cx &cx) {
     if (!Val::mark(cx)) { return false; }
-
-    for (Node<Method> *i(root.next); i != &root; i = i->next) {
-      i->get().mark(cx);
-    }
-
+    for (Node<Method> *i(root.next); i != &root; i = i->next) { i->get().mark(cx); }
     return true;
   }
   

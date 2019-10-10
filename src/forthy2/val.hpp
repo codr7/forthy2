@@ -14,8 +14,9 @@ namespace forthy2 {
   struct Type;
   
   struct Val: Node<Val> {
-    bool marked = true;
+    bool marked;
 
+    Val(): marked(true) {}
     virtual ~Val() {}
 
     virtual Val &clone(Cx &cx) { return *this; }

@@ -2,8 +2,6 @@
 #include "forthy2/fix.hpp"
 
 namespace forthy2 {
-  Val &Fix::clone(Cx &cx) { return cx.fix_type.get(cx, *this); }
-
   void Fix::dump(ostream &out) {
     const uint8_t s(scale());
     const int64_t v(trunc() / pow(s));

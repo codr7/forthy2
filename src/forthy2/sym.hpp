@@ -19,6 +19,10 @@ namespace forthy2 {
 
   ostream &operator <<(ostream &out, const Sym &sym);
 
+  inline bool operator ==(const Sym &x, const Sym &y) {
+    return &x == &y;
+  }
+
   inline bool operator !=(const Sym &x, const Sym &y) {
     return &x != &y;
   }

@@ -9,16 +9,44 @@ using namespace forthy2;
 enum struct Mode {repl, run};
 
 void repl(Cx &cx) {
-  cx.out << "forthy2." << VERSION << "\n\n";
+  (*cx.stdout) <<
+    "forthy2." << VERSION << "\n\n" <<
+    "Press Return on empty row to evaluate." << endl <<
+    "Empty input clears stack and Ctrl+D exits." << endl << endl <<
+    "  ";
+
+  stringstream buf;
+  string line;
+  
+  while (getline(*(cx.stdin), line)) {
+    if (line.empty()) {
+      if (buf.tellp()) {
+        try {
+          cx.eval(buf);
+        } catch (const exception &e) {
+          (*cx.stdout) << e.what() << endl;
+        }
+      } else {
+        cx.stack->clear();
+      }
+        
+      cx.stack->dump_items(*cx.stdout);
+      (*cx.stdout) << endl;
+      stringstream().swap(buf);
+    } else {
+      buf << line << endl;
+    }
+
+    (*cx.stdout) << "  ";
+  }
 }
 
 int main(int argc, char *argv[]) {  
   Cx cx;
   init_abc(cx, Pos::_, cx.root_env);
   init_math(cx, Pos::_, cx.root_env);
-  
   Mode mode(Mode::repl);
-
+  
   while (--argc && ++argv) {
     string a(*argv);
     

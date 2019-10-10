@@ -14,7 +14,6 @@ namespace forthy2 {
     Imp imp;
 
     Int(Imp imp);
-    Val &clone(Cx &cx) override;
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
     bool is(Val &other) override;
