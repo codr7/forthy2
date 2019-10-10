@@ -5,7 +5,7 @@
 namespace forthy2 {
   void PushOp::dealloc(Cx &cx) {
     Op::dealloc(cx);
-    cx.push_op.put(this);
+    cx.push_op.put(*this);
   }
 
   void PushOp::dump(ostream &out) {

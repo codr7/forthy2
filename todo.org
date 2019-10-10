@@ -1,7 +1,5 @@
-* rename get_type
-* switch Pool.get() to return ref
-** grep ".get("
-* --
+* add cx.push/pop
+** grep "cx.stack"
 * add abc/=
 ** Val.eq
 * add check macro
@@ -25,8 +23,6 @@
 * move Val imps to val.cpp
 * add cx.cpp
 ** move includes/imps
-* add cx.push/pop
-** grep "cx.stack"
 * add ScopeForm
 ** {...}
 ** add support for ;

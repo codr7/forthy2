@@ -6,7 +6,7 @@ namespace forthy2 {
   
   void CallOp::dealloc(Cx &cx) {
     Op::dealloc(cx);
-    cx.call_op.put(this);
+    cx.call_op.put(*this);
   }
 
   void CallOp::dump(ostream &out) { out << "call"; }

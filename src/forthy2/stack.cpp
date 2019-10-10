@@ -80,7 +80,7 @@ namespace forthy2 {
 
   void Stack::sweep(Cx &cx) {
     Val::sweep(cx);
-    cx.stack_type.pool.put(this);
+    cx.stack_type.pool.put(*this);
   }
 
   Type &Stack::type(Cx &cx) { return cx.stack_type; }

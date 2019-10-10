@@ -6,7 +6,7 @@ namespace forthy2 {
   
   void PairOp::dealloc(Cx &cx) {
     Op::dealloc(cx);
-    cx.pair_op.put(this);
+    cx.pair_op.put(*this);
   }
 
   void PairOp::dump(ostream &out) { out << "pair"; }

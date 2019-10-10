@@ -32,7 +32,7 @@ namespace forthy2 {
 
   void Pair::sweep(Cx &cx) {
     Val::sweep(cx);
-    cx.pair_type.pool.put(this);
+    cx.pair_type.pool.put(*this);
   }
 
   Type &Pair::type(Cx &cx) { return cx.pair_type; }

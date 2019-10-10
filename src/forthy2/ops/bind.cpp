@@ -4,7 +4,7 @@
 namespace forthy2 {
   void BindOp::dealloc(Cx &cx) {
     Op::dealloc(cx);
-    cx.bind_op.put(this);
+    cx.bind_op.put(*this);
   }
 
   void BindOp::dump(ostream &out) { out << "bind"; }

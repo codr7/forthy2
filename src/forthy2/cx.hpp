@@ -119,7 +119,7 @@ namespace forthy2 {
       unmarked_vals.extend(marked_vals);
       sweep_vals();
 
-      for (auto &s: syms) { sym_pool.put(s.second); }      
+      for (auto &s: syms) { sym_pool.put(*s.second); }      
     }
 
     void deref(Forms &in) {
@@ -207,9 +207,9 @@ namespace forthy2 {
       string name(str(forward<Args>(args)...));
       auto ok(syms.find(name));
       if (ok != syms.end()) { return *ok->second; }    
-      Sym *s(sym_pool.get(name));
-      syms.emplace(make_pair(name, s));
-      return *s;
+      Sym &s(sym_pool.get(name));
+      syms.emplace(make_pair(name, &s));
+      return s;
     }
 
     template <typename T, typename...Args>
@@ -234,7 +234,7 @@ namespace forthy2 {
   template <typename T>
   template <typename...Args>
   T &PoolType<T>::get(Cx &cx, Args &&...args) {
-    T &v(*pool.get(forward<Args>(args)...));
+    T &v(pool.get(forward<Args>(args)...));
     cx.marked_vals.push(v);
     return v;
   }

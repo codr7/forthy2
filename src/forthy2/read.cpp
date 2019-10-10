@@ -38,10 +38,10 @@ namespace forthy2 {
         if (c == ',') {
           Form *right(read_form(cx, pos, in));
           if (!right) { throw ESys(p, "Invalid pair"); }
-          PairForm *pf(cx.pair_form.get(p, *f, *right));
-          pf->left.deref(cx);
-          pf->right.deref(cx);
-          f = pf;
+          PairForm &pf(cx.pair_form.get(p, *f, *right));
+          pf.left.deref(cx);
+          pf.right.deref(cx);
+          f = &pf;
         } else {
           in.unget();
         }
@@ -60,7 +60,7 @@ namespace forthy2 {
     if (!z) { throw ESys(p, "Missing z-form"); }
     Form *y = read_form(cx, pos, in);
     if (!y) { throw ESys(p, "Missing y-form"); }
-    DotForm &d(*cx.dot_form.get(p, *y, *z));
+    DotForm &d(cx.dot_form.get(p, *y, *z));
     d.y.deref(cx);
     d.z.deref(cx);
     return d;
@@ -112,7 +112,7 @@ namespace forthy2 {
     }
 
     if (!in.eof()) { in.unget(); }
-    return *cx.id_form.get(p, cx.sym(out.str()));
+    return cx.id_form.get(p, cx.sym(out.str()));
   }
   
   pair<Int::Imp, bool> read_int(Cx &cx, Pos &pos, istream &in, bool is_hex) {
@@ -162,7 +162,7 @@ namespace forthy2 {
             auto f(read_frac(cx, pos, in));
             int64_t v(i.first * Fix::pow(f.second) + f.first);
             Fix &fv(cx.fix_type.get(cx, (i.first || !i.second) ? v : -v, f.second));
-            return *cx.lit_form.get(p, fv);
+            return cx.lit_form.get(p, fv);
           }
         }
       }
@@ -170,7 +170,7 @@ namespace forthy2 {
       in.unget();
     }
 
-    return *cx.lit_form.get(p, cx.int_type.get(cx, i.first));
+    return cx.lit_form.get(p, cx.int_type.get(cx, i.first));
   }
   
   void skip_ws(Pos &pos, istream &in) {

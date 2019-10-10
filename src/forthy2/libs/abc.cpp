@@ -11,8 +11,8 @@ namespace forthy2 {
     Node<Op> *op(&out);
     op = &val.compile(cx, end, end, *op);
     Val &id_val(dynamic_cast<IdForm &>(id).val);
-    op = cx.push_op.get(form, *op, id_val);
-    return *cx.bind_op.get(form, *op);
+    op = &cx.push_op.get(form, *op, id_val);
+    return cx.bind_op.get(form, *op);
   }
 
   static void dump_imp(Cx &cx, Pos pos) {

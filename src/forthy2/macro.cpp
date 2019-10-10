@@ -35,7 +35,7 @@ namespace forthy2 {
 
   void Macro::sweep(Cx &cx) {
     Val::sweep(cx);
-    cx.macro_type.pool.put(this);
+    cx.macro_type.pool.put(*this);
   }
 
   Type &Macro::type(Cx &cx) { return cx.macro_type; }

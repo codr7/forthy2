@@ -67,7 +67,7 @@ namespace forthy2 {
 
   void MethodSet::sweep(Cx &cx) {
     Val::sweep(cx);
-    cx.method_set_type.pool.put(this);
+    cx.method_set_type.pool.put(*this);
   }
 
   Type &MethodSet::type(Cx &cx) { return cx.method_set_type; }

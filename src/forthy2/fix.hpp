@@ -33,6 +33,8 @@ namespace forthy2 {
     
     Fix(int64_t rep, uint8_t scale): imp(make(rep, scale)) {}
 
+    Val &clone(Cx &cx) override;
+
     Cmp cmp(Val &other) override {
       auto &y(dynamic_cast<Fix &>(other));
       const int64_t xv(get()), yv(y.get());

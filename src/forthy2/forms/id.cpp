@@ -18,23 +18,23 @@ namespace forthy2 {
       auto &ms(dynamic_cast<MethodSet &>(v));
 
       if (ms.len == 1) {
-        op = cx.push_op.get(*this, *op, ms.root.next->get());
+        op = &cx.push_op.get(*this, *op, ms.root.next->get());
       } else {
-        op = cx.push_op.get(*this, *op, v);
+        op = &cx.push_op.get(*this, *op, v);
       }
       
-      return *cx.call_op.get(*this, *op);
+      return cx.call_op.get(*this, *op);
     }
 
     if (vt == &cx.method_type) {
-      op = cx.push_op.get(*this, *op, v);
-      return *cx.call_op.get(*this, *op);
+      op = &cx.push_op.get(*this, *op, v);
+      return cx.call_op.get(*this, *op);
     }
 
-    return *cx.push_op.get(*this, *op, v);
+    return cx.push_op.get(*this, *op, v);
   }
 
-  void IdForm::dealloc(Cx &cx) { cx.id_form.put(this); }
+  void IdForm::dealloc(Cx &cx) { cx.id_form.put(*this); }
 
   void IdForm::dump(ostream &out) { out << "id " << val; }
 }

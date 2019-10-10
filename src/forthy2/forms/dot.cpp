@@ -14,7 +14,7 @@ namespace forthy2 {
   void DotForm::dealloc(Cx &cx) {
     y.deref(cx);
     z.deref(cx);
-    cx.dot_form.put(this);
+    cx.dot_form.put(*this);
   }
 
   void DotForm::dump(ostream &out) {

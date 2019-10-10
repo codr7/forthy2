@@ -9,13 +9,13 @@ namespace forthy2 {
     Node<Op> *op(&out);
     op = &left.compile(cx, end, end, *op);
     op = &right.compile(cx, end, end, *op);
-    return *cx.pair_op.get(*this, *op);
+    return cx.pair_op.get(*this, *op);
   }
 
   void PairForm::dealloc(Cx &cx) {
     left.deref(cx);
     right.deref(cx);
-    cx.pair_form.put(this);
+    cx.pair_form.put(*this);
   }
 
   void PairForm::dump(ostream &out) {

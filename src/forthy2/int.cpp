@@ -3,7 +3,9 @@
 
 namespace forthy2 {
   Int::Int(Imp imp): imp(imp) {}
-  
+
+  Val &Int::clone(Cx &cx) { return cx.int_type.get(cx, *this); }
+
   Cmp Int::cmp(Val &other) {
     return forthy2::cmp<Imp>(imp, dynamic_cast<Int &>(other).imp);
   }
@@ -14,7 +16,7 @@ namespace forthy2 {
 
   void Int::sweep(Cx &cx) {
     Val::sweep(cx);
-    cx.int_type.pool.put(this);
+    cx.int_type.pool.put(*this);
   }
 
   Type &Int::type(Cx &cx) { return cx.int_type; }

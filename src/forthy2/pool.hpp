@@ -27,13 +27,8 @@ namespace forthy2 {
     }
     
     template <typename...Args>
-    T *get(Args &&...args) {
-      if constexpr(!USE_POOL) { return new T(forward<Args>(args)...); }
-      return new (alloc()) T(forward<Args>(args)...);
-    }
-
-    T *alloc() {
-      if constexpr(!USE_POOL) { return reinterpret_cast<T *>(new Slot()); }
+    T &get(Args &&...args) {
+      if constexpr(!USE_POOL) { return *new T(forward<Args>(args)...); }
       T *p(nullptr);
       
       if (free.empty()) {
@@ -54,15 +49,15 @@ namespace forthy2 {
         free.pop_back();
       }
       
-      return p;
+      return *new(p) T(forward<Args>(args)...);
     }
 
-    void put(T *item) {
+    void put(T &item) {
       if constexpr(USE_POOL) {
           item->~T();
-          free.push_back(item);
+          free.push_back(&item);
       } else {
-        delete item;
+        delete &item;
       }
     }
   };

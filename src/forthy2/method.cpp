@@ -46,7 +46,7 @@ namespace forthy2 {
     Val::sweep(cx);
     Node<Method>::unlink();
     set.len--;
-    cx.method_type.pool.put(this);
+    cx.method_type.pool.put(*this);
   } 
 
   Type &Method::type(Cx &cx) { return cx.method_type; }
