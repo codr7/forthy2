@@ -18,6 +18,19 @@ namespace forthy2 {
         if (!f) { throw ESys(p, "Missing form"); }
         cte = true;
         break;
+      case ',':
+        pos.col++;
+        if (!in.get(c)) { ESys(p, "Invalid pair"); }
+        
+        if (c == ',') {
+          pos.col++;
+          f = &cx.id_form.get(p, cx.sym(",,"));
+        } else {
+          in.unget();
+          f = &read_pair(cx, pos, in);
+        }
+
+        break;
       default:
         in.unget();
         
@@ -53,9 +66,6 @@ namespace forthy2 {
     Form *y = read_form(cx, pos, in);
     if (!y) { throw ESys(p, "Missing y-form"); }
     DotForm &d(cx.dot_form.get(p, x, *y, *z));
-    d.x.deref(cx);
-    d.y.deref(cx);
-    d.z.deref(cx);
     return d;
   }
   
@@ -166,6 +176,16 @@ namespace forthy2 {
     }
 
     return cx.lit_form.get(p, cx.int_type.get(cx, i.first));
+  }
+
+  PairForm &read_pair(Cx &cx, Pos &pos, istream &in) {
+    Pos p(pos);
+    Form *l = read_form(cx, pos, in);
+    if (!l) { throw ESys(p, "Missing left form"); }
+    Form *r = read_form(cx, pos, in);
+    if (!r) { throw ESys(p, "Missing right form"); }
+    PairForm &d(cx.pair_form.get(p, *l, *r));
+    return d;
   }
   
   void skip_ws(Pos &pos, istream &in) {

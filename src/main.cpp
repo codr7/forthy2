@@ -24,6 +24,7 @@ void repl(Cx &cx) {
         try {
           cx.eval(buf);
         } catch (const exception &e) {
+          if (cx.debug) { throw; }
           (*cx.stdout) << e.what() << endl;
         }
       } else {

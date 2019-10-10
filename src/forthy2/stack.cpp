@@ -73,7 +73,7 @@ namespace forthy2 {
     for (Val *v: items) { v->mark(cx); }
   }
 
-  Val *&Stack::peek(size_t offs) { return items[items.size() - offs -1]; }
+  Val &Stack::peek(size_t offs) { return *items[items.size() - offs -1]; }
 
   Val &Stack::pop() {
     Val *v(items.back());

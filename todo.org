@@ -1,6 +1,3 @@
-* move ,/,, to reader
-** bring back pair/unpair form/op
-* --
 * inherit Form from Val
 ** add form types to cx/abc
 * inherit Macro from Method
@@ -49,9 +46,7 @@
 * add quote
 ** '(1 2 3) 'foo
 ** handle in reader
+* check rets in on method call
 * add C++ emit
 ** use label/goto
 ** add -build mode
-* add Macro.method
-** wrap macro imp in method
-** call instead of expand if not cte in IdForm.compile

@@ -37,7 +37,7 @@ namespace forthy2 {
     size_t len();
     bool mark(Cx &cx) override;
     void mark_items(Cx &cx);
-    Val *&peek(size_t offs = 0);
+    Val &peek(size_t offs = 0);
     Val &pop();
     void push(Val &v);
     void sweep(Cx &cx) override;

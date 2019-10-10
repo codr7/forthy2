@@ -2,8 +2,7 @@
 #include "forthy2/forms/dot.hpp"
 
 namespace forthy2 {
-  DotForm::DotForm(Pos pos, Form &x, Form &y, Form &z):
-    Form(pos), x(x.ref()), y(y.ref()), z(z.ref()) {}
+  DotForm::DotForm(Pos pos, Form &x, Form &y, Form &z): Form(pos), x(x), y(y), z(z) {}
 
   Node<Op> &DotForm::compile(Cx &cx, FormIter &in, FormIter end, Node<Op> &out) {
     Node<Op> *op(&out);

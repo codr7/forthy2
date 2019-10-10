@@ -11,6 +11,7 @@
 #include "forthy2/forms/dot.hpp"
 #include "forthy2/forms/id.hpp"
 #include "forthy2/forms/lit.hpp"
+#include "forthy2/forms/pair.hpp"
 #include "forthy2/int.hpp"
 #include "forthy2/macro.hpp"
 #include "forthy2/method.hpp"
@@ -18,6 +19,7 @@
 #include "forthy2/node.hpp"
 #include "forthy2/ops/bind.hpp"
 #include "forthy2/ops/call.hpp"
+#include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/push.hpp"
 #include "forthy2/pair.hpp"
 #include "forthy2/path.hpp"
@@ -45,9 +47,11 @@ namespace forthy2 {
     Pool<DotForm> dot_form;
     Pool<IdForm> id_form;
     Pool<LitForm> lit_form;
+    Pool<PairForm> pair_form;
 
     Pool<BindOp> bind_op;
     Pool<CallOp> call_op;
+    Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
 
     uint64_t type_weight;
@@ -99,11 +103,12 @@ namespace forthy2 {
         op = &(*j)->compile(*this, i, in.end(), *op);
         
         if (debug) {
-          op->get().dump(cout);
-          cout << endl;
+          op->get().dump(*stdout);
+          (*stdout) << endl;
         }
       }
 
+      if (debug) { (*stdout) << endl; }
       return *op;
     }
     
@@ -191,6 +196,13 @@ namespace forthy2 {
       return pop();
     }
 
+    Val &pop(Pos pos, Type &type) {
+      Val &v(pop(pos));
+      Type &vt(v.type(*this));
+      if (!vt.isa(type)) { ESys(pos, "Expected ", type.id, ": ", vt.id); }
+      return v;
+    }
+
     void push(Val &val) { stack->push(val); }
     
     void read(istream &in, Forms &out) {
@@ -201,10 +213,12 @@ namespace forthy2 {
         out.push_back(f);
 
         if (debug) {
-          f->dump(cout);
-          cout << endl;
+          f->dump(*stdout);
+          (*stdout) << endl;
         }
       }
+
+      if (debug) { (*stdout) << endl; }
     }
 
     bool sweep_vals(optional<uint64_t> max_ns = {}) {

@@ -36,19 +36,19 @@ The holy trinity of stack operations; `dup`, `drop` and `swap`; get their own tw
 ```
   42 .:
   
-...42 42
+42 42
 ```
 
 ```
   1 2 3 :.
   
-...1 2
+1 2
 ```
 
 ```
   1 2 3 ::
   
-...1 3 2
+1 3 2
 ```
 
 ### dot-notation
@@ -57,7 +57,7 @@ Methods and macros may be called infix by adding `.` between first argument and 
 ```
   35.+ 7
 
-...42
+42
 ```
 
 ### macros
@@ -69,22 +69,24 @@ The following example pushes `1` and `5` on the compile time stack, which are ad
   |1 3 |5 7 + |{+ dump}
 
 6
-...10
+10
 ```
 
 ### pairs
-Values may be paired using `,` and unpaired using `,,`. 
+Forms may be paired at read time by prefixing with `,`.
 
 ```
-  1 2,
+  ,1 3, 5 7
   
-1 2,
-  3 4,
+,1 3 ,5 7
+```
+
+Existing pairs may be split using `,,`.
+
+```
+  ,1 3, 5 7,,
   
-1 2, 3 4,
-  ,, +
-  
-1 2, 7
+,1 3 5 7
 ```
 
 ### license
