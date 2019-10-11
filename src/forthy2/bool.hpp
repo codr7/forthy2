@@ -1,6 +1,7 @@
 #ifndef FORTHY2_BOOL_HPP
 #define FORTHY2_BOOL_HPP
 
+#include "forthy2/pool_type.hpp"
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
@@ -15,6 +16,11 @@ namespace forthy2 {
     bool is(Val &other) override;
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
+  };
+
+  struct BoolType: PoolType<Bool> {    
+    BoolType(Cx &cx, Sym &id, vector<Type *> parents = {});
+    Bool &get(Cx &cx, bool imp);
   };
 }
 

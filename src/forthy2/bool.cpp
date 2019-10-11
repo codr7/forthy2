@@ -18,4 +18,9 @@ namespace forthy2 {
   }
 
   Type &Bool::type(Cx &cx) { return cx.bool_type; }
+
+  BoolType::BoolType(Cx &cx, Sym &id, vector<Type *> parents):
+    PoolType<Bool>(cx, id, parents) {}
+
+  Bool &BoolType::get(Cx &cx, bool imp) { return imp ? cx.T : cx.F; }
 }

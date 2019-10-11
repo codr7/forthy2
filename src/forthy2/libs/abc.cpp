@@ -71,8 +71,8 @@ namespace forthy2 {
     env.bind_type(cx, pos, cx.stack_type);
     env.bind_type(cx, pos, cx.sym_type);
 
-    env.bind(pos, cx.sym("false"), cx.bool_type.get(cx, false));
-    env.bind(pos, cx.sym("true"), cx.bool_type.get(cx, true));
+    env.bind(pos, cx.sym("false"), cx.F);
+    env.bind(pos, cx.sym("true"), cx.T);
     
     env.add_macro(cx, pos, cx.sym("check"), {{cx.a_type}}).imp = check_imp;
 

@@ -62,7 +62,7 @@ namespace forthy2 {
 
     Type &a_type;
 
-    PoolType<Bool> &bool_type;
+    BoolType &bool_type;
     PoolType<Fix> &fix_type;
     PoolType<Int> &int_type;
     PoolType<Macro> &macro_type;
@@ -77,6 +77,8 @@ namespace forthy2 {
     Stack root_stack, *stack;
     Node<Op> ops;
 
+    Bool F, T;
+
     Path load_path;
     istream *stdin;
     ostream *stdout, *stderr;
@@ -84,7 +86,7 @@ namespace forthy2 {
     Cx():
       type_weight(1),
       a_type(*new Type(*this, sym("A"))),
-      bool_type(*new PoolType<Bool>(*this, sym("Bool"), {&a_type})),
+      bool_type(*new BoolType(*this, sym("Bool"), {&a_type})),
       fix_type(*new PoolType<Fix>(*this, sym("Fix"), {&a_type})),
       int_type(*new PoolType<Int>(*this, sym("Int"), {&a_type})),
       macro_type(*new PoolType<Macro>(*this, sym("Macro"), {&a_type})),
@@ -96,6 +98,8 @@ namespace forthy2 {
       sym_type(*new Type(*this, sym("Sym"), {&a_type})),
       env(&root_env),
       stack(&root_stack),
+      F(false),
+      T(true),
       stdin(&cin),
       stdout(&cout),
       stderr(&cerr) { }
