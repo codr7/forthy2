@@ -1,4 +1,5 @@
-* rename any_type to a_type
+* add check macro
+* add /test/run.f2
 * add MethodSet.nargs
 ** add constructor arg
 ** add test in add_method
@@ -41,8 +42,6 @@
 * add abc/=
 ** map to Val.eq
 ** use arg index
-* add check macro
-* add /test/run.f2
 * add opt types
 ** Int?
 ** add nil type / _

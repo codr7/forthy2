@@ -17,7 +17,6 @@
 #include "forthy2/method.hpp"
 #include "forthy2/method_set.hpp"
 #include "forthy2/node.hpp"
-#include "forthy2/ops/bind.hpp"
 #include "forthy2/ops/call.hpp"
 #include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/push.hpp"
@@ -49,7 +48,6 @@ namespace forthy2 {
     Pool<LitForm> lit_form;
     Pool<PairForm> pair_form;
 
-    Pool<BindOp> bind_op;
     Pool<CallOp> call_op;
     Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
@@ -57,7 +55,7 @@ namespace forthy2 {
     uint64_t type_weight;
     Node<Val> marked_vals, unmarked_vals;
 
-    Type &any_type;
+    Type &a_type;
 
     PoolType<Fix> &fix_type;
     PoolType<Int> &int_type;
@@ -79,16 +77,16 @@ namespace forthy2 {
     
     Cx():
       type_weight(1),
-      any_type(*new Type(*this, sym("Any"))),
-      fix_type(*new PoolType<Fix>(*this, sym("Fix"), {&any_type})),
-      int_type(*new PoolType<Int>(*this, sym("Int"), {&any_type})),
-      macro_type(*new PoolType<Macro>(*this, sym("Macro"), {&any_type})),
-      meta_type(*new Type(*this, sym("Meta"), {&any_type})),
-      method_set_type(*new PoolType<MethodSet>(*this, sym("MethodSet"), {&any_type})),
-      method_type(*new PoolType<Method>(*this, sym("Method"), {&any_type})),
-      pair_type(*new PoolType<Pair>(*this, sym("Pair"), {&any_type})),
-      stack_type(*new PoolType<Stack>(*this, sym("Stack"), {&any_type})),
-      sym_type(*new Type(*this, sym("Sym"), {&any_type})),
+      a_type(*new Type(*this, sym("A"))),
+      fix_type(*new PoolType<Fix>(*this, sym("Fix"), {&a_type})),
+      int_type(*new PoolType<Int>(*this, sym("Int"), {&a_type})),
+      macro_type(*new PoolType<Macro>(*this, sym("Macro"), {&a_type})),
+      meta_type(*new Type(*this, sym("Meta"), {&a_type})),
+      method_set_type(*new PoolType<MethodSet>(*this, sym("MethodSet"), {&a_type})),
+      method_type(*new PoolType<Method>(*this, sym("Method"), {&a_type})),
+      pair_type(*new PoolType<Pair>(*this, sym("Pair"), {&a_type})),
+      stack_type(*new PoolType<Stack>(*this, sym("Stack"), {&a_type})),
+      sym_type(*new Type(*this, sym("Sym"), {&a_type})),
       env(&root_env),
       stack(&root_stack),
       stdin(&cin),
@@ -102,7 +100,7 @@ namespace forthy2 {
         auto j(i++);
         op = &(*j)->compile(*this, i, in.end(), *op);
         
-        if (debug) {
+        if (debug && op != &ops) {
           op->get().dump(*stdout);
           (*stdout) << endl;
         }
@@ -146,8 +144,8 @@ namespace forthy2 {
       eval(pc);      
     }
 
-    void eval(Node<Op> &root) {
-      for (Node<Op> *op(root.next); op != &ops;) { op = &op->get().eval(*this); }
+    void eval(Node<Op> &pc) {
+      for (Node<Op> *op(pc.next); op != &ops;) { op = &op->get().eval(*this); }
     }
 
     void load(Pos pos, const Path &path) {

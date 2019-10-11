@@ -28,9 +28,12 @@ namespace forthy2 {
     virtual void dealloc(Cx &cx) = 0;
     void deref(Cx &cx);
     virtual void dump(ostream &out) = 0;
+    void eval(Cx &cx, FormIter &in, FormIter end);
     virtual void mark_vals(Cx &cx);
     Form &ref();
   };
+
+  ostream &operator <<(ostream &out, Form &form);
 }
 
 #endif

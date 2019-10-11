@@ -2,7 +2,7 @@
 #include "forthy2/forms/dot.hpp"
 
 namespace forthy2 {
-  DotForm::DotForm(Pos pos, Form *x, Form &y, Form &z): Form(pos), x(x), y(y), z(z) {}
+  DotForm::DotForm(Pos pos, Form *x, Form *y, Form &z): Form(pos), x(x), y(y), z(z) {}
 
   Node<Op> &DotForm::compile(Cx &cx, FormIter &in, FormIter end, Node<Op> &out) {
     Node<Op> *op(&out);
@@ -12,13 +12,12 @@ namespace forthy2 {
     Type &vt(v.type(cx));
 
     if (&vt == &cx.macro_type) {
-      if (!x) { ESys(pos, "Missing dot x"); }
       op = &z.compile(cx, end, end, *op);
-      op = &x->compile(cx, end, end, *op);
-      op = &y.compile(cx, end, end, *op);
+      if (x) { op = &x->compile(cx, end, end, *op); }
+      if (y) { op = &y->compile(cx, end, end, *op); }
     } else if (&vt == &cx.method_type || &vt == &cx.method_set_type) {
       if (x) { op = &x->compile(cx, end, end, *op); }
-      op = &y.compile(cx, end, end, *op);
+      if (y) { op = &y->compile(cx, end, end, *op); }
       op = &z.compile(cx, end, end, *op);
     } else {
       throw ESys(pos, "Invalid dot z: ", vt.id);
@@ -29,7 +28,7 @@ namespace forthy2 {
 
   void DotForm::dealloc(Cx &cx) {
     if (x) { x->deref(cx); }
-    y.deref(cx);
+    if (y) { y->deref(cx); }
     z.deref(cx);
     cx.dot_form.put(*this);
   }
@@ -37,14 +36,16 @@ namespace forthy2 {
   void DotForm::dump(ostream &out) {
     if (x) { x->dump(out); }
     out << '.';
-    y.dump(out);
-    out << ' ';
     z.dump(out);
+    if (y) {
+      out << ' ';
+      y->dump(out);
+    }
   }
   
   void DotForm::mark_vals(Cx &cx) {
     if (x) { x->mark_vals(cx); }
-    y.mark_vals(cx);
+    if (y) { y->mark_vals(cx); }
     z.mark_vals(cx);
   }
 }

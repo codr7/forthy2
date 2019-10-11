@@ -24,5 +24,5 @@ namespace forthy2 {
 
   void IdForm::dealloc(Cx &cx) { cx.id_form.put(*this); }
 
-  void IdForm::dump(ostream &out) { out << "id " << val; }
+  void IdForm::dump(ostream &out) { out << val; }
 }

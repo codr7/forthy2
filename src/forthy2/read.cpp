@@ -69,8 +69,7 @@ namespace forthy2 {
     Form *z = read_form(cx, pos, in);
     if (!z) { throw ESys(p, "Missing z-form"); }
     Form *y = read_form(cx, pos, in);
-    if (!y) { throw ESys(p, "Missing y-form"); }
-    DotForm &d(cx.dot_form.get(p, x, *y, *z));
+    DotForm &d(cx.dot_form.get(p, x, y, *z));
     return d;
   }
   
