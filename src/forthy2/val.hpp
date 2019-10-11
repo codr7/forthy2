@@ -11,20 +11,30 @@ namespace forthy2 {
   using namespace std;
 
   struct Cx;
+  struct Pos;
   struct Type;
   
   struct Val: Node<Val> {
     bool marked;
 
     Val(): marked(true) {}
+
     virtual ~Val() {}
 
+    virtual operator bool() { return true; }
+
     virtual Val &clone(Cx &cx) { return *this; }
+
     virtual void call(Cx &cx, Pos pos);
+
     virtual Cmp cmp(Val &other) { return forthy2::cmp<Val *>(this, &other); }
+
     virtual void dump(ostream &out) = 0;
+
     virtual bool eq(Val &other) { return is(other); }
+
     virtual bool is(Val &other) { return this == &other; }
+
     virtual bool mark(Cx &cx);
     
     virtual void sweep(Cx &cx) { Node<Val>::unlink(); }
@@ -33,6 +43,8 @@ namespace forthy2 {
 
     virtual void unmark() { marked = false; }
   };
+
+  ostream &operator <<(ostream &out, const Val &val);
 }
 
 #endif

@@ -6,7 +6,6 @@
 
 #include "forthy2/arg.hpp"
 #include "forthy2/e.hpp"
-#include "forthy2/ret.hpp"
 
 namespace forthy2 {
   using namespace std;
@@ -34,14 +33,8 @@ namespace forthy2 {
     Env *prev = nullptr;
     Items items;
 
-    Macro &add_macro(Cx &cx, Pos pos, Sym &id, const vector<Arg> &args);
-
-    Method &add_method(Cx &cx,
-                       Pos pos,
-                       Sym &id,
-                       const vector<Arg> &args,
-                       const vector<Ret> &rets);
-
+    Macro &add_macro(Cx &cx, Pos pos, Sym &id, const vector<Arg> &args = {});
+    Method &add_method(Cx &cx, Pos pos, Sym &id, const vector<Arg> &args = {});
     void bind(Pos pos, Sym &id, Val &val);
     void bind_type(Cx &cx, Pos pos, Type &type);
     Iter find(Sym &id);

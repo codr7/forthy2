@@ -10,18 +10,9 @@ namespace forthy2 {
   
   void Macro::dump(ostream &out) { out << "Macro@" << this; }
 
-  Node<Op> &Macro::expand(Cx &cx,
-                          Form &form,
-                          FormIter &in,
-                          FormIter end,
-                          Node<Op> &out) {
-    FormIter i(in);
-
-    for (int j(0); j < args.len(); i++, j++) {
-      if (i == end) { throw ESys(form.pos, "Missing args: ", id); }
-    }
-
-    return imp(cx, form, in, end, out);
+  Node<Op> &Macro::expand(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    if (in.size() < args.len()) { throw ESys(form.pos, "Missing args: ", id); }
+    return imp(cx, form, in, out);
   }
 
   bool Macro::is(Val &other) { return this == &other; }

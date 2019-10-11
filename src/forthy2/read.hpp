@@ -12,15 +12,17 @@ namespace forthy2 {
   struct LitForm;
   struct PairForm;
   struct Pos;
+  struct ScopeForm;
   struct Val;
 
   DotForm &read_dot(Cx &cx, Pos &pos, Form *x, istream &in);
   Form *read_form(Cx &cx, Pos &pos, istream &in);
   pair<uint64_t, uint8_t> read_frac(Cx &cx, Pos &pos, istream &in);
   IdForm &read_id(Cx &cx, Pos &pos, istream &in);
-  pair<Int::Imp, bool> read_int(Cx &cx, Pos &pos, istream &in, bool is_hex);
+  Int::Imp read_int(Cx &cx, Pos &pos, istream &in, bool is_hex);
   LitForm &read_num(Cx &cx, Pos &pos, istream &in);
   PairForm &read_pair(Cx &cx, Pos &pos, istream &in);
+  ScopeForm &read_scope(Cx &cx, Pos &pos, istream &in);
   void skip_ws(Pos &pos, istream &in);
 }
 

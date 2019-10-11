@@ -5,10 +5,10 @@ namespace forthy2 {
   PairForm::PairForm(const Pos &pos, Form &left, Form &right):
     Form(pos), left(left), right(right) {}
 
-  Node<Op> &PairForm::compile(Cx &cx, FormIter &in, FormIter end, Node<Op> &out) {
+  Node<Op> &PairForm::compile(Cx &cx, Forms &in, Node<Op> &out) {
     Node<Op> *op(&out);
-    op = &left.compile(cx, end, end, *op);
-    op = &right.compile(cx, end, end, *op);
+    op = &left.compile(cx, in, *op);
+    op = &right.compile(cx, in, *op);
     return cx.pair_op.get(*this, *op);
   }
 

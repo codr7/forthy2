@@ -1,5 +1,19 @@
-* add check macro
-* add /test/run.f2
+* override bool_type.get
+** rename true/false to T/F
+** return T / F
+* add identity vs. equality to readme
+* allow postfix , for pairing
+** add method
+** emit id form in read_form if followed by ',' and != ','
+* --
+* inherit macro from method
+** add separate imp
+** use dispatch for expand
+* move cx.eval loop body into for
+* add using PC = Node<Op>
+** grep/replace
+* reimplement read_int manually like read_frac
+** keep hex support
 * add MethodSet.nargs
 ** add constructor arg
 ** add test in add_method
@@ -9,13 +23,20 @@
 ** :. drop 
 ** :: swap
 ** extract bool id_char(char) from read_id
-** return DotForm if followed by is_id
+** return DotForm if followed by id_char()
 * inherit Form from Val
 ** add Form type to cx/abc
-* inherit Macro from Method
-** push forms on stack in expand, then call
-** return form to compile
-** add rets to add_macro/calls
+* add support for arg index
+** add Arg.index/index_id + constructor
+** dump as ,foo Int
+** method =(,t A t)
+** add map<id, index> to Args
+** perform separate pass to get indexes
+** get parent type from stack by index in Method.applicable()
+* add scope support for ;
+** compile as separate scope
+* add static array of Int[100]
+** override int_type.get
 * --
 * add int math ops
 * add ref-support
@@ -25,32 +46,22 @@
 ** resolve at compile time
 * add |-support for values
 ** eval on compile stack in Lit.compile if cte
-*** wrap separate stack around cx.compile
-* add ScopeForm
-** {...}
-** add support for ;
 * add else macro
 * add method macro
+** clone env on compile
+** compile body with_env on first use
 * add isa/type-of methods
 * add stack literals
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack
-* add support for arg index
-** add Arg.index + constructor
-** dump as T0 T1 etc.
-** get parent type from stack in Method.applicable()
-* add abc/=
-** map to Val.eq
-** use arg index
-* add opt types
+* unlink existing method if exists in MethodSet.push
+* add nil type
 ** Int?
 ** add nil type / _
-** add Type *Type.opt_type
+** add Type *Type.or_nil()
 *** return this if opt
 * add quote
 ** '(1 2 3) 'foo
-** handle in reader
-* check rets in on method call
 * add C++ emit
-** use label/goto
 ** add -build mode
+** use label/goto

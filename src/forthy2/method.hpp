@@ -5,7 +5,6 @@
 #include <string>
 
 #include "forthy2/arg.hpp"
-#include "forthy2/ret.hpp"
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
@@ -21,16 +20,10 @@ namespace forthy2 {
     MethodSet &set;
     Sym &id;
     Args args;
-    Rets rets;
     uint64_t weight;
     Imp imp;
 
-    Method(MethodSet &set,
-           Sym &id,
-           const vector<Arg> &args,
-           const vector<Ret> &rets,
-           uint64_t weight);
-
+    Method(MethodSet &set, Sym &id, const vector<Arg> &args, uint64_t weight);
     bool applicable(Cx &cx);
     void call(Cx &cx, Pos pos) override;
     void dump(ostream &out) override;

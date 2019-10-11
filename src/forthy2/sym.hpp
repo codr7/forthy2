@@ -17,19 +17,11 @@ namespace forthy2 {
     Type &type(Cx &cx) override;
   };
 
-  ostream &operator <<(ostream &out, const Sym &sym);
+  inline bool operator ==(const Sym &x, const Sym &y) { return &x == &y; }
 
-  inline bool operator ==(const Sym &x, const Sym &y) {
-    return &x == &y;
-  }
+  inline bool operator !=(const Sym &x, const Sym &y) { return &x != &y; }
 
-  inline bool operator !=(const Sym &x, const Sym &y) {
-    return &x != &y;
-  }
-
-  inline bool operator <(const Sym &x, const Sym &y) {
-    return &x < &y;
-  }
+  inline bool operator <(const Sym &x, const Sym &y) { return &x < &y; }
 }
 
 #endif

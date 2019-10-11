@@ -14,8 +14,7 @@ namespace forthy2 {
   struct Macro: Val {
     using Imp = function<Node<Op> &(Cx &cx,
                                     Form &form,
-                                    FormIter &in,
-                                    FormIter end,
+                                    Forms &in,
                                     Node<Op> &out)>;
 
     Sym &id;
@@ -25,7 +24,7 @@ namespace forthy2 {
     Macro(Sym &id, const vector<Arg> &args);
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
-    Node<Op> &expand(Cx &cx, Form &form, FormIter &in, FormIter end, Node<Op> &out);
+    Node<Op> &expand(Cx &cx, Form &form, Forms &in, Node<Op> &out);
     bool is(Val &other) override;
     bool mark(Cx &cx) override;
     void sweep(Cx &cx) override;

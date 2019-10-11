@@ -23,6 +23,8 @@ namespace forthy2 {
     template <typename T>
     Stack(T beg, T end): items(beg, end) {}
 
+    operator bool() override { return !items.empty(); }
+
     Iter begin();
 
     void clear() { items.clear(); }

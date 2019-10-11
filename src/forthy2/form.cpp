@@ -10,9 +10,9 @@ namespace forthy2 {
     if (!--nrefs) { dealloc(cx); }
   }
 
-  void Form::eval(Cx &cx, FormIter &in, FormIter end) {
+  void Form::eval(Cx &cx, Forms &in) {
     Node<Op> &pc(*cx.ops.prev);
-    compile(cx, in, end, pc);
+    compile(cx, in, pc);
     cx.eval(pc);
     while (cx.ops.prev != &pc) { cx.ops.prev->get().dealloc(cx); }
   }
@@ -24,8 +24,24 @@ namespace forthy2 {
     return *this;
   }
 
-  ostream &operator <<(ostream &out, Form &form) {
-    form.dump(out);
+  ostream &operator <<(ostream &out, const Form &in) {
+    const_cast<Form &>(in).dump(out);
+    return out;
+  }
+
+  ostream &operator <<(ostream &out, const Forms &in) {
+    bool sep(false);
+    
+    for (Form *f: const_cast<Forms &>(in)) {
+      if (sep) {
+        out << ' ';
+      } else {
+        sep = true;
+      }
+      
+      f->dump(out);
+    }
+
     return out;
   }
 }

@@ -3,7 +3,7 @@
 
 namespace forthy2 {
   static void int_add_imp(Cx &cx, Pos pos) {
-    Val &y(cx.pop()), &x(cx.pop());
+    Val &y(cx.pop(pos)), &x(cx.pop(pos));
     
     cx.push(cx.int_type.get(cx,
                             dynamic_cast<Int &>(x).imp +
@@ -13,8 +13,8 @@ namespace forthy2 {
   
   static void fix_add_imp(Cx &cx, Pos pos) {
     auto
-      &y(dynamic_cast<Fix &>(cx.pop())),
-      &x(dynamic_cast<Fix &>(cx.pop()));
+      &y(dynamic_cast<Fix &>(cx.pop(pos))),
+      &x(dynamic_cast<Fix &>(cx.pop(pos)));
     
     const uint8_t xs(x.scale()), ys(y.scale());
     const int64_t yv(y.get());
@@ -27,8 +27,8 @@ namespace forthy2 {
 
   static void fix_div_imp(Cx &cx, Pos pos) {
     auto
-      &y(dynamic_cast<Fix &>(cx.pop())),
-      &x(dynamic_cast<Fix &>(cx.pop()));
+      &y(dynamic_cast<Fix &>(cx.pop(pos))),
+      &x(dynamic_cast<Fix &>(cx.pop(pos)));
 
     const uint8_t xs(x.scale());
     
@@ -40,8 +40,8 @@ namespace forthy2 {
 
   static void fix_mul_imp(Cx &cx, Pos pos) {
     auto
-      &y(dynamic_cast<Fix &>(cx.pop())),
-      &x(dynamic_cast<Fix &>(cx.pop()));
+      &y(dynamic_cast<Fix &>(cx.pop(pos))),
+      &x(dynamic_cast<Fix &>(cx.pop(pos)));
 
     const uint8_t xs(x.scale());
 
@@ -52,8 +52,8 @@ namespace forthy2 {
 
   static void fix_sub_imp(Cx &cx, Pos pos) {
     auto
-      &y(dynamic_cast<Fix &>(cx.pop())),
-      &x(dynamic_cast<Fix &>(cx.pop()));
+      &y(dynamic_cast<Fix &>(cx.pop(pos))),
+      &x(dynamic_cast<Fix &>(cx.pop(pos)));
     
     const uint8_t xs(x.scale()), ys(y.scale());
     const int64_t yv(y.get());
@@ -68,23 +68,18 @@ namespace forthy2 {
     env.bind_type(cx, pos, cx.fix_type);
 
     env.add_method(cx, pos, cx.sym("+"),
-                   {{cx.int_type}, {cx.int_type}},
-                   {cx.int_type}).imp = int_add_imp;
+                   {{cx.int_type}, {cx.int_type}}).imp = int_add_imp;
     
     env.add_method(cx, pos, cx.sym("+"),
-                   {{cx.fix_type}, {cx.fix_type}},
-                   {cx.fix_type}).imp = fix_add_imp;
+                   {{cx.fix_type}, {cx.fix_type}}).imp = fix_add_imp;
 
     env.add_method(cx, pos, cx.sym("/"),
-                   {{cx.fix_type}, {cx.fix_type}},
-                   {cx.fix_type}).imp = fix_div_imp;
+                   {{cx.fix_type}, {cx.fix_type}}).imp = fix_div_imp;
 
     env.add_method(cx, pos, cx.sym("*"),
-                   {{cx.fix_type}, {cx.fix_type}},
-                   {cx.fix_type}).imp = fix_mul_imp;
+                   {{cx.fix_type}, {cx.fix_type}}).imp = fix_mul_imp;
 
     env.add_method(cx, pos, cx.sym("-"),
-                   {{cx.fix_type}, {cx.fix_type}},
-                   {cx.fix_type}).imp = fix_sub_imp;
+                   {{cx.fix_type}, {cx.fix_type}}).imp = fix_sub_imp;
   }
 }

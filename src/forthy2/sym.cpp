@@ -10,10 +10,5 @@ namespace forthy2 {
 
   void Sym::sweep(Cx &cx) { assert(false); }
 
-  ostream &operator <<(ostream &out, const Sym &sym) {
-    out << sym.name;
-    return out;
-  }
-
   Type &Sym::type(Cx &cx) { return cx.sym_type; }
 }

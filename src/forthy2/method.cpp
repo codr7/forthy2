@@ -2,12 +2,8 @@
 #include "forthy2/method.hpp"
 
 namespace forthy2 {
-  Method::Method(MethodSet &set,
-                 Sym &id,
-                 const vector<Arg> &args,
-                 const vector<Ret> &rets,
-                 uint64_t weight):
-    set(set), id(id), args(args), rets(rets), weight(weight) { }
+  Method::Method(MethodSet &set, Sym &id, const vector<Arg> &args, uint64_t weight):
+    set(set), id(id), args(args), weight(weight) { }
 
   bool Method::applicable(Cx &cx) {
     Stack::Items &s(cx.stack->items);

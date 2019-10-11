@@ -18,6 +18,10 @@ namespace forthy2 {
         if (!f) { throw ESys(p, "Missing form"); }
         cte = true;
         break;
+      case '{':
+        pos.col++;
+        f = &read_scope(cx, pos, in);
+        break;
       case ',':
         pos.col++;
         if (!in.get(c)) { ESys(p, "Invalid pair"); }
@@ -124,19 +128,12 @@ namespace forthy2 {
     return cx.id_form.get(p, cx.sym(out.str()));
   }
   
-  pair<Int::Imp, bool> read_int(Cx &cx, Pos &pos, istream &in, bool is_hex) {
+  Int::Imp read_int(Cx &cx, Pos &pos, istream &in, bool is_hex) {
     Pos p(pos);
-    bool is_neg(false);
-
-    if (char c(0); in.get(c)) {
-      is_neg = c == '-';
-      in.unget();
-    }
-    
     Int::Imp v(0);
     in >> (is_hex ? hex : dec) >> v;
     if (in.fail()) { throw ESys(p, "Failed reading int"); }
-    return make_pair(v, is_neg);
+    return v;
   }
   
   LitForm &read_num(Cx &cx, Pos &pos, istream &in) {
@@ -169,8 +166,8 @@ namespace forthy2 {
           if (isdigit(c)) {
             pos.col++;
             auto f(read_frac(cx, pos, in));
-            int64_t v(i.first * Fix::pow(f.second) + f.first);
-            Fix &fv(cx.fix_type.get(cx, (i.first || !i.second) ? v : -v, f.second));
+            int64_t v(i * Fix::pow(f.second) + f.first);
+            Fix &fv(cx.fix_type.get(cx, v, false));
             return cx.lit_form.get(p, fv);
           }
         }
@@ -179,7 +176,7 @@ namespace forthy2 {
       in.unget();
     }
 
-    return cx.lit_form.get(p, cx.int_type.get(cx, i.first));
+    return cx.lit_form.get(p, cx.int_type.get(cx, i));
   }
 
   PairForm &read_pair(Cx &cx, Pos &pos, istream &in) {
@@ -208,5 +205,27 @@ namespace forthy2 {
     }
 
     if (!in.eof()) { in.unget(); }
+  }
+
+  ScopeForm &read_scope(Cx &cx, Pos &pos, istream &in) {
+    ScopeForm &out(cx.scope_form.get(pos));
+    char c(0);
+    
+    for (;;) {
+      skip_ws(pos, in);
+      if (!in.get(c)) { throw ESys(out.pos, "Open scope"); }
+
+      if (c == '}') {
+        pos.col++;
+        break;
+      }
+      
+      in.unget();
+      Form *f(read_form(cx, pos, in));
+      if (!f) { throw ESys(out.pos, "Open scope"); }
+      out.body.push_back(f);
+    }
+
+    return out;
   }
 }

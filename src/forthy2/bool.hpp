@@ -1,20 +1,15 @@
-#ifndef FORTHY2_INT_HPP
-#define FORTHY2_INT_HPP
-
-#include <cstdint>
-#include <iostream>
+#ifndef FORTHY2_BOOL_HPP
+#define FORTHY2_BOOL_HPP
 
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
-  struct Cx;
-  
-  struct Int: Val {
-    using Imp = int64_t;
+  struct Bool: Val {
+    using Imp = bool;
     Imp imp;
 
-    Int(Imp imp);
-    operator bool() override { return imp > 0; }
+    Bool(Imp imp);
+    operator bool() override { return imp; }
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
     bool is(Val &other) override;

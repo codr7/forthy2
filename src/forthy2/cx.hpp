@@ -5,6 +5,7 @@
 #include <iostream>
 #include <unordered_map>
 
+#include "forthy2/bool.hpp"
 #include "forthy2/defer.hpp"
 #include "forthy2/env.hpp"
 #include "forthy2/fix.hpp"
@@ -12,12 +13,14 @@
 #include "forthy2/forms/id.hpp"
 #include "forthy2/forms/lit.hpp"
 #include "forthy2/forms/pair.hpp"
+#include "forthy2/forms/scope.hpp"
 #include "forthy2/int.hpp"
 #include "forthy2/macro.hpp"
 #include "forthy2/method.hpp"
 #include "forthy2/method_set.hpp"
 #include "forthy2/node.hpp"
 #include "forthy2/ops/call.hpp"
+#include "forthy2/ops/check.hpp"
 #include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/push.hpp"
 #include "forthy2/pair.hpp"
@@ -47,8 +50,10 @@ namespace forthy2 {
     Pool<IdForm> id_form;
     Pool<LitForm> lit_form;
     Pool<PairForm> pair_form;
+    Pool<ScopeForm> scope_form;
 
     Pool<CallOp> call_op;
+    Pool<CheckOp> check_op;
     Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
 
@@ -57,6 +62,7 @@ namespace forthy2 {
 
     Type &a_type;
 
+    PoolType<Bool> &bool_type;
     PoolType<Fix> &fix_type;
     PoolType<Int> &int_type;
     PoolType<Macro> &macro_type;
@@ -78,6 +84,7 @@ namespace forthy2 {
     Cx():
       type_weight(1),
       a_type(*new Type(*this, sym("A"))),
+      bool_type(*new PoolType<Bool>(*this, sym("Bool"), {&a_type})),
       fix_type(*new PoolType<Fix>(*this, sym("Fix"), {&a_type})),
       int_type(*new PoolType<Int>(*this, sym("Int"), {&a_type})),
       macro_type(*new PoolType<Macro>(*this, sym("Macro"), {&a_type})),
@@ -94,18 +101,21 @@ namespace forthy2 {
       stderr(&cerr) { }
 
     Node<Op> &compile(Forms &in, Node<Op> &out) {
+      Forms tmp(in);
+      reverse(tmp.begin(), tmp.end());
       Node<Op> *op(&out);
 
-      for (auto i(in.begin()); i != in.end();) {
-        auto j(i++);
-        op = &(*j)->compile(*this, i, in.end(), *op);
+      while (!tmp.empty()) {
+        Form &f(*tmp.back());
+        tmp.pop_back();
+        op = &f.compile(*this, tmp, *op);
         
         if (debug && op != &ops) {
           op->get().dump(*stdout);
           (*stdout) << endl;
         }
       }
-
+      
       if (debug) { (*stdout) << endl; }
       return *op;
     }
@@ -144,8 +154,10 @@ namespace forthy2 {
       eval(pc);      
     }
 
-    void eval(Node<Op> &pc) {
-      for (Node<Op> *op(pc.next); op != &ops;) { op = &op->get().eval(*this); }
+    void eval(Node<Op> &pc) { eval(pc, ops); }
+    
+    void eval(Node<Op> &beg, Node<Op> &end) {
+      for (Node<Op> *op(beg.next); op != &end;) { op = &op->get().eval(*this); }
     }
 
     void load(Pos pos, const Path &path) {
@@ -194,11 +206,12 @@ namespace forthy2 {
       return pop();
     }
 
-    Val &pop(Pos pos, Type &type) {
+    template <typename T>
+    T &pop(Pos pos, PoolType<T> &type) {
       Val &v(pop(pos));
       Type &vt(v.type(*this));
       if (!vt.isa(type)) { ESys(pos, "Expected ", type.id, ": ", vt.id); }
-      return v;
+      return dynamic_cast<T &>(v);
     }
 
     void push(Val &val) { stack->push(val); }
@@ -242,22 +255,21 @@ namespace forthy2 {
       return s;
     }
 
-    template <typename T, typename...Args>
-    auto with_env(Env &e, T body, Args &&...args) {
+    template <typename T>
+    T with_env(Env &e, function<T ()> body) {
       Env *prev(env);
       env = &e;  
       e.prev = prev;
       auto restore(defer([&]() { env = prev; }));
-      return body(forward<Args>(args)...);
+      return body();
     }
 
-    template <typename T, typename...Args>
-    auto with_stack(Stack &s, T body, Args &&...args) {
+    void with_stack(Stack &s, function<void ()> body) {
       Stack *prev(stack);
       stack = &s;  
       s.prev = prev;
       auto restore(defer([&]() { stack = prev; }));
-      return body(forward<Args>(args)...);
+      body();
     }
   };
 

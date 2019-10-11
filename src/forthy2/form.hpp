@@ -24,16 +24,17 @@ namespace forthy2 {
     
     Form(Pos pos);
     virtual ~Form();
-    virtual Node<Op> &compile(Cx &cx, FormIter &in, FormIter end, Node<Op> &out) = 0;
+    virtual Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) = 0;
     virtual void dealloc(Cx &cx) = 0;
     void deref(Cx &cx);
     virtual void dump(ostream &out) = 0;
-    void eval(Cx &cx, FormIter &in, FormIter end);
+    void eval(Cx &cx, Forms &in);
     virtual void mark_vals(Cx &cx);
     Form &ref();
   };
 
-  ostream &operator <<(ostream &out, Form &form);
+  ostream &operator <<(ostream &out, const Form &form);
+  ostream &operator <<(ostream &out, const Forms &forms);
 }
 
 #endif

@@ -14,17 +14,13 @@ namespace forthy2 {
     return m;
   }
 
-  Method &Env::add_method(Cx &cx,
-                          Pos pos,
-                          Sym &id,
-                          const vector<Arg> &args,
-                          const vector<Ret> &rets) {
+  Method &Env::add_method(Cx &cx, Pos pos, Sym &id, const vector<Arg> &args) {
     MethodSet &s(MethodSet::get(cx, pos, *this, id));
 
     Method &m(cx.method_type.get(cx,
                                  s,
                                  Args::get_id(cx, id, args),
-                                 args, rets,
+                                 args,
                                  Args::get_weight(cx, args)));
     
     bind(pos, m.id, m);
