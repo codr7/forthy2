@@ -17,5 +17,9 @@ namespace forthy2 {
     cx.scope_form.put(*this);
   }
 
-  void ScopeForm::dump(ostream &out) { out << '{' << body << '}' << endl; }
+  void ScopeForm::dump(ostream &out) { out << '{' << body << '}'; }
+
+  void ScopeForm::mark_vals(Cx &cx) {
+    for (Form *f: body) { f->mark_vals(cx); }
+  }
 }

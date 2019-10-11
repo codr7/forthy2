@@ -5,9 +5,9 @@ namespace forthy2 {
   static Node<Op> &check_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
     Form &body(*in.back());
     in.pop_back();
-    Node<Op> &body_pc(out), *op(&body_pc);
+    Node<Op> *op(&out);
     op = &body.compile(cx, in, *op);
-    return cx.check_op.get(form, *op, body_pc);
+    return cx.check_op.get(form, *op, body.ref());
   }
 
   static Node<Op> &const_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
@@ -53,6 +53,10 @@ namespace forthy2 {
     cx.push(cx.bool_type.get(cx, ok));
   }
 
+  static void not_imp(Cx &cx, Pos pos) {
+    cx.push(cx.bool_type.get(cx, !dynamic_cast<Bool &>(cx.pop(pos)).imp));
+  }
+
   static void type_imp(Cx &cx, Pos pos) { cx.push(cx.pop(pos).type(cx)); }
 
   static void unpair_imp(Cx &cx, Pos pos) {
@@ -73,8 +77,8 @@ namespace forthy2 {
     env.bind_type(cx, pos, cx.stack_type);
     env.bind_type(cx, pos, cx.sym_type);
 
-    env.bind(pos, cx.sym("false"), cx.F);
-    env.bind(pos, cx.sym("true"), cx.T);
+    env.bind(pos, cx.sym("F"), cx.F);
+    env.bind(pos, cx.sym("T"), cx.T);
     
     env.add_macro(cx, pos, cx.sym("check"), {{cx.a_type}}).imp = check_imp;
 
@@ -90,8 +94,8 @@ namespace forthy2 {
     env.add_method(cx, pos, cx.sym("isa"),
                    {{cx.meta_type}, {cx.meta_type}}).imp = isa_imp;
 
+    env.add_method(cx, pos, cx.sym("not"), {{cx.bool_type}}).imp = not_imp;
     env.add_method(cx, pos, cx.sym("type"), {{cx.a_type}}).imp = type_imp;
-
     env.add_method(cx, pos, cx.sym(",,"), {{cx.pair_type}}).imp = unpair_imp;
   }
 }

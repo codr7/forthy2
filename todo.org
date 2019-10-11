@@ -42,7 +42,6 @@
 * add method macro
 ** clone env on compile
 ** compile body with_env on first use
-* add isa/type-of methods
 * add stack literals
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack

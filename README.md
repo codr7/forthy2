@@ -51,6 +51,15 @@ The holy trinity of stack operations; `dup`, `drop` and `swap`; get their own tw
 1 3 2
 ```
 
+### booleans
+Boolean values come in two flavors, `T` and `F`.
+
+```
+  T.not
+
+F
+```
+
 ### dot-notation
 Methods and macros may be called infix by adding `.` between first argument and operation.
 

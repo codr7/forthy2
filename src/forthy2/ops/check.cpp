@@ -4,30 +4,24 @@
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
-  CheckOp::CheckOp(Form &form, Node<Op> &prev, Node<Op> &body_pc):
-    Op(form, prev), body_pc(body_pc) {}
+  CheckOp::CheckOp(Form &form, Node<Op> &prev, Form &body):
+    Op(form, prev), body(body) {}
   
   void CheckOp::dealloc(Cx &cx) {
     Op::dealloc(cx);
+    body.deref(cx);
     cx.check_op.put(*this);
   }
 
-  void CheckOp::dump(ostream &out) { out << "check " << body_pc.next->get().form; }
+  void CheckOp::dump(ostream &out) { out << "check " << body; }
 
   Node<Op> &CheckOp::eval(Cx &cx) {
-    Val &v(cx.pop(form.pos));
-      
-    if (!v) {
-      Forms fs;
-      
-      for (Node<Op> *op(body_pc.next); op != this; op = op->next) {
-        Form &f(op->get().form);
-        if (fs.empty() || &f != fs.back()) { fs.push_back(&f); }
-      }
-
-      throw ESys(form.pos, "Test failed: ", fs);
-    }
-    
+    if (!cx.pop(form.pos)) { throw ESys(form.pos, "Test failed: ", body); }
     return *Node<Op>::next;
+  }
+
+  void CheckOp::mark_vals(Cx &cx) {
+    Op::mark_vals(cx);
+    body.mark_vals(cx);
   }
 }
