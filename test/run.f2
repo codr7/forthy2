@@ -1,5 +1,5 @@
-check {Int.isa A}
+|check {Int.isa A}
 
-check {35.+ 7 .is 42}
+|check {35.+ 7 .is 42}
 
 dump-stack
