@@ -8,7 +8,7 @@ namespace forthy2 {
     return forthy2::cmp<Imp>(imp, dynamic_cast<Bool &>(other).imp);
   }
 
-  void Bool::dump(ostream &out) { out << (imp ? "true" : "false"); }
+  void Bool::dump(ostream &out) { out << (imp ? 'T' : 'F'); }
 
   bool Bool::is(Val &other) { return dynamic_cast<Bool &>(other).imp == imp; }
 

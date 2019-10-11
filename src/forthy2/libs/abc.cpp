@@ -53,6 +53,8 @@ namespace forthy2 {
     cx.push(cx.bool_type.get(cx, ok));
   }
 
+  static void type_imp(Cx &cx, Pos pos) { cx.push(cx.pop(pos).type(cx)); }
+
   static void unpair_imp(Cx &cx, Pos pos) {
     auto &p(dynamic_cast<Pair &>(cx.pop(pos)).imp);
     cx.push(*p.first);
@@ -87,6 +89,8 @@ namespace forthy2 {
 
     env.add_method(cx, pos, cx.sym("isa"),
                    {{cx.meta_type}, {cx.meta_type}}).imp = isa_imp;
+
+    env.add_method(cx, pos, cx.sym("type"), {{cx.a_type}}).imp = type_imp;
 
     env.add_method(cx, pos, cx.sym(",,"), {{cx.pair_type}}).imp = unpair_imp;
   }

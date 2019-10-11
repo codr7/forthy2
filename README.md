@@ -55,7 +55,7 @@ The holy trinity of stack operations; `dup`, `drop` and `swap`; get their own tw
 Methods and macros may be called infix by adding `.` between first argument and operation.
 
 ```
-  35.+ 7
+  6.* 7
 
 42
 ```
@@ -70,6 +70,23 @@ The following example pushes `1` and `5` on the compile time stack, which are ad
 
 6
 10
+```
+
+### identity vs. equality
+`is` may be used to check if two values are the same,
+
+```
+  6.* 7 .is 42
+
+T
+```
+
+while `=` returns true if they are equal; the difference only applies to reference types such as stacks.
+
+```
+  (1 2 3).= (1 2 3)
+
+T
 ```
 
 ### pairs

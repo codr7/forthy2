@@ -1,10 +1,7 @@
-* override bool_type.get
-** rename true/false to T/F
-** return T / F
-* add identity vs. equality to readme
 * allow postfix , for pairing
 ** add method
 ** emit id form in read_form if followed by ',' and != ','
+** add pair tests
 * --
 * inherit macro from method
 ** add separate imp

@@ -10,6 +10,29 @@ namespace forthy2 {
                             dynamic_cast<Int &>(y).imp));
   }
 
+  static void int_div_imp(Cx &cx, Pos pos) {
+    Val &y(cx.pop(pos)), &x(cx.pop(pos));
+    
+    cx.push(cx.int_type.get(cx,
+                            dynamic_cast<Int &>(x).imp /
+                            dynamic_cast<Int &>(y).imp));
+  }
+
+  static void int_mul_imp(Cx &cx, Pos pos) {
+    Val &y(cx.pop(pos)), &x(cx.pop(pos));
+    
+    cx.push(cx.int_type.get(cx,
+                            dynamic_cast<Int &>(x).imp *
+                            dynamic_cast<Int &>(y).imp));
+  }
+
+  static void int_sub_imp(Cx &cx, Pos pos) {
+    Val &y(cx.pop(pos)), &x(cx.pop(pos));
+    
+    cx.push(cx.int_type.get(cx,
+                            dynamic_cast<Int &>(x).imp -
+                            dynamic_cast<Int &>(y).imp));
+  }
   
   static void fix_add_imp(Cx &cx, Pos pos) {
     auto
@@ -69,7 +92,16 @@ namespace forthy2 {
 
     env.add_method(cx, pos, cx.sym("+"),
                    {{cx.int_type}, {cx.int_type}}).imp = int_add_imp;
-    
+
+    env.add_method(cx, pos, cx.sym("/"),
+                   {{cx.int_type}, {cx.int_type}}).imp = int_div_imp;
+
+    env.add_method(cx, pos, cx.sym("*"),
+                   {{cx.int_type}, {cx.int_type}}).imp = int_mul_imp;
+
+    env.add_method(cx, pos, cx.sym("-"),
+                   {{cx.int_type}, {cx.int_type}}).imp = int_sub_imp;
+
     env.add_method(cx, pos, cx.sym("+"),
                    {{cx.fix_type}, {cx.fix_type}}).imp = fix_add_imp;
 
