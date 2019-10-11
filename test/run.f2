@@ -1,5 +1,5 @@
-{Int.isa A}.check
+check {Int.isa A}
 
-{{35.+ 7}.is 42}.check
+check {{35.+ 7}.is 42}
 
 dump-stack
