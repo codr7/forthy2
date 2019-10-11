@@ -1,6 +1,6 @@
-* allow postfix , for pairing
-** add method
+* allow postfix pairing with ,
 ** emit id form in read_form if followed by ',' and != ','
+** add method
 ** add pair tests
 * --
 * inherit macro from method

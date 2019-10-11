@@ -161,7 +161,7 @@ namespace forthy2 {
     void eval(Node<Op> &pc) { eval(pc, ops); }
     
     void eval(Node<Op> &beg, Node<Op> &end) {
-      for (Node<Op> *op(beg.next); op != &end;) { op = &op->get().eval(*this); }
+      for (Node<Op> *op(beg.next); op != &end; op = &op->get().eval(*this));
     }
 
     void load(Pos pos, const Path &path) {
