@@ -1,7 +1,7 @@
 |const N    20
 |const REPS 10
 
-|method fib (Int;Int) {
+|method fib (Int) {
   .:< 2 |else {.: -1 fib.+; -1 fib}
 }
 
