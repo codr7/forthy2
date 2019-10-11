@@ -3,17 +3,6 @@
 ** add method
 ** add pair tests
 * --
-* inherit macro from method
-** add separate imp
-** use dispatch for expand
-* add using PC = Node<Op>
-** grep/replace
-* reimplement read_int manually like read_frac
-** keep hex support
-* add MethodSet.nargs
-** add constructor arg
-** add test in add_method
-** push first instead of set in id compile if !nargs
 * add stack op methods
 ** .: dup
 ** :. drop 
@@ -22,6 +11,23 @@
 ** return DotForm if followed by id_char()
 * add scope support for ;
 ** compile as separate scope
+* inherit macro from method
+** add separate imp
+** use dispatch for expand
+* reimplement read_int manually like read_frac
+** keep hex support
+* add else macro
+* add method macro
+** clone env on compile
+** compile body with_env on first use
+* add stack literals
+** (1 2 3; 4 5)
+** parse suffix as separate stack
+* --
+* add MethodSet.nargs
+** add constructor arg
+** add test in add_method
+** push first instead of set in id compile if !nargs
 * add support for arg index
 ** add Arg.index/index_id + constructor
 ** dump as ,foo Int
@@ -38,13 +44,6 @@
 ** resolve at compile time
 * add |-support for values
 ** eval on compile stack in Lit.compile if cte
-* add else macro
-* add method macro
-** clone env on compile
-** compile body with_env on first use
-* add stack literals
-** (1 2 3; 4 5)
-** parse suffix as separate stack
 * unlink existing method if exists in MethodSet.push
 * add nil type
 ** Int?
