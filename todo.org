@@ -6,7 +6,6 @@
 * inherit macro from method
 ** add separate imp
 ** use dispatch for expand
-* move cx.eval loop body into for
 * add using PC = Node<Op>
 ** grep/replace
 * reimplement read_int manually like read_frac
@@ -27,8 +26,8 @@
 ** add Arg.index/index_id + constructor
 ** dump as ,foo Int
 ** method =(,t A t)
-** add map<id, index> to Args
-** perform separate pass to get indexes
+** fill map<id, index> during read
+** perform separate pass to get indexes from map
 ** get parent type from stack by index in Method.applicable()
 * add scope support for ;
 ** compile as separate scope
