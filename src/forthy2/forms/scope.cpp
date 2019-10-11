@@ -17,5 +17,5 @@ namespace forthy2 {
     cx.scope_form.put(*this);
   }
 
-  void ScopeForm::dump(ostream &out) { out << '{' << endl << body << '}' << endl; }
+  void ScopeForm::dump(ostream &out) { out << '{' << body << '}' << endl; }
 }
