@@ -20,8 +20,8 @@
 ** :: swap
 ** extract bool id_char(char) from read_id
 ** return DotForm if followed by id_char()
-* inherit Form from Val
-** add Form type to cx/abc
+* add scope support for ;
+** compile as separate scope
 * add support for arg index
 ** add Arg.index/index_id + constructor
 ** dump as ,foo Int
@@ -29,12 +29,8 @@
 ** fill map<id, index> during read
 ** perform separate pass to get indexes from map
 ** get parent type from stack by index in Method.applicable()
-* add scope support for ;
-** compile as separate scope
 * add static array of Int[100]
 ** override int_type.get
-* --
-* add int math ops
 * add ref-support
 ** &foo
 ** IdForm or "Invalid ref: "
