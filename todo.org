@@ -17,6 +17,10 @@
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack
 * --
+* add CallOp.check_applicable
+** default false
+** emit with first method call if len(set) == 1
+** throw error unless Method.applicable()
 * add MethodSet.nargs
 ** add constructor arg
 ** add test in add_method
