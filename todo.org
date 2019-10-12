@@ -1,14 +1,8 @@
 * add postfix pairing using ,
 ** emit id form in read_form if followed by ',' and != ','
+** print pairs as 'a b,'
 ** add method
 ** add pair tests
-* --
-* add stack op methods
-** .: dup
-** :. drop 
-** :: swap
-** extract bool id_char(char) from read_id
-** return DotForm if followed by id_char()
 * add scope support for ;
 ** compile as separate scope
 * inherit macro from method

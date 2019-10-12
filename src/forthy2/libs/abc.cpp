@@ -2,16 +2,33 @@
 #include "forthy2/libs/abc.hpp"
 
 namespace forthy2 {
+  static void eq_imp(Cx &cx, Pos pos) {
+    bool ok(cx.pop(pos).eq(cx.pop(pos)));
+    cx.push(cx.bool_type.get(cx, ok));
+  }
+
+  static void dup_imp(Cx &cx, Pos pos) { cx.push(cx.peek()); }
+
+  static void drop_imp(Cx &cx, Pos pos) { cx.pop(); }
+
+  static void swap_imp(Cx &cx, Pos pos) { cx.stack->swap(); }
+
+  static void unpair_imp(Cx &cx, Pos pos) {
+    auto &p(dynamic_cast<Pair &>(cx.pop(pos)).imp);
+    cx.push(*p.first);
+    cx.push(*p.second);
+  }
+
+  static void bool_imp(Cx &cx, Pos pos) {
+    cx.push(cx.bool_type.get(cx, cx.pop(pos)));
+  }
+
   static Node<Op> &check_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
     Form &body(*in.back());
     in.pop_back();
     Node<Op> *op(&out);
     op = &body.compile(cx, in, *op);
     return cx.check_op.get(form, *op, body.ref());
-  }
-
-  static void bool_imp(Cx &cx, Pos pos) {
-    cx.push(cx.bool_type.get(cx, cx.pop(pos)));
   }
 
   static void dump_imp(Cx &cx, Pos pos) {
@@ -24,11 +41,6 @@ namespace forthy2 {
     auto &out(*cx.stdout);
     cx.stack->dump(out);
     out << endl;
-  }
-
-  static void eq_imp(Cx &cx, Pos pos) {
-    bool ok(cx.pop(pos).eq(cx.pop(pos)));
-    cx.push(cx.bool_type.get(cx, ok));
   }
 
   static void is_imp(Cx &cx, Pos pos) {
@@ -63,12 +75,6 @@ namespace forthy2 {
 
   static void type_imp(Cx &cx, Pos pos) { cx.push(cx.pop(pos).type(cx)); }
 
-  static void unpair_imp(Cx &cx, Pos pos) {
-    auto &p(dynamic_cast<Pair &>(cx.pop(pos)).imp);
-    cx.push(*p.first);
-    cx.push(*p.second);
-  }
-
   void init_abc(Cx &cx, Pos pos, Env &env) {
     env.bind_type(cx, pos, cx.a_type);
     env.bind_type(cx, pos, cx.bool_type);
@@ -86,15 +92,21 @@ namespace forthy2 {
     env.bind(pos, cx.sym("_"), cx._);
     env.bind(pos, cx.sym("F"), cx.F);
     env.bind(pos, cx.sym("T"), cx.T);
-    
-    env.add_macro(cx, pos, cx.sym("check"), {{cx.a_type.or_nil()}}).imp = check_imp;
-
-    env.add_method(cx, pos, cx.sym("bool"), {{cx.a_type.or_nil()}}).imp = bool_imp;
-    env.add_method(cx, pos, cx.sym("dump"), {{cx.a_type.or_nil()}}).imp = dump_imp;
-    env.add_method(cx, pos, cx.sym("dump-stack")).imp = dump_stack_imp;
 
     env.add_method(cx, pos, cx.sym("="),
                    {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = eq_imp;
+
+    env.add_method(cx, pos, cx.sym(".:"), {{cx.a_type.or_nil()}}).imp = dup_imp;
+    env.add_method(cx, pos, cx.sym(":."), {{cx.a_type.or_nil()}}).imp = drop_imp;
+
+    env.add_method(cx, pos, cx.sym("::"),
+                   {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = swap_imp;
+
+    env.add_method(cx, pos, cx.sym(",,"), {{cx.pair_type}}).imp = unpair_imp;
+    env.add_method(cx, pos, cx.sym("bool"), {{cx.a_type.or_nil()}}).imp = bool_imp;
+    env.add_macro(cx, pos, cx.sym("check"), {{cx.a_type.or_nil()}}).imp = check_imp;
+    env.add_method(cx, pos, cx.sym("dump"), {{cx.a_type.or_nil()}}).imp = dump_imp;
+    env.add_method(cx, pos, cx.sym("dump-stack")).imp = dump_stack_imp;
     
     env.add_method(cx, pos, cx.sym("is"),
                    {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = is_imp;
@@ -107,6 +119,5 @@ namespace forthy2 {
 
     env.add_method(cx, pos, cx.sym("not"), {{cx.bool_type}}).imp = not_imp;
     env.add_method(cx, pos, cx.sym("type"), {{cx.a_type.or_nil()}}).imp = type_imp;
-    env.add_method(cx, pos, cx.sym(",,"), {{cx.pair_type}}).imp = unpair_imp;
   }
 }

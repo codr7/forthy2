@@ -42,6 +42,12 @@ namespace forthy2 {
     Val &peek(size_t offs = 0);
     Val &pop();
     void push(Val &v);
+
+    void swap() {
+      size_t ss(items.size());
+      std::swap(items[ss-1], items[ss-2]);
+    }
+    
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };  

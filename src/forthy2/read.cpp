@@ -37,6 +37,16 @@ namespace forthy2 {
         break;
 
       case '.':
+        if (in.get(c)) {
+          in.unget();
+
+          if (c == '.' || c == ':') {
+            in.unget();
+            f = &read_id(cx, pos, in);
+            break;
+          }
+        }
+
         pos.col++;
         f = &read_dot(cx, pos, nullptr, in);
         break;
@@ -100,13 +110,17 @@ namespace forthy2 {
     
     for (;;) {  
       if (!in.get(c) || (!arg_depth && (!isgraph(c) ||
-                                        c == '|' || c == ']' || c == '.' ||
+                                        c == '|' || c == ']' ||
+                                        ((c == '.' || c == ':') &&
+                                         pc && pc != '.' && pc != ':') ||
+                                        (c != '.' && c != ':' &&
+                                         pc && (pc == '.' || pc == ':')) ||
                                         (c == ',' && pc && pc != ',') ||
                                         c == '(' || c == ')' ||
                                         c == '{' || c == '}'))) {
         break;
       }
-      
+
       out << c;
 
       switch (c) {

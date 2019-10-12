@@ -208,6 +208,8 @@ namespace forthy2 {
       return true;
     }
 
+    Val &peek(size_t offs = 0) { return stack->peek(offs); }
+
     Val &pop() { return stack->pop(); }
 
     Val &pop(Pos pos) {
