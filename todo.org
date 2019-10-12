@@ -1,4 +1,3 @@
-* return false from is/= if different types
 * add scope support for ;
 ** compile as separate scope
 ** add scope readme

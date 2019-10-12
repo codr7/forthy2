@@ -3,7 +3,8 @@
 
 namespace forthy2 {
   static void eq_imp(Cx &cx, Pos pos) {
-    bool ok(cx.pop().eq(cx.pop()));
+    Val &y(cx.pop()), &x(cx.pop());
+    bool ok(x.type(cx) == y.type(cx) && x.eq(y));
     cx.push(cx.bool_type.get(cx, ok));
   }
 
@@ -49,7 +50,8 @@ namespace forthy2 {
   }
 
   static void is_imp(Cx &cx, Pos pos) {
-    bool ok(cx.pop().is(cx.pop()));
+    Val &y(cx.pop()), &x(cx.pop());
+    bool ok(x.type(cx) == y.type(cx) && x.is(y));
     cx.push(cx.bool_type.get(cx, ok));
   }
 

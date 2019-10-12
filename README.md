@@ -162,13 +162,27 @@ A?
 `let` may be used to create compile time bindings.
 
 ```
-  |let foo 42
-  foo
+  {
+    |let foo 42
+    foo
+  }
 
 42
 ```
 
-Attempting to shadow a binding within the same scope gives a compile time error,
+Referencing unbound names results in compile time errors,
+
+```
+  {
+    |let foo 42
+    bar
+  }
+  
+Error at row 2, col 0:
+Unknown id: bar
+```
+
+as do attempts to shadow bindings within the same scope,
 
 ```
   |let foo 1
@@ -178,7 +192,7 @@ Error at row 2, col 1:
 Dup binding: foo
 ```
 
-while opening a new scope allows rebinding the same name.
+while shadowing within child scopes is permitted.
 
 ```
   |let foo 1

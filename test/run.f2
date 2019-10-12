@@ -11,6 +11,8 @@
 
 |check {6.* 7 .is 42}
 
+|check {42.= 42.0 not}
+
 {
   |let foo 42
   |check {foo.is 42}

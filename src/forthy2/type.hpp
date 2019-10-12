@@ -30,6 +30,8 @@ namespace forthy2 {
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };
+
+  inline bool operator==(Type &x, Type &y) { return &x == &y; }
 }
 
 #endif
