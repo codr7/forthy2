@@ -99,20 +99,26 @@ T
 ```
 
 ### pairs
-Forms may be paired at read time by prefixing with `,`.
+Values may be paired using `,`, which pops arguments from the stack;
 
 ```
-  ,1 3, 5 7
+  1 3, 5 7,
   
-,1 3 ,5 7
+1 3, 5 7,
 ```
 
-Existing pairs may be split using `,,`.
+or by prefixing at read time;
 
 ```
-  ,1 3, 5 7,,
+  |,1 3 |,5 7
+```
+
+and existing pairs split using `,,`.
+
+```
+  |,1 3,,
   
-,1 3 5 7
+1 3
 ```
 
 ### types

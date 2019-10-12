@@ -4,17 +4,16 @@
 #include "forthy2/read.hpp"
 
 namespace forthy2 {
-  Form *read_form(Cx &cx, Pos &pos, istream &in) {
+  Form *read_form(Cx &cx, Pos &pos, istream &in, bool cte) {
     skip_ws(pos, in);
     Pos p(pos);
     Form *f;
-    bool cte(false);
     
     if (char c(0); in.get(c)) {
       switch (c) {
       case '|':
         pos.col++;
-        f = read_form(cx, pos, in);
+        f = read_form(cx, pos, in, true);
         if (!f) { throw ESys(p, "Missing form"); }
         cte = true;
         break;
@@ -30,8 +29,13 @@ namespace forthy2 {
           pos.col++;
           f = &cx.id_form.get(p, cx.sym(",,"));
         } else {
-          in.unget();
-          f = &read_pair(cx, pos, in);
+          if (cte) {
+            in.unget();
+            f = &read_pair(cx, pos, in);
+          } else {
+            pos.col++;
+            f = &cx.id_form.get(p, cx.sym(","));
+          }
         }
 
         break;

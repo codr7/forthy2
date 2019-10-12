@@ -3,7 +3,7 @@
 
 namespace forthy2 {
   static void eq_imp(Cx &cx, Pos pos) {
-    bool ok(cx.pop(pos).eq(cx.pop(pos)));
+    bool ok(cx.pop().eq(cx.pop()));
     cx.push(cx.bool_type.get(cx, ok));
   }
 
@@ -13,14 +13,19 @@ namespace forthy2 {
 
   static void swap_imp(Cx &cx, Pos pos) { cx.stack->swap(); }
 
+  static void pair_imp(Cx &cx, Pos pos) {
+    Val &r(cx.pop()), &l(cx.pop());
+    cx.push(cx.pair_type.get(cx, l, r));
+  }
+
   static void unpair_imp(Cx &cx, Pos pos) {
-    auto &p(dynamic_cast<Pair &>(cx.pop(pos)).imp);
+    auto &p(dynamic_cast<Pair &>(cx.pop()).imp);
     cx.push(*p.first);
     cx.push(*p.second);
   }
 
   static void bool_imp(Cx &cx, Pos pos) {
-    cx.push(cx.bool_type.get(cx, cx.pop(pos)));
+    cx.push(cx.bool_type.get(cx, cx.pop()));
   }
 
   static Node<Op> &check_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
@@ -33,7 +38,7 @@ namespace forthy2 {
 
   static void dump_imp(Cx &cx, Pos pos) {
     auto &out(*cx.stdout);
-    cx.pop(pos).dump(out);
+    cx.pop().dump(out);
     out << endl;
   }
 
@@ -44,12 +49,12 @@ namespace forthy2 {
   }
 
   static void is_imp(Cx &cx, Pos pos) {
-    bool ok(cx.pop(pos).is(cx.pop(pos)));
+    bool ok(cx.pop().is(cx.pop()));
     cx.push(cx.bool_type.get(cx, ok));
   }
 
   static void isa_imp(Cx &cx, Pos pos) {
-    Val &p(cx.pop(pos)), &c(cx.pop(pos));
+    Val &p(cx.pop()), &c(cx.pop());
 
     if (Type *t(dynamic_cast<Type &>(c).isa(dynamic_cast<Type &>(p))); t) {
       cx.push(*t);
@@ -70,10 +75,10 @@ namespace forthy2 {
   }
 
   static void not_imp(Cx &cx, Pos pos) {
-    cx.push(cx.bool_type.get(cx, !dynamic_cast<Bool &>(cx.pop(pos)).imp));
+    cx.push(cx.bool_type.get(cx, !dynamic_cast<Bool &>(cx.pop()).imp));
   }
 
-  static void type_imp(Cx &cx, Pos pos) { cx.push(cx.pop(pos).type(cx)); }
+  static void type_imp(Cx &cx, Pos pos) { cx.push(cx.pop().type(cx)); }
 
   void init_abc(Cx &cx, Pos pos, Env &env) {
     env.bind_type(cx, pos, cx.a_type);
@@ -102,6 +107,9 @@ namespace forthy2 {
     env.add_method(cx, pos, cx.sym("::"),
                    {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = swap_imp;
 
+    env.add_method(cx, pos, cx.sym(","),
+                   {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = pair_imp;
+    
     env.add_method(cx, pos, cx.sym(",,"), {{cx.pair_type}}).imp = unpair_imp;
     env.add_method(cx, pos, cx.sym("bool"), {{cx.a_type.or_nil()}}).imp = bool_imp;
     env.add_macro(cx, pos, cx.sym("check"), {{cx.a_type.or_nil()}}).imp = check_imp;

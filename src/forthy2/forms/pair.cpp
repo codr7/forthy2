@@ -19,10 +19,10 @@ namespace forthy2 {
   }
 
   void PairForm::dump(ostream &out) {
-    out << ',';
     left.dump(out);
     out << ' ';
     right.dump(out);
+    out << ',';
   }
   
   void PairForm::mark_vals(Cx &cx) {

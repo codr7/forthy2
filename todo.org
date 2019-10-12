@@ -1,8 +1,4 @@
-* add postfix pairing using ,
-** emit id form in read_form if followed by ',' and != ','
-** print pairs as 'a b,'
-** add method
-** add pair tests
+* add pair tests from readme
 * change dup/drop/swap to macros
 ** add ops
 * add scope support for ;
