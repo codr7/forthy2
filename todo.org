@@ -1,4 +1,3 @@
-* add pair tests from readme
 * return false from is/= if different types
 * add scope support for ;
 ** compile as separate scope
@@ -49,7 +48,6 @@
 ** add call method
 * add |-support for values
 ** eval on compile stack in Lit.compile if cte
-* unlink existing method if exists in MethodSet.push
 * add quote
 ** '(1 2 3) 'foo
 * add string type

@@ -130,10 +130,10 @@ and existing pairs split using `,,`.
 Int
 ```
 
-### A
+#### A
 `A` is the root type, from which all types except `Nil` are derived.
 
-### Nil
+#### Nil
 `Nil` has exactly one value, `_`; which is used to indicate missing values.
 
 ```
