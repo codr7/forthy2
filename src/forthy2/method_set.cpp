@@ -3,8 +3,6 @@
 #include "forthy2/method_set.hpp"
 
 namespace forthy2 {
-  MethodSet::MethodSet(): len(0) {}
-
   MethodSet &MethodSet::get(Cx &cx, Pos pos, Env &env, Sym &id) {
     auto i(env.find(id));
     
@@ -16,6 +14,8 @@ namespace forthy2 {
     env.insert(i, id, s);
     return s;
   }
+
+  MethodSet::MethodSet(): len(0) {}
   
   void MethodSet::call(Cx &cx, Pos pos) {
     Method *m(dispatch(cx));

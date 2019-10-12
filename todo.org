@@ -2,6 +2,9 @@
 * add scope support for ;
 ** compile as separate scope
 ** add scope readme
+* clone env in ScopeForm
+** transform using Val.clone
+** implement MethodSet.clone
 * inherit macro from method
 ** add separate imp
 ** use dispatch for expand
@@ -34,10 +37,9 @@
 * add static array of Int[100]
 ** override int_type.get
 * add ref-support
-** &foo
-** IdForm or "Invalid ref: "
-** add RefForm
-** resolve at compile time
+** &foo -> Macro/Method(Set)
+** &{} -> Lambda
+** add call method
 * add |-support for values
 ** eval on compile stack in Lit.compile if cte
 * unlink existing method if exists in MethodSet.push
