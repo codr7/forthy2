@@ -6,4 +6,4 @@
 }
 
 N fib dump
-|clock REPS {N fib}
+REPS |clock {N fib}
