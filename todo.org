@@ -1,8 +1,7 @@
 * add pair tests from readme
-* change dup/drop/swap to macros
-** add ops
 * add scope support for ;
 ** compile as separate scope
+** add scope readme
 * inherit macro from method
 ** add separate imp
 ** use dispatch for expand
