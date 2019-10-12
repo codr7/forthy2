@@ -44,12 +44,10 @@
 * add support for arg index
 ** add Arg.index/index_id + constructor
 ** dump as ,foo Int
-** method =(,t A t)
+** method =(|,t A t)
 ** fill map<id, index> during read
 ** perform separate pass to get indexes from map
 ** get parent type from stack by index in Method.applicable()
-* add static array of Int[100]
-** override int_type.get
 * add ref-support
 ** &foo -> Macro/Method(Set)
 ** &{} -> Lambda
