@@ -8,7 +8,7 @@ namespace forthy2 {
     cx.push_op.put(*this);
   }
 
-  void PushOp::dump(ostream &out) { val.dump(out); }
+  void PushOp::dump(ostream &out) { out << "push " << val; }
 
   Node<Op> &PushOp::eval(Cx &cx) {
     cx.push(val.clone(cx));
