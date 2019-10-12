@@ -1,4 +1,8 @@
 * add pair tests from readme
+* add mark(ns)/sweep(ns) fns
+** return time taken when done
+** change cx result to optional<uint64_t>
+** call at end of test/run.f2
 * add scope support for ;
 ** compile as separate scope
 ** add scope readme
