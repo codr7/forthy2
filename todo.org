@@ -1,3 +1,4 @@
+* add else macro
 * add stack literals
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack
@@ -10,7 +11,6 @@
 * add scope support for ;
 ** compile as separate scope
 ** add scope readme
-* add else macro
 * add method macro
 ** clone env on compile
 ** compile body with_env on first use

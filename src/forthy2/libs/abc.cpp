@@ -8,6 +8,18 @@ namespace forthy2 {
     cx.push(cx.bool_type.get(cx, ok));
   }
 
+  static void lt_imp(Cx &cx, Pos pos) {
+    Val &y(cx.pop()), &x(cx.pop());
+    bool ok(x.type(cx) == y.type(cx) && x.cmp(y) == Cmp::Lt);
+    cx.push(cx.bool_type.get(cx, ok));
+  }
+
+  static void gt_imp(Cx &cx, Pos pos) {
+    Val &y(cx.pop()), &x(cx.pop());
+    bool ok(x.type(cx) == y.type(cx) && x.cmp(y) == Cmp::Gt);
+    cx.push(cx.bool_type.get(cx, ok));
+  }
+
   static void dup_imp(Cx &cx, Pos pos) { cx.push(cx.peek()); }
 
   static void drop_imp(Cx &cx, Pos pos) { cx.pop(); }
@@ -102,6 +114,12 @@ namespace forthy2 {
 
     env.add_method(cx, pos, cx.sym("="),
                    {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = eq_imp;
+
+    env.add_method(cx, pos, cx.sym("<"),
+                   {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = lt_imp;
+
+    env.add_method(cx, pos, cx.sym(">"),
+                   {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = gt_imp;
 
     env.add_method(cx, pos, cx.sym(".:"), {{cx.a_type.or_nil()}}).imp = dup_imp;
     env.add_method(cx, pos, cx.sym(":."), {{cx.a_type.or_nil()}}).imp = drop_imp;
