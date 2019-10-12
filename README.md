@@ -152,6 +152,36 @@ Nilable types may be obtained by suffixing type names with `?`.
 A?
 ```
 
+### bindings
+`let` may be used to create compile time bindings.
+
+```
+  |let foo 42
+  foo
+
+42
+```
+
+Attempting to shadow a binding within the same scope gives a compile time error,
+
+```
+  |let foo 1
+  |let foo 3
+
+Error at row 2, col 1:
+Dup binding: foo
+```
+
+while opening a new scope allows rebinding the same name.
+
+```
+  |let foo 1
+  {|let foo 3}
+  foo
+
+1
+```
+
 ### license
 [MIT](https://github.com/codr7/forthy2/blob/master/LICENSE.txt)
 

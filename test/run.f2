@@ -7,4 +7,9 @@
 
 |check {6.* 7 .is 42}
 
+{
+  |let foo 42
+  |check {foo.is 42}
+}
+
 dump-stack

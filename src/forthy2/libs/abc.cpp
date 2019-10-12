@@ -10,17 +10,6 @@ namespace forthy2 {
     return cx.check_op.get(form, *op, body.ref());
   }
 
-  static Node<Op> &const_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
-    Form &id_form(*in.back());
-    in.pop_back();
-    Sym &id(dynamic_cast<IdForm &>(id_form).val);
-    Form &val_form(*in.back());
-    in.pop_back();
-    val_form.eval(cx, in);
-    cx.env->bind(form.pos, id, cx.pop(form.pos));
-    return out;
-  }
-
   static void bool_imp(Cx &cx, Pos pos) {
     cx.push(cx.bool_type.get(cx, cx.pop(pos)));
   }
@@ -57,6 +46,17 @@ namespace forthy2 {
     }
   }
 
+  static Node<Op> &let_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    Form &id_form(*in.back());
+    in.pop_back();
+    Sym &id(dynamic_cast<IdForm &>(id_form).val);
+    Form &val_form(*in.back());
+    in.pop_back();
+    val_form.eval(cx, in);
+    cx.env->bind(form.pos, id, cx.pop(form.pos));
+    return out;
+  }
+
   static void not_imp(Cx &cx, Pos pos) {
     cx.push(cx.bool_type.get(cx, !dynamic_cast<Bool &>(cx.pop(pos)).imp));
   }
@@ -89,9 +89,6 @@ namespace forthy2 {
     
     env.add_macro(cx, pos, cx.sym("check"), {{cx.a_type.or_nil()}}).imp = check_imp;
 
-    env.add_macro(cx, pos, cx.sym("const"),
-                  {{cx.sym_type}, {cx.a_type.or_nil()}}).imp = const_imp;
-
     env.add_method(cx, pos, cx.sym("bool"), {{cx.a_type.or_nil()}}).imp = bool_imp;
     env.add_method(cx, pos, cx.sym("dump"), {{cx.a_type.or_nil()}}).imp = dump_imp;
     env.add_method(cx, pos, cx.sym("dump-stack")).imp = dump_stack_imp;
@@ -104,6 +101,9 @@ namespace forthy2 {
 
     env.add_method(cx, pos, cx.sym("isa"),
                    {{cx.meta_type}, {cx.meta_type}}).imp = isa_imp;
+
+    env.add_macro(cx, pos, cx.sym("let"),
+                  {{cx.sym_type}, {cx.a_type.or_nil()}}).imp = let_imp;
 
     env.add_method(cx, pos, cx.sym("not"), {{cx.bool_type}}).imp = not_imp;
     env.add_method(cx, pos, cx.sym("type"), {{cx.a_type.or_nil()}}).imp = type_imp;
