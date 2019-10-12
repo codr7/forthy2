@@ -20,6 +20,16 @@
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack
 * --
+* add Byte type
+** Imp = uint8_t
+** read hex as byte if < 256
+** add int/byte conversions
+* add Char type
+** cidk
+** add reader support
+*** \r \n \t \s \e
+*** \0x2a \90 \\A \\a \\\
+** add conversion to/from int/byte
 * add CallMethodOp
 ** emit with first method if len(set) == 1
 ** throw error unless Method.applicable()
@@ -45,6 +55,7 @@
 * unlink existing method if exists in MethodSet.push
 * add quote
 ** '(1 2 3) 'foo
+* add string type
 * add say method
 ** add val.print
 *** default to dump
