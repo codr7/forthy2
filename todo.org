@@ -43,6 +43,12 @@
 * unlink existing method if exists in MethodSet.push
 * add quote
 ** '(1 2 3) 'foo
+* add say method
+** add val.print
+*** default to dump
+*** print symbols with quote
+*** print stack items in sequence
+*** print pair items separated by space
 * add C++ emit
 ** add -build mode
 ** use label/goto
