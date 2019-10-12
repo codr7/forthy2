@@ -30,7 +30,7 @@ Empty input clears stack and Ctrl+D exits.
 42
 ```
 
-### stacks
+### stack operations
 The holy trinity of stack operations; `dup`, `drop` and `swap`; get their own two-char pictograms.
 
 ```
@@ -52,7 +52,7 @@ The holy trinity of stack operations; `dup`, `drop` and `swap`; get their own tw
 ```
 
 ### booleans
-Boolean values come in two flavors, `T` and `F`.
+Booleans come in two flavors, `T` and `F`.
 
 ```
   T.not
@@ -70,9 +70,9 @@ Methods and macros may be called infix by adding `.` between first argument and 
 ```
 
 ### macros
-Macros are methods which are called at compile time and potentially parse arguments from the input stream. `|` may be used to trigger compile time evaluation, which is how macros are usually called.
+Macros are methods which are called at compile time and potentially consume arguments from the input stream. `|` may be used to trigger compile time evaluation.
 
-The following example pushes `1` and `5` on the compile time stack, which are added and printed when compiling the final expression. `3` and `7` are pushed on the run time stack as usual and added.
+The following example pushes `1` and `5` at compile time, which are then added and printed when compiling the final expression. `3` and `7` are pushed at run time and added.
 
 ```
   |1 3 |5 7 + |{+ dump}
