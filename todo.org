@@ -1,29 +1,31 @@
 * add pair tests from readme
-* add mark(ns)/sweep(ns) fns
-** return time taken when done
-** change cx result to optional<uint64_t>
-** call at end of test/run.f2
+* return false from is/= if different types
 * add scope support for ;
 ** compile as separate scope
 ** add scope readme
-* clone env in ScopeForm
-** transform using Val.clone
-** implement MethodSet.clone
-* inherit macro from method
-** add separate imp
-** use dispatch for expand
-* reimplement read_int manually like read_frac
-** keep hex support
 * add else macro
 * add method macro
 ** clone env on compile
 ** compile body with_env on first use
 * add clock macro/op
 ** pop reps from stack
+
+* clone env in ScopeForm
+** transform using Val.clone
+** implement MethodSet.clone
 * add stack literals
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack
+* add mark(ns)/sweep(ns) fns
+** return time taken when done
+** change cx result to optional<uint64_t>
+** call at end of test/run.f2
 * --
+* inherit macro from method
+** add separate imp
+** use dispatch for expand
+* reimplement read_int manually like read_frac
+** keep hex support
 * add Byte type
 ** Imp = uint8_t
 ** read hex as byte if < 256
@@ -41,13 +43,6 @@
 ** add constructor arg
 ** add test in add_method
 ** push first instead of set in id compile if !nargs
-* add support for arg index
-** add Arg.index/index_id + constructor
-** dump as ,foo Int
-** method =(|,t A t)
-** fill map<id, index> during read
-** perform separate pass to get indexes from map
-** get parent type from stack by index in Method.applicable()
 * add ref-support
 ** &foo -> Macro/Method(Set)
 ** &{} -> Lambda
