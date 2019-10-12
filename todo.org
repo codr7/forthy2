@@ -1,3 +1,12 @@
+* add stack literals
+** (1 2 3; 4 5)
+** parse suffix as separate stack
+* add ref-support
+** RefForm
+** resolve at compile time
+*** &foo -> Macro/Method(Set)
+*** &{} -> Lambda
+** add call method
 * add scope support for ;
 ** compile as separate scope
 ** add scope readme
@@ -11,9 +20,6 @@
 * clone env in ScopeForm
 ** transform using Val.clone
 ** implement MethodSet.clone
-* add stack literals
-** (1 2 3; 4 5)
-** parse suffix as separate stack
 * add mark(ns)/sweep(ns) fns
 ** return time taken when done
 ** change cx result to optional<uint64_t>
@@ -41,10 +47,6 @@
 ** add constructor arg
 ** add test in add_method
 ** push first instead of set in id compile if !nargs
-* add ref-support
-** &foo -> Macro/Method(Set)
-** &{} -> Lambda
-** add call method
 * add |-support for values
 ** eval on compile stack in Lit.compile if cte
 * add quote
