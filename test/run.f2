@@ -1,5 +1,10 @@
-|check {Int.isa A}
+|check {_.type .is Nil}
+|check {Nil.isa A .is _}
+|check {Nil.isa A? .is A?}
 
-|check {35.+ 7 .is 42}
+|check {42.type .is Int}
+|check {Int.isa A .is Num}
+
+|check {6.* 7 .is 42}
 
 dump-stack

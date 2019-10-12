@@ -18,6 +18,7 @@
 #include "forthy2/macro.hpp"
 #include "forthy2/method.hpp"
 #include "forthy2/method_set.hpp"
+#include "forthy2/nil.hpp"
 #include "forthy2/node.hpp"
 #include "forthy2/ops/call.hpp"
 #include "forthy2/ops/check.hpp"
@@ -60,7 +61,8 @@ namespace forthy2 {
     uint64_t type_weight;
     Node<Val> marked_vals, unmarked_vals;
 
-    Type &a_type;
+    NilType &nil_type;
+    Type &a_type, &num_type;
 
     BoolType &bool_type;
     PoolType<Fix> &fix_type;
@@ -77,6 +79,7 @@ namespace forthy2 {
     Stack root_stack, *stack;
     Node<Op> ops;
 
+    Nil _;
     Bool F, T;
 
     Path load_path;
@@ -85,10 +88,12 @@ namespace forthy2 {
     
     Cx():
       type_weight(1),
+      nil_type(*new NilType(*this, sym("Nil"))),
       a_type(*new Type(*this, sym("A"))),
+      num_type(*new Type(*this, sym("Num"), {&a_type})),
       bool_type(*new BoolType(*this, sym("Bool"), {&a_type})),
-      fix_type(*new PoolType<Fix>(*this, sym("Fix"), {&a_type})),
-      int_type(*new PoolType<Int>(*this, sym("Int"), {&a_type})),
+      fix_type(*new PoolType<Fix>(*this, sym("Fix"), {&num_type})),
+      int_type(*new PoolType<Int>(*this, sym("Int"), {&num_type})),
       macro_type(*new PoolType<Macro>(*this, sym("Macro"), {&a_type})),
       meta_type(*new Type(*this, sym("Meta"), {&a_type})),
       method_set_type(*new PoolType<MethodSet>(*this, sym("MethodSet"), {&a_type})),
@@ -211,7 +216,7 @@ namespace forthy2 {
     }
 
     template <typename T>
-    T &pop(Pos pos, PoolType<T> &type) {
+    T &pop(Pos pos, ValType<T> &type) {
       Val &v(pop(pos));
       Type &vt(v.type(*this));
       if (!vt.isa(type)) { ESys(pos, "Expected ", type.id, ": ", vt.id); }

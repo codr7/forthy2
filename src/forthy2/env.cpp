@@ -41,6 +41,7 @@ namespace forthy2 {
 
   void Env::bind_type(Cx &cx, Pos pos, Type &type) {
     bind(pos, type.id, type);
+    if (type.nil_type != &type) { bind_type(cx, pos, type.or_nil()); }
   }
 
   Env::Iter Env::find(Sym &id) {

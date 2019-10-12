@@ -1,4 +1,4 @@
-* allow postfix pairing with ,
+* add postfix pairing using ,
 ** emit id form in read_form if followed by ',' and != ','
 ** add method
 ** add pair tests
@@ -45,11 +45,6 @@
 * add |-support for values
 ** eval on compile stack in Lit.compile if cte
 * unlink existing method if exists in MethodSet.push
-* add nil type
-** Int?
-** add nil type / _
-** add Type *Type.or_nil()
-*** return this if opt
 * add quote
 ** '(1 2 3) 'foo
 * add C++ emit

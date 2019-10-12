@@ -8,12 +8,14 @@
 
 namespace forthy2 {
   struct Cx;
+  struct NilType;
   struct Sym;
   
   struct Type: Val {
     Sym &id;
     uint64_t weight;
     unordered_map<Type *, Type *> parents;
+    Type *nil_type = nullptr;
     
     Type(Cx &cx, Sym &id, vector<Type *> parents = {});
     virtual ~Type();
@@ -24,6 +26,7 @@ namespace forthy2 {
     bool is(Val &other) override;
     Type *isa(Type &parent);
     bool mark(Cx &cx) override;
+    NilType &or_nil();
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };

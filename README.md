@@ -115,6 +115,43 @@ Existing pairs may be split using `,,`.
 ,1 3 5 7
 ```
 
+### types
+`type` may be used to get the type of any value.
+
+```
+  42 type
+
+Int
+```
+
+### Nil
+`Nil` has exactly one value, `_`; which is used to indicate missing values.
+
+```
+  _.type
+
+Nil
+```
+
+### A
+`A` is the root type, from which all types except `Nil` are derived.
+
+Type relationships may be queried using `isa`; which returns the direct parent type if any, and `_` otherwise.
+
+```
+  Nil.isa A
+
+_
+```
+
+Nilable types may be obtained by suffixing type names with `?`.
+
+```
+  Nil.isa A?
+
+A?
+```
+
 ### license
 [MIT](https://github.com/codr7/forthy2/blob/master/LICENSE.txt)
 

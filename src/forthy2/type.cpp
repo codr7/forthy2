@@ -6,6 +6,14 @@ namespace forthy2 {
     id(id), weight(cx.type_weight++) {
     cx.marked_vals.push(*this);
     for (Type *p: parents) { derive(*p, *p); }
+
+    if (id.name == "Nil" || id.name.back() == '?') {
+      nil_type = this;
+    } else {
+      nil_type = new NilType(cx, cx.sym(id, '?'));
+      cx.nil_type.derive(*nil_type);
+      derive(*nil_type);
+    }
   }
 
   Type::~Type() {}
@@ -43,6 +51,8 @@ namespace forthy2 {
     for (auto &p: parents) { p.first->mark(cx); }
     return true;
   }
+
+  NilType &Type::or_nil() { return *dynamic_cast<NilType *>(nil_type); }
 
   void Type::sweep(Cx &cx) {
     Val::sweep(cx);

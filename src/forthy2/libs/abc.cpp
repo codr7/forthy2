@@ -49,8 +49,12 @@ namespace forthy2 {
 
   static void isa_imp(Cx &cx, Pos pos) {
     Val &p(cx.pop(pos)), &c(cx.pop(pos));
-    bool ok(dynamic_cast<Type &>(c).isa(dynamic_cast<Type &>(p)));
-    cx.push(cx.bool_type.get(cx, ok));
+
+    if (Type *t(dynamic_cast<Type &>(c).isa(dynamic_cast<Type &>(p))); t) {
+      cx.push(*t);
+    } else {
+      cx.push(cx._);
+    }
   }
 
   static void not_imp(Cx &cx, Pos pos) {
@@ -73,29 +77,36 @@ namespace forthy2 {
     env.bind_type(cx, pos, cx.meta_type);
     env.bind_type(cx, pos, cx.method_set_type);
     env.bind_type(cx, pos, cx.method_type);
+    env.bind_type(cx, pos, cx.nil_type);
+    env.bind_type(cx, pos, cx.num_type);
     env.bind_type(cx, pos, cx.pair_type);
     env.bind_type(cx, pos, cx.stack_type);
     env.bind_type(cx, pos, cx.sym_type);
 
+    env.bind(pos, cx.sym("_"), cx._);
     env.bind(pos, cx.sym("F"), cx.F);
     env.bind(pos, cx.sym("T"), cx.T);
     
-    env.add_macro(cx, pos, cx.sym("check"), {{cx.a_type}}).imp = check_imp;
+    env.add_macro(cx, pos, cx.sym("check"), {{cx.a_type.or_nil()}}).imp = check_imp;
 
     env.add_macro(cx, pos, cx.sym("const"),
-                  {{cx.sym_type}, {cx.a_type}}).imp = const_imp;
+                  {{cx.sym_type}, {cx.a_type.or_nil()}}).imp = const_imp;
 
-    env.add_method(cx, pos, cx.sym("bool"), {{cx.a_type}}).imp = bool_imp;
-    env.add_method(cx, pos, cx.sym("dump"), {{cx.a_type}}).imp = dump_imp;
+    env.add_method(cx, pos, cx.sym("bool"), {{cx.a_type.or_nil()}}).imp = bool_imp;
+    env.add_method(cx, pos, cx.sym("dump"), {{cx.a_type.or_nil()}}).imp = dump_imp;
     env.add_method(cx, pos, cx.sym("dump-stack")).imp = dump_stack_imp;
-    env.add_method(cx, pos, cx.sym("="), {{cx.a_type}, {cx.a_type}}).imp = eq_imp;
-    env.add_method(cx, pos, cx.sym("is"), {{cx.a_type}, {cx.a_type}}).imp = is_imp;
+
+    env.add_method(cx, pos, cx.sym("="),
+                   {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = eq_imp;
+    
+    env.add_method(cx, pos, cx.sym("is"),
+                   {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = is_imp;
 
     env.add_method(cx, pos, cx.sym("isa"),
                    {{cx.meta_type}, {cx.meta_type}}).imp = isa_imp;
 
     env.add_method(cx, pos, cx.sym("not"), {{cx.bool_type}}).imp = not_imp;
-    env.add_method(cx, pos, cx.sym("type"), {{cx.a_type}}).imp = type_imp;
+    env.add_method(cx, pos, cx.sym("type"), {{cx.a_type.or_nil()}}).imp = type_imp;
     env.add_method(cx, pos, cx.sym(",,"), {{cx.pair_type}}).imp = unpair_imp;
   }
 }
