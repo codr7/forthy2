@@ -182,7 +182,7 @@ namespace forthy2 {
       eval(in);
     }
     
-    bool mark_vals(optional<uint64_t> max_ns = {}) {
+    optional<uint64_t> mark_vals(optional<uint64_t> max_ns = {}) {
       Timer t;
 
       if (!unmarked_vals) {
@@ -194,20 +194,21 @@ namespace forthy2 {
       }
       
       for (Env *e(env); e; e = e->prev) {
-        if (max_ns && t.ns() >= *max_ns) { return false; }
+        if (max_ns && t.ns() >= *max_ns) { return {}; }
         e->mark_items(*this);
       }
       
       for (Stack *s(stack); s; s = s->prev) {
-        if (max_ns && t.ns() >= *max_ns) { return false; }
+        if (max_ns && t.ns() >= *max_ns) { return {}; }
         s->mark_items(*this);
       }
 
       for (Node<Op> *op(ops.next); op != &ops; op = op->next) {
+        if (max_ns && t.ns() >= *max_ns) { return {}; }
         op->get().mark_vals(*this);
       }
       
-      return true;
+      return t.ns();
     }
 
     Val &peek(size_t offs = 0) { return stack->peek(offs); }
@@ -245,17 +246,17 @@ namespace forthy2 {
       if (debug) { (*stdout) << endl; }
     }
 
-    bool sweep_vals(optional<uint64_t> max_ns = {}) {
+    optional<uint64_t> sweep_vals(optional<uint64_t> max_ns = {}) {
       Timer t;
 
       for (auto i(unmarked_vals.prev); i != &unmarked_vals;) {
-        if (max_ns && t.ns() >= *max_ns) { return false; }
+        if (max_ns && t.ns() >= *max_ns) { return {}; }
         Val &v(i->get());
         i = i->prev;
         v.sweep(*this);
       }
 
-      return true;
+      return t.ns();
     }
     
     template <typename...Args>

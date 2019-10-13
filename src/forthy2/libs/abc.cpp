@@ -2,6 +2,34 @@
 #include "forthy2/libs/abc.hpp"
 
 namespace forthy2 {
+  static void mark_imp(Cx &cx, Pos pos) {
+    optional<uint64_t> max_ns;
+
+    if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
+      max_ns = dynamic_cast<Int &>(v).imp;
+    }
+    
+    if (auto ok(cx.mark_vals(max_ns)); ok) {
+      cx.push(cx.int_type.get(cx, *ok));
+    } else {
+      cx.push(cx._);
+    }
+  }
+
+  static void sweep_imp(Cx &cx, Pos pos) {
+    optional<uint64_t> max_ns;
+
+    if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
+      max_ns = dynamic_cast<Int &>(v).imp;
+    }
+    
+    if (auto ok(cx.sweep_vals(max_ns)); ok) {
+      cx.push(cx.int_type.get(cx, *ok));
+    } else {
+      cx.push(cx._);
+    }
+  }
+
   static void eq_imp(Cx &cx, Pos pos) {
     Val &y(cx.pop()), &x(cx.pop());
     bool ok(x.type(cx) == y.type(cx) && x.eq(y));
@@ -176,6 +204,12 @@ namespace forthy2 {
     env.bind(pos, cx.sym("_"), cx._);
     env.bind(pos, cx.sym("F"), cx.F);
     env.bind(pos, cx.sym("T"), cx.T);
+
+    env.add_method(cx, pos, cx.sym("mark"),
+                   {{cx.int_type.or_nil()}}).imp = mark_imp;
+
+    env.add_method(cx, pos, cx.sym("sweep"),
+                   {{cx.int_type.or_nil()}}).imp = sweep_imp;
 
     env.add_method(cx, pos, cx.sym("="),
                    {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = eq_imp;

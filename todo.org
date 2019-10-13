@@ -34,10 +34,6 @@ switch (
 *** &foo -> Macro/Method(Set)
 *** &{} -> Lambda
 ** add call method
-* add mark(ns)/sweep(ns) fns
-** return time taken when done
-** change cx result to optional<uint64_t>
-** call at end of test/run.f2
 * add static array of Int vals
 ** add MAX_FAST_INT
 * inherit macro from method

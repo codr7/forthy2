@@ -6,8 +6,8 @@ namespace forthy2 {
 
   bool Val::mark(Cx &cx) {
     if (marked) { return false; }
+    if (Type &t(type(cx)); this != &t) { t.mark(cx); }
     Node<Val>::unlink();
-    type(cx).mark(cx);
     cx.marked_vals.push(*this);
     marked = true;
     return true;
