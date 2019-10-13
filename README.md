@@ -152,10 +152,6 @@ and existing pairs split using `,,`.
 Int
 ```
 
-#### A
-`A` is the root type, from which all types except `Nil` are derived.
-
-#### Nil
 `Nil` has exactly one value, `_`; which is used to indicate missing values.
 
 ```
@@ -164,7 +160,7 @@ Int
 Nil
 ```
 
-Type relationships may be queried using `isa`; which returns the direct parent type if any, and `_` otherwise.
+`A` is the root type, from which all types except `Nil` are derived. Type relationships may be queried using `isa`; which returns the direct parent type if any, and `_` otherwise.
 
 ```
   Nil.isa A
