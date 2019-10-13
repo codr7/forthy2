@@ -33,6 +33,9 @@ namespace forthy2 {
     Env *prev = nullptr;
     Items items;
 
+    Env();
+    Env(Cx &cx, Env &in);
+    
     Macro &add_macro(Cx &cx, Pos pos, Sym &id, const vector<Arg> &args = {});
     Method &add_method(Cx &cx, Pos pos, Sym &id, const vector<Arg> &args = {});
     void bind(Pos pos, Sym &id, Val &val);

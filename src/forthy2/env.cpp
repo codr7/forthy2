@@ -5,9 +5,14 @@
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
-  Env::Item::Item(Env *home, Sym &id, Val &val):
-    home(home), id(&id), val(&val) {}
-
+  Env::Env() {}
+  
+  Env::Env(Cx &cx, Env &in) {
+    transform(in.items.begin(), in.items.end(), back_inserter(items), [&](auto &i) {
+        return Item(i.home, *i.id, i.val->clone(cx));
+      });
+  }
+  
   Macro &Env::add_macro(Cx &cx, Pos pos, Sym &id, const vector<Arg> &args) {
     Macro &m(cx.macro_type.get(cx, id, args));
     bind(pos, id, m);
@@ -62,4 +67,7 @@ namespace forthy2 {
   void Env::mark_items(Cx &cx) {
     for (Item it: items) { it.val->mark(cx); }
   }
+
+  Env::Item::Item(Env *home, Sym &id, Val &val):
+    home(home), id(&id), val(&val) {}
 }

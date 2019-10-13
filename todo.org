@@ -1,3 +1,6 @@
+* implement MethodSet.clone
+** add std::set MethodSet.items ordered by weight
+** drop method node
 * add scope support for ;
 ** compile as separate scope
 ** add scope readme
@@ -6,9 +9,6 @@
 ** compile body with_env on first use
 * add clock macro/op
 ** pop reps from stack
-* clone env in ScopeForm
-** transform using Val.clone
-** implement MethodSet.clone
 * --
 * add |-support for values
 ** eval in Lit.compile if cte
