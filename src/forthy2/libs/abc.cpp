@@ -134,6 +134,17 @@ namespace forthy2 {
     return *op.pc;
   }
 
+  static Node<Op> &while_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    Form &body(*in.back());
+    in.pop_back();
+
+    Node<Op> *op(&body.compile(cx, in, out));
+    IfOp &if_op(cx.if_op.get(form, *op));
+    if_op.pc = &out;
+    if_op.neg = true;
+    return if_op;
+  }
+
   static void inc_imp(Cx &cx, Pos pos) {
     Val &v(cx.pop(pos));
     cx.push(cx.int_type.get(cx, dynamic_cast<Int &>(v).imp + 1));
@@ -201,8 +212,9 @@ namespace forthy2 {
     env.add_macro(cx, pos, cx.sym("or"), {{cx.a_type.or_nil()}}).imp = or_imp;
     env.add_method(cx, pos, cx.sym("not"), {{cx.bool_type}}).imp = not_imp;
 
-    env.add_macro(cx, pos, cx.sym("if"), {{cx.a_type.or_nil()}}).imp = if_imp;
-    env.add_macro(cx, pos, cx.sym("else"), {{cx.a_type.or_nil()}}).imp = else_imp;
+    env.add_macro(cx, pos, cx.sym("if"), {{cx.a_type}}).imp = if_imp;
+    env.add_macro(cx, pos, cx.sym("else"), {{cx.a_type}}).imp = else_imp;
+    env.add_macro(cx, pos, cx.sym("while"), {{cx.a_type}}).imp = while_imp;
 
     env.add_method(cx, pos, cx.sym("+1"), {{cx.int_type}}).imp = inc_imp;
     env.add_method(cx, pos, cx.sym("-1"), {{cx.int_type}}).imp = dec_imp;
