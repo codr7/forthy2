@@ -68,7 +68,7 @@ All values have boolean representations, non-zero integers are `T` etc.
 T
 ```
 
-`and`/`or` both return the last evaluated value.
+`and`/`or` both pop the first argument off the stack and return the last evaluated value.
 
 ```
   T |and 42
