@@ -1,3 +1,13 @@
+switch (
+  |,{.< 42} {
+              
+  }
+
+  |,T {
+  
+  }
+)
+
 * add scope support for ;
 ** compile as separate scope
 ** add scope readme

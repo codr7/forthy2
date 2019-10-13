@@ -94,7 +94,7 @@ namespace forthy2 {
     Form &y(*in.back());
     in.pop_back();
     
-    IfOp &op(cx.if_op.get(form, out));
+    BranchOp &op(cx.branch_op.get(form, out));
     op.pc = &y.compile(cx, in, op);
     op.pop_exit = true;
     return *op.pc;
@@ -104,7 +104,7 @@ namespace forthy2 {
     Form &y(*in.back());
     in.pop_back();
     
-    IfOp &op(cx.if_op.get(form, out));
+    BranchOp &op(cx.branch_op.get(form, out));
     op.pc = &y.compile(cx, in, op);
     op.neg = true;
     op.pop_exit = true;
@@ -119,7 +119,7 @@ namespace forthy2 {
     Form &body(*in.back());
     in.pop_back();
    
-    IfOp &op(cx.if_op.get(form, out));
+    BranchOp &op(cx.branch_op.get(form, out));
     op.pc = &body.compile(cx, in, op);
     op.pop_jump = true;
     op.pop_exit = true;
@@ -130,7 +130,7 @@ namespace forthy2 {
     Form &body(*in.back());
     in.pop_back();
    
-    IfOp &op(cx.if_op.get(form, out));
+    BranchOp &op(cx.branch_op.get(form, out));
     op.pc = &body.compile(cx, in, op);
     op.neg = true;
     op.pop_jump = true;
@@ -143,10 +143,10 @@ namespace forthy2 {
     in.pop_back();
 
     Node<Op> *op(&body.compile(cx, in, out));
-    IfOp &if_op(cx.if_op.get(form, *op));
-    if_op.pc = &out;
-    if_op.neg = true;
-    return if_op;
+    BranchOp &branch_op(cx.branch_op.get(form, *op));
+    branch_op.pc = &out;
+    branch_op.neg = true;
+    return branch_op;
   }
 
   static void inc_imp(Cx &cx, Pos pos) {
