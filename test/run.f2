@@ -9,6 +9,12 @@
 |check {42.type .is Int}
 |check {Int.isa A .is Num}
 
+|check {F |or 42 .is 42}
+|check {42 |or T .is 42}
+
+|check {F |and 42 .is F}
+|check {T |and 42 .is 42}
+
 |check {6.* 7 .is 42}
 
 |check {42.= 42.0 not}

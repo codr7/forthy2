@@ -5,7 +5,7 @@
 
 ```
   |method fib (Int) {
-    .: .< 2 |else {.: -1 fib.+; -1 fib}
+    .: .< 2 |or {.: -1 fib.+; -1 fib}
   }
 ```
 
@@ -58,6 +58,28 @@ Booleans come in two flavors, `T` and `F`.
   T.not
 
 F
+```
+
+All values have boolean representations, non-zero integers are `T` etc.
+
+```
+  42 bool
+
+T
+```
+
+`and`/`or` both return the last evaluated value.
+
+```
+  T |and 42
+
+42
+```
+
+```
+  F |or 42
+
+42
 ```
 
 ### dot-notation

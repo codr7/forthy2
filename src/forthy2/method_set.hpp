@@ -14,9 +14,10 @@ namespace forthy2 {
     static MethodSet &get(Cx &cx, Pos pos, Env &env, Sym &id);
 
     Node<Method> root;
+    Sym &id;
     int len;
 
-    MethodSet();
+    MethodSet(Sym &id);
     void call(Cx &cx, Pos pos) override;
     Method *dispatch(Cx &cx);
     void dump(ostream &out) override;

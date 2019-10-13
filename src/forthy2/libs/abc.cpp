@@ -88,11 +88,29 @@ namespace forthy2 {
     return out;
   }
 
+  static void type_imp(Cx &cx, Pos pos) { cx.push(cx.pop().type(cx)); }
+
+  static Node<Op> &and_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    Form &y(*in.back());
+    in.pop_back();
+    
+    IfOp &op(cx.if_op.get(form, out, true));
+    op.pc = &y.compile(cx, in, op);
+    return *op.pc;
+  }
+
+  static Node<Op> &or_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    Form &y(*in.back());
+    in.pop_back();
+    
+    IfOp &op(cx.if_op.get(form, out));
+    op.pc = &y.compile(cx, in, op);
+    return *op.pc;
+  }
+
   static void not_imp(Cx &cx, Pos pos) {
     cx.push(cx.bool_type.get(cx, !dynamic_cast<Bool &>(cx.pop()).imp));
   }
-
-  static void type_imp(Cx &cx, Pos pos) { cx.push(cx.pop().type(cx)); }
 
   void init_abc(Cx &cx, Pos pos, Env &env) {
     env.bind_type(cx, pos, cx.a_type);
@@ -145,7 +163,10 @@ namespace forthy2 {
     env.add_macro(cx, pos, cx.sym("let"),
                   {{cx.sym_type}, {cx.a_type.or_nil()}}).imp = let_imp;
 
-    env.add_method(cx, pos, cx.sym("not"), {{cx.bool_type}}).imp = not_imp;
     env.add_method(cx, pos, cx.sym("type"), {{cx.a_type.or_nil()}}).imp = type_imp;
+
+    env.add_macro(cx, pos, cx.sym("and"), {{cx.a_type.or_nil()}}).imp = and_imp;
+    env.add_macro(cx, pos, cx.sym("or"), {{cx.a_type.or_nil()}}).imp = or_imp;
+    env.add_method(cx, pos, cx.sym("not"), {{cx.bool_type}}).imp = not_imp;
   }
 }

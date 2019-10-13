@@ -10,16 +10,16 @@ namespace forthy2 {
       return *dynamic_cast<MethodSet *>(i->val);
     }
     
-    MethodSet &s(cx.method_set_type.get(cx));
+    MethodSet &s(cx.method_set_type.get(cx, id));
     env.insert(i, id, s);
     return s;
   }
 
-  MethodSet::MethodSet(): len(0) {}
+  MethodSet::MethodSet(Sym &id): id(id), len(0) {}
   
   void MethodSet::call(Cx &cx, Pos pos) {
     Method *m(dispatch(cx));
-    if (!m) { throw ESys(pos, "Method not applicable"); }
+    if (!m) { throw ESys(pos, "Method not applicable: ", id); }
     m->call(cx, pos);
   }
 

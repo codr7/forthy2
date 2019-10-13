@@ -1,4 +1,5 @@
-* add else macro
+* add |-support for values
+** eval in Lit.compile if cte
 * add stack literals
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack
@@ -25,6 +26,8 @@
 ** change cx result to optional<uint64_t>
 ** call at end of test/run.f2
 * --
+* add static array of Int vals
+** add MAX_FAST_INT
 * inherit macro from method
 ** add separate imp
 ** use dispatch for expand
@@ -47,8 +50,6 @@
 ** add constructor arg
 ** add test in add_method
 ** push first instead of set in id compile if !nargs
-* add |-support for values
-** eval on compile stack in Lit.compile if cte
 * add quote
 ** '(1 2 3) 'foo
 * add string type

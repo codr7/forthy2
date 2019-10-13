@@ -22,6 +22,7 @@
 #include "forthy2/node.hpp"
 #include "forthy2/ops/call.hpp"
 #include "forthy2/ops/check.hpp"
+#include "forthy2/ops/if.hpp"
 #include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/push.hpp"
 #include "forthy2/pair.hpp"
@@ -55,6 +56,7 @@ namespace forthy2 {
 
     Pool<CallOp> call_op;
     Pool<CheckOp> check_op;
+    Pool<IfOp> if_op;
     Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
 
