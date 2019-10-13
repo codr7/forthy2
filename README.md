@@ -223,7 +223,7 @@ while shadowing within child scopes is permitted.
 ### garbage collection
 [forthy2](https://github.com/codr7/forthy2) supports incremental, time sliced manual garbage collection.
 
-`mark` takes an optional deadline in nanoseconds and returns the total time when done,  `_` otherwise.
+`mark` takes an optional deadline in nanoseconds and returns the total time when finished,  `_` otherwise.
 
 ```
   _ mark
@@ -231,12 +231,20 @@ while shadowing within child scopes is permitted.
 16413
 ```
 
-While `sweep` provides the same API to the second GC phase.
+`sweep` provides the same API to the second GC phase.
 
 ```
   _ sweep
 
 489
+```
+
+And `mark-sweep` allows treating both phases as one.
+
+```
+  _ mark-sweep
+
+7616
 ```
 
 It's important to make sure everything is marked before sweeping, or the GC risks deallocating used memory.

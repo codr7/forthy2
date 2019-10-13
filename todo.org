@@ -21,8 +21,9 @@ switch (
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack
 * add switch
-** use branch
-** pop_jump = true
+** use branch op
+*** pop_if = true
+** add jump op
 * implement MethodSet.clone
 ** add std::set MethodSet.items ordered by weight
 ** drop method Node

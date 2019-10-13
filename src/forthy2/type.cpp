@@ -4,7 +4,7 @@
 namespace forthy2 {
   Type::Type(Cx &cx, Sym &id, vector<Type *> parents):
     id(id), weight(cx.type_weight++) {
-    cx.marked_vals.push(*this);
+    cx.marked.push(*this);
     for (Type *p: parents) { derive(*p, *p); }
 
     if (id.name == "Nil" || id.name.back() == '?') {

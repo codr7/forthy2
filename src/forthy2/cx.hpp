@@ -61,7 +61,7 @@ namespace forthy2 {
     Pool<PushOp> push_op;
 
     uint64_t type_weight;
-    Node<Val> marked_vals, unmarked_vals;
+    Node<Val> marked, unmarked;
 
     NilType &nil_type;
     Type &a_type, &num_type;
@@ -138,8 +138,8 @@ namespace forthy2 {
         op = next;
       }
 
-      unmarked_vals.extend(marked_vals);
-      sweep_vals();
+      unmarked.extend(marked);
+      sweep();
 
       for (auto &s: syms) { sym_pool.put(*s.second); }      
     }
@@ -182,15 +182,12 @@ namespace forthy2 {
       eval(in);
     }
     
-    optional<uint64_t> mark_vals(optional<uint64_t> max_ns = {}) {
+    optional<uint64_t> mark(optional<uint64_t> max_ns = {}) {
       Timer t;
 
-      if (!unmarked_vals) {
-        for (auto i(marked_vals.next); i != &marked_vals; i = i->next) {
-          i->get().unmark();
-        }
-        
-        unmarked_vals.extend(marked_vals);
+      if (!unmarked) {
+        for (auto i(marked.next); i != &marked; i = i->next) { i->get().unmark(); }
+        unmarked.extend(marked);
       }
       
       for (Env *e(env); e; e = e->prev) {
@@ -209,6 +206,15 @@ namespace forthy2 {
       }
       
       return t.ns();
+    }
+
+    optional<uint64_t> mark_sweep(optional<uint64_t> max_ns = {}) {
+      if (auto mark_ns(mark(max_ns)); mark_ns) {
+        if (max_ns) { *max_ns -= max(*max_ns, *mark_ns); }
+        if (auto sweep_ns(sweep(max_ns)); sweep_ns) { return *mark_ns + *sweep_ns; }
+      }
+
+      return {};
     }
 
     Val &peek(size_t offs = 0) { return stack->peek(offs); }
@@ -246,10 +252,10 @@ namespace forthy2 {
       if (debug) { (*stdout) << endl; }
     }
 
-    optional<uint64_t> sweep_vals(optional<uint64_t> max_ns = {}) {
+    optional<uint64_t> sweep(optional<uint64_t> max_ns = {}) {
       Timer t;
 
-      for (auto i(unmarked_vals.prev); i != &unmarked_vals;) {
+      for (auto i(unmarked.prev); i != &unmarked;) {
         if (max_ns && t.ns() >= *max_ns) { return {}; }
         Val &v(i->get());
         i = i->prev;
@@ -291,7 +297,7 @@ namespace forthy2 {
   template <typename...Args>
   T &PoolType<T>::get(Cx &cx, Args &&...args) {
     T &v(pool.get(forward<Args>(args)...));
-    cx.marked_vals.push(v);
+    cx.marked.push(v);
     return v;
   }
 }
