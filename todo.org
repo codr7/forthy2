@@ -12,8 +12,8 @@ switch (
 ** compile as separate scope
 ** add scope readme
 * add method macro
-** clone env on compile
-** compile body with_env on first use
+** compile body with_env
+** add beg_pc
 * add clock macro/op
 ** pop reps from stack
 * --
@@ -25,7 +25,10 @@ switch (
 *** pop_if = true
 ** add jump op
 * implement MethodSet.clone
-** add std::set MethodSet.items ordered by weight
+** extract BinSet from env
+*** items/find/insert
+*** upper_bound?
+** derive BinSet<Method *>
 ** drop method Node
 * add |-support for values
 ** eval in Lit.compile if cte

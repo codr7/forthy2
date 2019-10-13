@@ -210,7 +210,7 @@ namespace forthy2 {
 
     optional<uint64_t> mark_sweep(optional<uint64_t> max_ns = {}) {
       if (auto mark_ns(mark(max_ns)); mark_ns) {
-        if (max_ns) { *max_ns -= max(*max_ns, *mark_ns); }
+        if (max_ns) { *max_ns -= min(*max_ns, *mark_ns); }
         if (auto sweep_ns(sweep(max_ns)); sweep_ns) { return *mark_ns + *sweep_ns; }
       }
 
