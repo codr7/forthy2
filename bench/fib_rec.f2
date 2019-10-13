@@ -7,3 +7,4 @@
 
 N fib dump
 REPS |clock {N fib}
+dump-stack

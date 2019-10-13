@@ -1,6 +1,3 @@
-* implement MethodSet.clone
-** add std::set MethodSet.items ordered by weight
-** drop method node
 * add scope support for ;
 ** compile as separate scope
 ** add scope readme
@@ -10,6 +7,9 @@
 * add clock macro/op
 ** pop reps from stack
 * --
+* implement MethodSet.clone
+** add std::set MethodSet.items ordered by weight
+** drop method Node
 * add |-support for values
 ** eval in Lit.compile if cte
 * add stack literals

@@ -1,24 +1,26 @@
-|check {1 .: + .is 2}
-|check {1 3 5 :. + .is 4}
-|check {1 3 :: - .is 2}
+|check {1 .: + .= 2}
+|check {1 3 5 :. + .= 4}
+|check {1 3 :: - .= 2}
 
-|check {_.type .is Nil}
-|check {Nil.isa A .is _}
-|check {Nil.isa A? .is A?}
+|check {_.type .= Nil}
+|check {Nil.isa A .= _}
+|check {Nil.isa A? .= A?}
 
-|check {42.type .is Int}
-|check {Int.isa A .is Num}
+|check {42.type .= Int}
+|check {Int.isa A .= Num}
 
-|check {F |or 42 .is 42}
-|check {42 |or T .is 42}
+|check {F |or 42 .= 42}
+|check {42 |or T .= 42}
 
-|check {F |and 42 .is F}
-|check {T |and 42 .is 42}
+|check {F |and 42 .= F}
+|check {T |and 42 .= 42}
 
-|check {T |if {42} .is 42}
-|check {F |else {42} .is 42}
+|check {T |if {42} .= 42}
+|check {F |else {42} .= 42}
 
-|check {6.* 7 .is 42}
+|check {41 +1 .= 42}
+|check {43 -1 .= 42}
+|check {6.* 7 .= 42}
 
 |check {42.= 42.0 not}
 
@@ -27,10 +29,10 @@
 
 {
   |let foo 42
-  |check {foo.is 42}
+  |check {foo.= 42}
 }
 
 |check {1 3, type.isa Pair}
-|check {|,1 3,, + .is 4}
+|check {|,1 3,, + .= 4}
 
 dump-stack

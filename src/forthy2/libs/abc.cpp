@@ -134,6 +134,16 @@ namespace forthy2 {
     return *op.pc;
   }
 
+  static void inc_imp(Cx &cx, Pos pos) {
+    Val &v(cx.pop(pos));
+    cx.push(cx.int_type.get(cx, dynamic_cast<Int &>(v).imp + 1));
+  }
+
+  static void dec_imp(Cx &cx, Pos pos) {
+    Val &v(cx.pop(pos));
+    cx.push(cx.int_type.get(cx, dynamic_cast<Int &>(v).imp - 1));
+  }
+
   void init_abc(Cx &cx, Pos pos, Env &env) {
     env.bind_type(cx, pos, cx.a_type);
     env.bind_type(cx, pos, cx.bool_type);
@@ -193,5 +203,8 @@ namespace forthy2 {
 
     env.add_macro(cx, pos, cx.sym("if"), {{cx.a_type.or_nil()}}).imp = if_imp;
     env.add_macro(cx, pos, cx.sym("else"), {{cx.a_type.or_nil()}}).imp = else_imp;
+
+    env.add_method(cx, pos, cx.sym("+1"), {{cx.int_type}}).imp = inc_imp;
+    env.add_method(cx, pos, cx.sym("-1"), {{cx.int_type}}).imp = dec_imp;
   }
 }
