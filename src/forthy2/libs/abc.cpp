@@ -96,7 +96,7 @@ namespace forthy2 {
     
     BranchOp &op(cx.branch_op.get(form, out));
     op.pc = &y.compile(cx, in, op);
-    op.pop_exit = true;
+    op.pop_else = true;
     return *op.pc;
   }
 
@@ -107,7 +107,7 @@ namespace forthy2 {
     BranchOp &op(cx.branch_op.get(form, out));
     op.pc = &y.compile(cx, in, op);
     op.neg = true;
-    op.pop_exit = true;
+    op.pop_else = true;
     return *op.pc;
   }
 
@@ -121,8 +121,8 @@ namespace forthy2 {
    
     BranchOp &op(cx.branch_op.get(form, out));
     op.pc = &body.compile(cx, in, op);
-    op.pop_jump = true;
-    op.pop_exit = true;
+    op.pop_if = true;
+    op.pop_else = true;
     return *op.pc;
   }
 
@@ -133,8 +133,8 @@ namespace forthy2 {
     BranchOp &op(cx.branch_op.get(form, out));
     op.pc = &body.compile(cx, in, op);
     op.neg = true;
-    op.pop_jump = true;
-    op.pop_exit = true;
+    op.pop_if = true;
+    op.pop_else = true;
     return *op.pc;
   }
 

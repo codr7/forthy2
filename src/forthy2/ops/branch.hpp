@@ -8,7 +8,7 @@ namespace forthy2 {
   
   struct BranchOp: Op {
     Node<Op> *pc;
-    bool neg = false, pop_jump = false, pop_exit = false;
+    bool neg = false, pop_if = false, pop_else = false;
     
     BranchOp(Form &form, Node<Op> &prev);
     void dealloc(Cx &cx) override;

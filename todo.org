@@ -17,14 +17,17 @@ switch (
 * add clock macro/op
 ** pop reps from stack
 * --
+* add stack literals
+** (1 2 3; 4 5)
+** parse suffix as separate stack
+* add switch
+** use branch
+** pop_jump = true
 * implement MethodSet.clone
 ** add std::set MethodSet.items ordered by weight
 ** drop method Node
 * add |-support for values
 ** eval in Lit.compile if cte
-* add stack literals
-** (1 2 3; 4 5)
-** parse suffix as separate stack
 * add ref-support
 ** RefForm
 ** resolve at compile time
