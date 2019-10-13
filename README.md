@@ -228,10 +228,10 @@ while shadowing within child scopes is permitted.
 ```
   _ mark
 
-16413
+7616
 ```
 
-`sweep` provides the same API to the second GC phase.
+`sweep` provides the same API to the second GC phase,
 
 ```
   _ sweep
@@ -239,15 +239,13 @@ while shadowing within child scopes is permitted.
 489
 ```
 
-And `mark-sweep` allows treating both phases as one.
+and `mark-sweep` allows treating both phases as one.
 
 ```
   _ mark-sweep
 
-7616
+16413
 ```
-
-It's important to make sure everything is marked before sweeping, or the GC risks deallocating used memory.
 
 ### license
 [MIT](https://github.com/codr7/forthy2/blob/master/LICENSE.txt)
