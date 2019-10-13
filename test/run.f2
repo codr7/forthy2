@@ -18,7 +18,7 @@
 |check {T |if {42} .= 42}
 |check {F |else {42} .= 42}
 
-|check {3 |while {.: -1} + + .= 6}
+|check {3 |while {.: -1} + + + .= 6}
 
 |check {41 +1 .= 42}
 |check {43 -1 .= 42}

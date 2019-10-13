@@ -14,11 +14,11 @@ namespace forthy2 {
 
   Node<Op> &IfOp::eval(Cx &cx) {
     if (cx.peek() == neg) {
-      if (pop) { cx.pop(); }
+      if (pop_jump) { cx.pop(); }
       return *pc->next;
     }
     
-    cx.pop();
+    if (pop_exit) { cx.pop(); }
     return *Node<Op>::next;
   }
 }

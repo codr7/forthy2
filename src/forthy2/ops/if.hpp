@@ -8,7 +8,7 @@ namespace forthy2 {
   
   struct IfOp: Op {
     Node<Op> *pc;
-    bool neg = false, pop = false;
+    bool neg = false, pop_jump = false, pop_exit = false;
     
     IfOp(Form &form, Node<Op> &prev);
     void dealloc(Cx &cx) override;
