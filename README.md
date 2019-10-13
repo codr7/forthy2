@@ -5,7 +5,7 @@
 
 ```
   |method fib (Int) {
-    .: .< 2 |or {.: -1 fib.+; -1 fib}
+    .: .< 2 |else {.: -1 fib.+; -1 fib}
   }
 ```
 

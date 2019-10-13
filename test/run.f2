@@ -15,6 +15,9 @@
 |check {F |and 42 .is F}
 |check {T |and 42 .is 42}
 
+|check {T |if {42} .is 42}
+|check {F |else {42} .is 42}
+
 |check {6.* 7 .is 42}
 
 |check {42.= 42.0 not}

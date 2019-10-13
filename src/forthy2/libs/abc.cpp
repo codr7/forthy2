@@ -94,7 +94,7 @@ namespace forthy2 {
     Form &y(*in.back());
     in.pop_back();
     
-    IfOp &op(cx.if_op.get(form, out, true));
+    IfOp &op(cx.if_op.get(form, out));
     op.pc = &y.compile(cx, in, op);
     return *op.pc;
   }
@@ -105,11 +105,33 @@ namespace forthy2 {
     
     IfOp &op(cx.if_op.get(form, out));
     op.pc = &y.compile(cx, in, op);
+    op.neg = true;
     return *op.pc;
   }
 
   static void not_imp(Cx &cx, Pos pos) {
     cx.push(cx.bool_type.get(cx, !dynamic_cast<Bool &>(cx.pop()).imp));
+  }
+
+  static Node<Op> &if_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    Form &body(*in.back());
+    in.pop_back();
+   
+    IfOp &op(cx.if_op.get(form, out));
+    op.pc = &body.compile(cx, in, op);
+    op.pop = true;
+    return *op.pc;
+  }
+
+  static Node<Op> &else_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    Form &body(*in.back());
+    in.pop_back();
+   
+    IfOp &op(cx.if_op.get(form, out));
+    op.pc = &body.compile(cx, in, op);
+    op.neg = true;
+    op.pop = true;
+    return *op.pc;
   }
 
   void init_abc(Cx &cx, Pos pos, Env &env) {
@@ -168,5 +190,8 @@ namespace forthy2 {
     env.add_macro(cx, pos, cx.sym("and"), {{cx.a_type.or_nil()}}).imp = and_imp;
     env.add_macro(cx, pos, cx.sym("or"), {{cx.a_type.or_nil()}}).imp = or_imp;
     env.add_method(cx, pos, cx.sym("not"), {{cx.bool_type}}).imp = not_imp;
+
+    env.add_macro(cx, pos, cx.sym("if"), {{cx.a_type.or_nil()}}).imp = if_imp;
+    env.add_macro(cx, pos, cx.sym("else"), {{cx.a_type.or_nil()}}).imp = else_imp;
   }
 }
