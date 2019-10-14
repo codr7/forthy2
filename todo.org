@@ -25,11 +25,8 @@ switch (
 *** pop_if = true
 ** add jump op
 * implement MethodSet.clone
-** extract BinSet from env
-*** items/find/insert
-*** upper_bound?
-** derive BinSet<Method *>
-** drop method Node
+** switch to use vector/upper_bound like env
+*** drop method Node
 * add |-support for values
 ** eval in Lit.compile if cte
 * add ref-support

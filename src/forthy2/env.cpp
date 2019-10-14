@@ -36,7 +36,7 @@ namespace forthy2 {
   void Env::bind(Pos pos, Sym &id, Val &val) {
     Iter i(find(id));
     
-    if (i == items.end() || *i->id != id) {
+    if (i == items.end() || i->id != &id) {
       insert(i, id, val);
     } else {
       if (i->home == this) { throw ESys(pos, "Dup binding: ", id); }
@@ -50,13 +50,13 @@ namespace forthy2 {
   }
 
   Env::Iter Env::find(Sym &id) {
-    return lower_bound(items.begin(), items.end(), id,
-                       [&](auto &x, auto &y) { return *x.id < y; });
+    return upper_bound(items.begin(), items.end(), id,
+                       [&](auto &x, auto &y) { return &x <= y.id; });
   }
     
   Val &Env::get(Pos pos, Sym &id) {
     auto i(find(id));
-    if (i == items.end() || *i->id != id) { throw ESys(pos, "Unknown id: ", id); }
+    if (i == items.end() || i->id != &id) { throw ESys(pos, "Unknown id: ", id); }
     return *i->val;
   }
     

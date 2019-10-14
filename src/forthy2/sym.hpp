@@ -10,18 +10,15 @@ namespace forthy2 {
   
   struct Sym: Val {
     string name;
+
+    bool operator ==(const Sym &) = delete;
+    bool operator !=(const Sym &) = delete;
     
     Sym(const string &name);
     void dump(ostream &out) override;
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };
-
-  inline bool operator ==(const Sym &x, const Sym &y) { return &x == &y; }
-
-  inline bool operator !=(const Sym &x, const Sym &y) { return &x != &y; }
-
-  inline bool operator <(const Sym &x, const Sym &y) { return &x < &y; }
 }
 
 #endif

@@ -6,7 +6,7 @@ namespace forthy2 {
   MethodSet &MethodSet::get(Cx &cx, Pos pos, Env &env, Sym &id) {
     auto i(env.find(id));
     
-    if (i != env.items.end() && *i->id == id) {
+    if (i != env.items.end() && i->id == &id) {
       return *dynamic_cast<MethodSet *>(i->val);
     }
     
