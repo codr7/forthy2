@@ -7,7 +7,7 @@
 
 #include "forthy2/bool.hpp"
 #include "forthy2/defer.hpp"
-#include "forthy2/env.hpp"
+#include "forthy2/scope.hpp"
 #include "forthy2/fix.hpp"
 #include "forthy2/forms/dot.hpp"
 #include "forthy2/forms/id.hpp"
@@ -83,7 +83,7 @@ namespace forthy2 {
     PoolType<Stack> &stack_type;
     Type &sym_type;
         
-    Env root_env, *env;
+    Scope root_scope, *scope;
     Stack root_stack, *stack;
     Node<Op> ops;
 
@@ -109,7 +109,7 @@ namespace forthy2 {
       pair_type(*new PoolType<Pair>(*this, sym("Pair"), {&a_type})),
       stack_type(*new PoolType<Stack>(*this, sym("Stack"), {&a_type})),
       sym_type(*new Type(*this, sym("Sym"), {&a_type})),
-      env(&root_env),
+      scope(&root_scope),
       stack(&root_stack),
       F(false),
       T(true),
@@ -196,7 +196,7 @@ namespace forthy2 {
         unmarked.extend(marked);
       }
       
-      for (Env *e(env); e; e = e->prev) {
+      for (Scope *e(scope); e; e = e->prev) {
         if (max_ns && t.ns() >= *max_ns) { return {}; }
         e->mark_items(*this);
       }
@@ -282,11 +282,11 @@ namespace forthy2 {
     }
 
     template <typename T>
-    T with_env(Env &e, function<T ()> body) {
-      Env *prev(env);
-      env = &e;  
+    T with_scope(Scope &e, function<T ()> body) {
+      Scope *prev(scope);
+      scope = &e;  
       e.prev = prev;
-      auto restore(defer([&]() { env = prev; }));
+      auto restore(defer([&]() { scope = prev; }));
       return body();
     }
 

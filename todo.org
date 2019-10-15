@@ -8,8 +8,6 @@ switch (
   }
 )
 
-* rename env to scope
-** add with_scope around StackOp body
 * add ref-support
 ** RefForm
 ** resolve at compile time

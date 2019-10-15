@@ -1,17 +1,17 @@
 #include "forthy2/cx.hpp"
-#include "forthy2/env.hpp"
+#include "forthy2/scope.hpp"
 #include "forthy2/method_set.hpp"
 
 namespace forthy2 {
-  MethodSet &MethodSet::get(Cx &cx, Pos pos, Env &env, Sym &id) {
-    auto i(env.find(id));
+  MethodSet &MethodSet::get(Cx &cx, Pos pos, Scope &scope, Sym &id) {
+    auto i(scope.find(id));
     
-    if (i != env.items.end() && i->id == &id) {
+    if (i != scope.items.end() && i->id == &id) {
       return *dynamic_cast<MethodSet *>(i->val);
     }
     
     MethodSet &s(cx.method_set_type.get(cx, id));
-    env.insert(i, id, s);
+    scope.insert(i, id, s);
     return s;
   }
 

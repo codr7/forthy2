@@ -5,7 +5,7 @@ namespace forthy2 {
   IdForm::IdForm(Pos pos, Sym &val): Form(pos), val(val) {}
 
   Node<Op> &IdForm::compile(Cx &cx, Forms &in, Node<Op> &out) {
-    Val &v(cx.env->get(pos, val));
+    Val &v(cx.scope->get(pos, val));
     Type *vt(&v.type(cx));
 
     if (vt == &cx.macro_type) {

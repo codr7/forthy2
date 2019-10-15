@@ -17,7 +17,12 @@ namespace forthy2 {
 
   Node<Op> &StackOp::eval(Cx &cx) {
     Stack &s(cx.stack_type.get(cx));
-    cx.with_stack<void>(s, [&]() { cx.eval(*this, *end_pc->next); });
+    
+    cx.with_stack<void>(s, [&]() {
+        Scope scope(cx, *cx.scope);
+        cx.with_scope<void>(scope, [&]() { cx.eval(*this, *end_pc->next); });
+      });
+    
     cx.push(s);
     return *end_pc->next;
   }

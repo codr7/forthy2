@@ -44,8 +44,8 @@ void repl(Cx &cx) {
 
 int main(int argc, char *argv[]) {  
   Cx cx;
-  init_abc(cx, Pos::_, cx.root_env);
-  init_math(cx, Pos::_, cx.root_env);
+  init_abc(cx, Pos::_, cx.root_scope);
+  init_math(cx, Pos::_, cx.root_scope);
   Mode mode(Mode::repl);
   
   while (--argc && ++argv) {

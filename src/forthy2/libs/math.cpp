@@ -87,31 +87,31 @@ namespace forthy2 {
                             xs));
   }
 
-  void init_math(Cx &cx, Pos pos, Env &env) {
-    env.bind_type(cx, pos, cx.fix_type);
+  void init_math(Cx &cx, Pos pos, Scope &scope) {
+    scope.bind_type(cx, pos, cx.fix_type);
 
-    env.add_method(cx, pos, cx.sym("+"),
+    scope.add_method(cx, pos, cx.sym("+"),
                    {{cx.int_type}, {cx.int_type}}).imp = int_add_imp;
 
-    env.add_method(cx, pos, cx.sym("/"),
+    scope.add_method(cx, pos, cx.sym("/"),
                    {{cx.int_type}, {cx.int_type}}).imp = int_div_imp;
 
-    env.add_method(cx, pos, cx.sym("*"),
+    scope.add_method(cx, pos, cx.sym("*"),
                    {{cx.int_type}, {cx.int_type}}).imp = int_mul_imp;
 
-    env.add_method(cx, pos, cx.sym("-"),
+    scope.add_method(cx, pos, cx.sym("-"),
                    {{cx.int_type}, {cx.int_type}}).imp = int_sub_imp;
 
-    env.add_method(cx, pos, cx.sym("+"),
+    scope.add_method(cx, pos, cx.sym("+"),
                    {{cx.fix_type}, {cx.fix_type}}).imp = fix_add_imp;
 
-    env.add_method(cx, pos, cx.sym("/"),
+    scope.add_method(cx, pos, cx.sym("/"),
                    {{cx.fix_type}, {cx.fix_type}}).imp = fix_div_imp;
 
-    env.add_method(cx, pos, cx.sym("*"),
+    scope.add_method(cx, pos, cx.sym("*"),
                    {{cx.fix_type}, {cx.fix_type}}).imp = fix_mul_imp;
 
-    env.add_method(cx, pos, cx.sym("-"),
+    scope.add_method(cx, pos, cx.sym("-"),
                    {{cx.fix_type}, {cx.fix_type}}).imp = fix_sub_imp;
   }
 }

@@ -5,9 +5,9 @@ namespace forthy2 {
   ScopeForm::ScopeForm(Pos pos): Form(pos) {}
 
   Node<Op> &ScopeForm::compile(Cx &cx, Forms &in, Node<Op> &out) {
-    Env env(cx, *cx.env);
+    Scope scope(cx, *cx.scope);
     
-    return cx.with_env<Node<Op> &>(env, [&]() -> Node<Op> & {
+    return cx.with_scope<Node<Op> &>(scope, [&]() -> Node<Op> & {
         return cx.compile(body, out);
       });
   }

@@ -6,12 +6,12 @@
 
 namespace forthy2 {
   struct Cx;
-  struct Env;
+  struct Scope;
   struct Method;
   struct Sym;
   
   struct MethodSet: Val {
-    static MethodSet &get(Cx &cx, Pos pos, Env &env, Sym &id);
+    static MethodSet &get(Cx &cx, Pos pos, Scope &scope, Sym &id);
 
     Node<Method> root;
     Sym &id;

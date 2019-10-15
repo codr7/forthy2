@@ -1,5 +1,5 @@
-#ifndef FORTHY2_ENV_HPP
-#define FORTHY2_ENV_HPP
+#ifndef FORTHY2_SCOPE_HPP
+#define FORTHY2_SCOPE_HPP
 
 #include <algorithm>
 #include <vector>
@@ -18,23 +18,23 @@ namespace forthy2 {
   struct Type;
   struct Val;
   
-  struct Env {
+  struct Scope {
     struct Item {
-      Env *home;
+      Scope *home;
       Sym *id;
       Val *val;
       
-      Item(Env *home, Sym &id, Val &val);
+      Item(Scope *home, Sym &id, Val &val);
     };
       
     using Items = vector<Item>;
     using Iter = Items::iterator;
     
-    Env *prev = nullptr;
+    Scope *prev = nullptr;
     Items items;
 
-    Env();
-    Env(Cx &cx, Env &in);
+    Scope();
+    Scope(Cx &cx, Scope &in);
     
     Macro &add_macro(Cx &cx, Pos pos, Sym &id, const vector<Arg> &args = {});
     Method &add_method(Cx &cx, Pos pos, Sym &id, const vector<Arg> &args = {});

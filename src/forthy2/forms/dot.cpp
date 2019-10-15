@@ -6,7 +6,7 @@ namespace forthy2 {
 
   Node<Op> &DotForm::compile(Cx &cx, Forms &in, Node<Op> &out) {
     Sym &id(dynamic_cast<IdForm &>(z).val);
-    Val &v(cx.env->get(pos, id));
+    Val &v(cx.scope->get(pos, id));
     Type &vt(v.type(cx));
 
     if (&vt == &cx.macro_type) {
