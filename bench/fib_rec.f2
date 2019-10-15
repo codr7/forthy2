@@ -8,3 +8,4 @@
 N fib dump
 REPS |clock {N fib}
 dump-stack
+_ mark-sweep./ 1000 dump

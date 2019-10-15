@@ -226,24 +226,31 @@ namespace forthy2 {
   }
 
   ScopeForm &read_scope(Cx &cx, Pos &pos, istream &in) {
-    ScopeForm &out(cx.scope_form.get(pos));
+    ScopeForm &root(cx.scope_form.get(pos)), *out(&root);
     char c(0);
     
     for (;;) {
       skip_ws(pos, in);
-      if (!in.get(c)) { throw ESys(out.pos, "Open scope"); }
+      if (!in.get(c)) { throw ESys(out->pos, "Open scope"); }
 
       if (c == '}') {
         pos.col++;
         break;
       }
-      
-      in.unget();
-      Form *f(read_form(cx, pos, in));
-      if (!f) { throw ESys(out.pos, "Open scope"); }
-      out.body.push_back(f);
+
+      if (c == ';') {
+        pos.col++;
+        ScopeForm &prev(*out);
+        out = &cx.scope_form.get(pos);
+        prev.body.push_back(out);
+      } else {
+        in.unget();
+        Form *f(read_form(cx, pos, in));
+        if (!f) { throw ESys(out->pos, "Open scope"); }
+        out->body.push_back(f);
+      }
     }
 
-    return out;
+    return root;
   }
 }

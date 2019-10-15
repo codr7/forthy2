@@ -8,15 +8,18 @@ switch (
   }
 )
 
-* add scope support for ;
-** compile as separate scope
-** add scope readme
+* add clock macro/op
+** pop reps from stack
 * add method macro
 ** compile body with_env
 ** add beg_pc
-* add clock macro/op
-** pop reps from stack
+* add scope readme
 * --
+* add for macro
+** add Type.iter method with callback
+* add stack lib
+** add copy(n offs), clone(n, offs), swap(x y) & drop(n offs) methods
+*** add backing Stack methods
 * add stack literals
 ** (1 2 3; 4 5)
 ** parse suffix as separate stack
