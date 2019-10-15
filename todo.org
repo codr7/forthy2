@@ -8,11 +8,20 @@ switch (
   }
 )
 
+* add scope readme
+** block scopes
+* add ref-support
+** RefForm
+** resolve at compile time
+*** &foo -> Macro/Method(Set)
+*** &{} -> Lambda
+**** extract common base Target for Lambda/Method
 * add method macro
+** add Call with pos/target/return_pc
+** add Return op
 ** compile body with_env
 ** add beg_pc
 * profile fib_rec
-* add scope readme
 * --
 * switch Type.parents to sorted vector like env
 ** bench
@@ -21,9 +30,6 @@ switch (
 * add stack lib
 ** add copy(n offs), clone(n, offs), swap(x y) & drop(n offs) methods
 *** add backing Stack methods
-* add stack literals
-** (1 2 3; 4 5)
-** parse suffix as separate stack
 * add switch
 ** use branch op
 *** pop_if = true

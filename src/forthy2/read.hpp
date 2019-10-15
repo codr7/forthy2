@@ -13,6 +13,7 @@ namespace forthy2 {
   struct PairForm;
   struct Pos;
   struct ScopeForm;
+  struct StackForm;
   struct Val;
 
   DotForm &read_dot(Cx &cx, Pos &pos, Form *x, istream &in);
@@ -23,6 +24,7 @@ namespace forthy2 {
   LitForm &read_num(Cx &cx, Pos &pos, istream &in);
   PairForm &read_pair(Cx &cx, Pos &pos, istream &in);
   ScopeForm &read_scope(Cx &cx, Pos &pos, istream &in);
+  StackForm &read_stack(Cx &cx, Pos &pos, istream &in);
   void skip_ws(Pos &pos, istream &in);
 }
 

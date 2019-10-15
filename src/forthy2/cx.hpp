@@ -14,6 +14,7 @@
 #include "forthy2/forms/lit.hpp"
 #include "forthy2/forms/pair.hpp"
 #include "forthy2/forms/scope.hpp"
+#include "forthy2/forms/stack.hpp"
 #include "forthy2/int.hpp"
 #include "forthy2/macro.hpp"
 #include "forthy2/method.hpp"
@@ -26,6 +27,7 @@
 #include "forthy2/ops/clock.hpp"
 #include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/push.hpp"
+#include "forthy2/ops/stack.hpp"
 #include "forthy2/pair.hpp"
 #include "forthy2/path.hpp"
 #include "forthy2/pool.hpp"
@@ -54,6 +56,7 @@ namespace forthy2 {
     Pool<LitForm> lit_form;
     Pool<PairForm> pair_form;
     Pool<ScopeForm> scope_form;
+    Pool<StackForm> stack_form;
 
     Pool<CallOp> call_op;
     Pool<CheckOp> check_op;
@@ -61,6 +64,7 @@ namespace forthy2 {
     Pool<BranchOp> branch_op;
     Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
+    Pool<StackOp> stack_op;
 
     uint64_t type_weight;
     Node<Val> marked, unmarked;
@@ -286,12 +290,13 @@ namespace forthy2 {
       return body();
     }
 
-    void with_stack(Stack &s, function<void ()> body) {
+    template <typename T>
+    T with_stack(Stack &s, function<T ()> body) {
       Stack *prev(stack);
       stack = &s;  
       s.prev = prev;
       auto restore(defer([&]() { stack = prev; }));
-      body();
+      return body();
     }
   };
 

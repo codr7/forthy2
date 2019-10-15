@@ -21,6 +21,10 @@ namespace forthy2 {
         pos.col++;
         f = &read_scope(cx, pos, in);
         break;
+      case '(':
+        pos.col++;
+        f = &read_stack(cx, pos, in);
+        break;
       case ',':
         pos.col++;
         if (!in.get(c)) { ESys(p, "Invalid pair"); }
@@ -153,7 +157,7 @@ namespace forthy2 {
     if (in.fail()) { throw ESys(p, "Failed reading int"); }
     return v;
   }
-  
+
   LitForm &read_num(Cx &cx, Pos &pos, istream &in) {
     Pos p(pos);
     bool is_hex(false);
@@ -207,24 +211,6 @@ namespace forthy2 {
     return d;
   }
   
-  void skip_ws(Pos &pos, istream &in) {
-    char c(0);
-    
-    while (in.get(c) && isspace(c)) {
-      switch (c) {
-      case ' ':
-      case '\t':
-        pos.col++;
-        break;
-      case '\n':
-        pos.row++;
-        pos.col = 0;
-      };
-    }
-
-    if (!in.eof()) { in.unget(); }
-  }
-
   ScopeForm &read_scope(Cx &cx, Pos &pos, istream &in) {
     ScopeForm &root(cx.scope_form.get(pos)), *out(&root);
     char c(0);
@@ -252,5 +238,52 @@ namespace forthy2 {
     }
 
     return root;
+  }
+
+  StackForm &read_stack(Cx &cx, Pos &pos, istream &in) {
+    StackForm &root(cx.stack_form.get(pos)), *out(&root);
+    char c(0);
+    
+    for (;;) {
+      skip_ws(pos, in);
+      if (!in.get(c)) { throw ESys(out->pos, "Open stack"); }
+
+      if (c == ')') {
+        pos.col++;
+        break;
+      }
+
+      if (c == ';') {
+        pos.col++;
+        StackForm &prev(*out);
+        out = &cx.stack_form.get(pos);
+        prev.body.push_back(out);
+      } else {
+        in.unget();
+        Form *f(read_form(cx, pos, in));
+        if (!f) { throw ESys(out->pos, "Open stack"); }
+        out->body.push_back(f);
+      }
+    }
+
+    return root;
+  }
+
+  void skip_ws(Pos &pos, istream &in) {
+    char c(0);
+    
+    while (in.get(c) && isspace(c)) {
+      switch (c) {
+      case ' ':
+      case '\t':
+        pos.col++;
+        break;
+      case '\n':
+        pos.row++;
+        pos.col = 0;
+      };
+    }
+
+    if (!in.eof()) { in.unget(); }
   }
 }
