@@ -6,6 +6,5 @@
 }
 
 N fib dump
-REPS |clock {N fib}
+REPS |clock {N fib} dump
 dump-stack
-_ mark-sweep./ 1000 dump

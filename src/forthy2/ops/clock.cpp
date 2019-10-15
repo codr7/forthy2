@@ -23,7 +23,7 @@ namespace forthy2 {
       cx.eval(*this, *end_pc->next);
     }
     
-    cx.push(cx.int_type.get(cx, t.ns()));
+    cx.push(cx.int_type.get(cx, t.ms()));
     return *end_pc->next;
   }
 

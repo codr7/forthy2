@@ -11,8 +11,11 @@ switch (
 * add method macro
 ** compile body with_env
 ** add beg_pc
+* profile fib_rec
 * add scope readme
 * --
+* switch Type.parents to sorted vector like env
+** bench
 * add for macro
 ** add Type.iter method with callback
 * add stack lib
