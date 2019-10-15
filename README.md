@@ -70,6 +70,12 @@ Error at row 2, col 0:
 Unknown id: foo
 ```
 
+`;` may be used to compile remaining forms in a separate scope.
+
+```
+  {; let foo 42}
+```
+
 ### booleans
 Booleans come in two flavors, `T` and `F`.
 

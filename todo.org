@@ -8,6 +8,8 @@ switch (
   }
 )
 
+* add stack tests
+** add push/pop/len methods
 * add ref-support
 ** RefForm
 ** resolve at compile time
