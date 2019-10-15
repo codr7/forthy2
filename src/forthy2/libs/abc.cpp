@@ -91,6 +91,15 @@ namespace forthy2 {
     return cx.check_op.get(form, *op, body.ref());
   }
 
+  static Node<Op> &clock_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    Form &body(*in.back());
+    in.pop_back();
+    ClockOp &clock_op(cx.clock_op.get(form, out, body.ref()));
+    Node<Op> &end_pc(body.compile(cx, in, clock_op));
+    clock_op.end_pc = &end_pc;
+    return end_pc;
+  }
+
   static void dump_imp(Cx &cx, Pos pos) {
     auto &out(*cx.stdout);
     cx.pop().dump(out);
@@ -249,6 +258,7 @@ namespace forthy2 {
     env.add_method(cx, pos, cx.sym(",,"), {{cx.pair_type}}).imp = unpair_imp;
     env.add_method(cx, pos, cx.sym("bool"), {{cx.a_type.or_nil()}}).imp = bool_imp;
     env.add_macro(cx, pos, cx.sym("check"), {{cx.a_type.or_nil()}}).imp = check_imp;
+    env.add_macro(cx, pos, cx.sym("clock"), {{cx.a_type.or_nil()}}).imp = clock_imp;
     env.add_method(cx, pos, cx.sym("dump"), {{cx.a_type.or_nil()}}).imp = dump_imp;
     env.add_method(cx, pos, cx.sym("dump-stack")).imp = dump_stack_imp;
     

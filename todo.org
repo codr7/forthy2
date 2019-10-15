@@ -8,8 +8,6 @@ switch (
   }
 )
 
-* add clock macro/op
-** pop reps from stack
 * add method macro
 ** compile body with_env
 ** add beg_pc
