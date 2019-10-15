@@ -30,7 +30,7 @@ Empty input clears stack and Ctrl+D exits.
 42
 ```
 
-### stack operations
+### stacks
 The holy trinity of stack operations; `dup`, `drop` and `swap`; get their own two-char pictograms.
 
 ```
@@ -49,6 +49,25 @@ The holy trinity of stack operations; `dup`, `drop` and `swap`; get their own tw
   1 2 3 ::
   
 1 3 2
+```
+
+Stack literals are enclosed in parens, `;` may be used to push remaining values on a separate stack.
+
+```
+  (1 2 3; 4 5)
+
+(1 2 3 (4 5))
+```
+
+### scopes
+[forthy2](https://github.com/codr7/forthy2) is fully block-scoped, there is no such thing as a toplevel definition. All definitions are tied to scopes and inaccessible from the outside.
+
+```
+  {|let foo 42}
+  foo
+
+Error at row 2, col 0:
+Unknown id: foo
 ```
 
 ### booleans

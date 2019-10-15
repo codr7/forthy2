@@ -8,8 +8,6 @@ switch (
   }
 )
 
-* add scope readme
-** block scopes
 * add ref-support
 ** RefForm
 ** resolve at compile time
