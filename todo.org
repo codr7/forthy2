@@ -31,6 +31,8 @@ switch (
 ** import in main
 ** add copy(Stack? n offs), clone(Stack? n offs), swap(Stack? x y) & drop(Stack? n offs) methods
 *** add backing Stack methods
+** make stack arg to push/pop/len optional
+** add peek with offs
 * add switch
 ** use branch op
 *** pop_if = true
