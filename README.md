@@ -25,7 +25,7 @@ forthy2
 Press Return on empty row to evaluate.
 Empty input clears stack and Ctrl+D exits.
 
-  0x2a
+  42
   
 42
 ```
