@@ -35,7 +35,7 @@ namespace forthy2 {
     void dump_items(ostream &out);
     bool empty();
     Iter end();
-    bool is(Val &other) override;
+    bool eq(Val &other) override;
     size_t len();
     bool mark(Cx &cx) override;
     void mark_items(Cx &cx);
@@ -49,6 +49,7 @@ namespace forthy2 {
     }
     
     void sweep(Cx &cx) override;
+    Val &try_pop(Cx &cx);
     Type &type(Cx &cx) override;
   };  
 }

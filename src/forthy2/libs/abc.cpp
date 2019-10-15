@@ -210,6 +210,19 @@ namespace forthy2 {
     cx.push(cx.int_type.get(cx, dynamic_cast<Int &>(v).imp - 1));
   }
 
+  static void stack_len_imp(Cx &cx, Pos pos) {
+    cx.push(cx.int_type.get(cx, dynamic_cast<Stack &>(cx.pop()).len()));
+  }
+
+  static void stack_pop_imp(Cx &cx, Pos pos) {
+    cx.push(dynamic_cast<Stack &>(cx.pop()).try_pop(cx));
+  }
+
+  static void stack_push_imp(Cx &cx, Pos pos) {
+    Val &v(cx.pop());
+    dynamic_cast<Stack &>(cx.pop()).push(v);
+  }
+
   void init_abc(Cx &cx, Pos pos, Env &env) {
     env.bind_type(cx, pos, cx.a_type);
     env.bind_type(cx, pos, cx.bool_type);
@@ -283,5 +296,11 @@ namespace forthy2 {
 
     env.add_method(cx, pos, cx.sym("+1"), {{cx.int_type}}).imp = inc_imp;
     env.add_method(cx, pos, cx.sym("-1"), {{cx.int_type}}).imp = dec_imp;
+
+    env.add_method(cx, pos, cx.sym("len"), {{cx.stack_type}}).imp = stack_len_imp;    
+    env.add_method(cx, pos, cx.sym("pop"), {{cx.stack_type}}).imp = stack_pop_imp;    
+
+    env.add_method(cx, pos, cx.sym("push"),
+                   {{cx.stack_type}, {cx.a_type}}).imp = stack_push_imp;    
   }
 }

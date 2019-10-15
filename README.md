@@ -59,6 +59,28 @@ Stack literals are enclosed in parens, `;` may be used to push remaining values 
 (1 2 3 (4 5))
 ```
 
+Stacks are dynamic and support basic stack operations.
+
+```
+  (1 3 5) .: .push 7
+
+(1 3 5 7)
+  .: len
+
+(1 3 5 7) 4
+  :. .: pop
+
+(1 3 5) 7
+```
+
+Popping empty stacks returns `_`.
+
+```
+  () pop
+
+_
+```
+
 ### scopes
 [forthy2](https://github.com/codr7/forthy2) is fully block-scoped, there is no such thing as a toplevel definition. All definitions are tied to scopes and inaccessible from the outside.
 

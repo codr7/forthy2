@@ -8,14 +8,15 @@ switch (
   }
 )
 
-* add stack tests
-** add push/pop/len methods
+* rename env to scope
+** add with_scope around StackOp body
 * add ref-support
 ** RefForm
 ** resolve at compile time
 *** &foo -> Macro/Method(Set)
 *** &{} -> Lambda
 **** extract common base Target for Lambda/Method
+**** add call method
 * add method macro
 ** add Call with pos/target/return_pc
 ** add Return op
@@ -39,12 +40,6 @@ switch (
 *** drop method Node
 * add |-support for values
 ** eval in Lit.compile if cte
-* add ref-support
-** RefForm
-** resolve at compile time
-*** &foo -> Macro/Method(Set)
-*** &{} -> Lambda
-** add call method
 * add static array of Int vals
 ** add MAX_FAST_INT
 * inherit macro from method

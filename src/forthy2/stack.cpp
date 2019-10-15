@@ -48,14 +48,14 @@ namespace forthy2 {
   
   Stack::Iter Stack::end() { return items.end(); }
 
-  bool Stack::is(Val &other) {
+  bool Stack::eq(Val &other) {
     Items &other_items(dynamic_cast<Stack &>(other).items);
     if (items.size() != other_items.size()) { return false; }
 
     for (auto i(items.begin()), j(other_items.begin());
          i != items.end() && j != other_items.end();
          i++, j++) {
-      if (!(*i)->is(**j)) { return false; }
+      if (!(*i)->eq(**j)) { return false; }
     }
 
     return true;
@@ -86,6 +86,11 @@ namespace forthy2 {
   void Stack::sweep(Cx &cx) {
     Val::sweep(cx);
     cx.stack_type.pool.put(*this);
+  }
+
+  Val &Stack::try_pop(Cx &cx) {
+    if (items.empty()) { return cx._; }
+    return pop();
   }
 
   Type &Stack::type(Cx &cx) { return cx.stack_type; }
