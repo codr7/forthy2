@@ -29,7 +29,9 @@ switch (
 * add for macro
 ** add Type.iter method with callback
 * add stack lib
-** add copy(n offs), clone(n, offs), swap(x y) & drop(n offs) methods
+** move existing ops
+** import in main
+** add copy(Stack? n offs), clone(Stack? n offs), swap(Stack? x y) & drop(Stack? n offs) methods
 *** add backing Stack methods
 * add switch
 ** use branch op
