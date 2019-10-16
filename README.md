@@ -102,7 +102,7 @@ Unknown id: foo
 Booleans come in two flavors, `T` and `F`.
 
 ```
-  T.not
+  T not
 
 F
 ```
@@ -202,7 +202,7 @@ Int
 `Nil` has exactly one value, `_`; which is used to indicate missing values.
 
 ```
-  _.type
+  _ type
 
 Nil
 ```
