@@ -176,7 +176,7 @@ Values may be paired using `,`, which pops arguments from the stack;
 1 3, 5 7,
 ```
 
-or by prefixing at read time;
+or by prefixing at compile time;
 
 ```
   |,1 3 |,5 7
