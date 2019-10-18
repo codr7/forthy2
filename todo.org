@@ -3,6 +3,11 @@
 ** init Method.fn
 ** finish Method.call()
 * fib_rec
+* add MethodSet.nargs
+** add constructor arg
+** add test in add_method
+** push first instead of set in id compile if !nargs
+* emit safe call in id compile if method set len is 1
 * --
 * add fix point readme
 * add return-call method
@@ -51,13 +56,6 @@
 *** \r \n \t \s \e
 *** \0x2a \90 \\A \\a \\\
 ** add conversion to/from int/byte
-* add CallMethodOp
-** emit with first method if len(set) == 1
-** throw error unless Method.applicable()
-* add MethodSet.nargs
-** add constructor arg
-** add test in add_method
-** push first instead of set in id compile if !nargs
 * add quote
 ** '(1 2 3) 'foo
 * add string type
