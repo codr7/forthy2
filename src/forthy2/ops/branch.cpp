@@ -10,7 +10,7 @@ namespace forthy2 {
     cx.branch_op.put(*this);
   }
 
-  void BranchOp::dump(ostream &out) { out << "branch " << pc->get(); }
+  void BranchOp::dump(ostream &out) { out << "branch"; }
 
   Node<Op> &BranchOp::eval(Cx &cx) {
     if (cx.peek() == neg) {

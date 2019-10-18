@@ -78,8 +78,9 @@ namespace forthy2 {
       if (in.get(c)) {
         if (c == '.') {
           if (in.get(c)) {
+            in.unget();
+
             if (c == ':') {
-              in.unget();
               in.unget();
             } else {
               pos.col++;
