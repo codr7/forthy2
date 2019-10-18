@@ -25,7 +25,7 @@ namespace forthy2 {
 
     operator bool() override { return !items.empty(); }
 
-    Iter begin();
+    Iter beg();
 
     void clear() { items.clear(); }
     

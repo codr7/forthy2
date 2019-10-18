@@ -28,7 +28,6 @@
 #include "forthy2/ops/call.hpp"
 #include "forthy2/ops/check.hpp"
 #include "forthy2/ops/clock.hpp"
-#include "forthy2/ops/lambda.hpp"
 #include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/push.hpp"
 #include "forthy2/ops/return.hpp"
@@ -69,7 +68,6 @@ namespace forthy2 {
     Pool<CheckOp> check_op;
     Pool<ClockOp> clock_op;
     Pool<BranchOp> branch_op;
-    Pool<LambdaOp> lambda_op;
     Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
     Pool<ReturnOp> return_op;
@@ -238,7 +236,7 @@ namespace forthy2 {
         if (max_ns && t.ns() >= *max_ns) { return {}; }
         op->get().mark_vals(*this);
       }
-      
+
       return t.ns();
     }
 

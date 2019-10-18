@@ -169,6 +169,42 @@ namespace forthy2 {
     return out;
   }
 
+  static Node<Op> &method_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    Sym &id(dynamic_cast<IdForm *>(in.back())->val);
+    in.pop_back();
+
+    Form &args_form(*in.back());
+    in.pop_back();
+
+    args_form.eval(cx, in);
+    Stack &args_val(cx.pop(form.pos, cx.stack_type));
+    vector<Arg> args;
+
+    transform(args_val.beg(),
+              args_val.end(),
+              back_inserter(args), [&](auto &v) {
+                if (&v->type(cx) == &cx.meta_type) {
+                  return Arg(*dynamic_cast<Type *>(v));
+                }
+                  
+                return Arg(v);
+              });
+
+    Method &m(cx.scope->add_method(cx, form.pos, id, args));
+    Forms &body(dynamic_cast<ScopeForm *>(in.back())->body);
+    in.pop_back();
+
+    Node<Op> &ops(m.fn.ops);
+    Scope scope(cx, *cx.scope);
+    
+    cx.with_scope<void>(scope, [&]() {
+        Node<Op> &pc(cx.compile(body, *ops.prev));
+        cx.return_op.get(form, pc);
+      });
+
+    return out;
+  }
+
   static Node<Op> &type_imp(Cx &cx, Op &pc) {
     cx.push(cx.pop().type(cx));
     return *pc.next;
@@ -330,6 +366,9 @@ namespace forthy2 {
 
     scope.add_macro(cx, pos, cx.sym("let"),
                   {{cx.sym_type}, {cx.a_type.or_()}}).imp = let_imp;
+
+    scope.add_macro(cx, pos, cx.sym("method"),
+                    {{cx.sym_type}, {cx.stack_type}, {cx.a_type}}).imp = method_imp;
 
     scope.add_method(cx, pos, cx.sym("type"), {{cx.a_type.or_()}}).imp = type_imp;
 

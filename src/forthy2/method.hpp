@@ -21,7 +21,7 @@ namespace forthy2 {
     Sym &id;
     Args args;
     uint64_t weight;
-    optional<Fn> fn;
+    Fn fn;
     Imp imp;
     
     Method(MethodSet &set, Sym &id, const vector<Arg> &args, uint64_t weight);

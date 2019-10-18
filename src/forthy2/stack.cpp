@@ -7,7 +7,7 @@ namespace forthy2 {
 
   Stack::Stack(const Stack &in): items(in.items) { }
 
-  Stack::Iter Stack::begin() { return items.begin(); }
+  Stack::Iter Stack::beg() { return items.begin(); }
 
   Val &Stack::clone(Cx &cx) { return cx.stack_type.get(cx, *this); }
 

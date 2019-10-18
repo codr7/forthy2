@@ -27,8 +27,7 @@ namespace forthy2 {
       throw ESys(pc.form.pos, "Method not applicable: ", id);
     }
     
-    if (imp) { return imp(cx, pc); }
-    return *return_pc.next;
+    return imp ? imp(cx, pc) : fn.call(cx, pc, return_pc, safe);
   }
 
   void Method::dump(ostream &out) { out << "Method@" << this; }
@@ -37,6 +36,7 @@ namespace forthy2 {
     if (!Val::mark(cx)) { return false; }
     set.mark(cx);
     args.mark_items(cx);
+    fn.mark(cx);
     return true;
   }
 
@@ -44,6 +44,7 @@ namespace forthy2 {
     Val::sweep(cx);
     Node<Method>::unlink();
     set.len--;
+    fn.sweep(cx);
     cx.method_type.pool.put(*this);
   } 
 

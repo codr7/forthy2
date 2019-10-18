@@ -58,6 +58,9 @@ namespace forthy2 {
         pos.col++;
         f = &read_dot(cx, pos, nullptr, in);
         break;
+      case ';':
+        in.unget();
+        return nullptr;
       case '&':
         pos.col++;        
         if (!(f = read_form(cx, pos, in))) { ESys(p, "Invalid ref"); }
@@ -131,7 +134,7 @@ namespace forthy2 {
     
     for (;;) {  
       if (!in.get(c) || (!arg_depth && (!isgraph(c) ||
-                                        c == '|' || c == ']' ||
+                                        c == '|' || c == ']' || c == ';' ||
                                         ((c == '.' || c == ':') &&
                                          pc && pc != '.' && pc != ':') ||
                                         (c != '.' && c != ':' &&
