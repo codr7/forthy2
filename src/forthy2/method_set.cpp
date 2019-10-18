@@ -30,24 +30,9 @@ namespace forthy2 {
 
     return nullptr;
   }
-  
-  void MethodSet::dump(ostream &out) {
-    out << '(';
-    bool first(true);
-      
-    for (Node<Method> *i(root.next); i != &root; i = i->next) {
-      if (first) {
-        first = false;
-      } else {
-        out << ' ';
-      }
-            
-      out << i->get().id;
-    }
 
-    out << ')';
-  }
-  
+  void MethodSet::dump(ostream &out) { out << "MethodSet@" << this; }
+
   bool MethodSet::mark(Cx &cx) {
     if (!Val::mark(cx)) { return false; }
     for (Node<Method> *i(root.next); i != &root; i = i->next) { i->get().mark(cx); }
