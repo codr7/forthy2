@@ -22,7 +22,7 @@ namespace forthy2 {
   }
 
   Method &Scope::add_method(Cx &cx, Pos pos, Sym &id, const vector<Arg> &args) {
-    MethodSet &s(MethodSet::get(cx, pos, *this, id));
+    MethodSet &s(MethodSet::get(cx, pos, *this, id, args.size()));
 
     Method &m(cx.method_type.get(cx,
                                  s,

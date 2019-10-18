@@ -11,13 +11,14 @@ namespace forthy2 {
   struct Sym;
   
   struct MethodSet: Val {
-    static MethodSet &get(Cx &cx, Pos pos, Scope &scope, Sym &id);
+    static MethodSet &get(Cx &cx, Pos pos, Scope &scope, Sym &id, int nargs);
 
     Node<Method> root;
     Sym &id;
+    int nargs;
     int len;
 
-    MethodSet(Sym &id);
+    MethodSet(Sym &id, int nargs);
     Node<Op> &call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) override;
     Method *dispatch(Cx &cx);
     void dump(ostream &out) override;
