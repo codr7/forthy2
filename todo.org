@@ -1,10 +1,11 @@
 * switch Type.parents to sorted vector like Scope
 ** switch Scope.find to lower_bound?
-* add static array of Int vals
-** add MAX_FAST_INT
-* add unsafe { }
+* add cx.int_zero, cx.int_pos, cx.int_neg
+** add IntType with get-override
+* add unsafe {...} macro
 ** add cx.unsafe
-** use as default safe in id compile
+*** default 0
+*** use as default safe in id compile
 * --
 * add recall method
 ** goto beg_pc
