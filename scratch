@@ -1,1 +1,11 @@
 valgrind --leak-check=full ./forthy2 -debug ../test/run.f2
+
+switch (
+  |,{.< 42} {
+              
+  }
+
+  |,T {
+  
+  }
+)

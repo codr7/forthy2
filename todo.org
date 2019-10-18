@@ -1,18 +1,7 @@
-switch (
-  |,{.< 42} {
-              
-  }
-
-  |,T {
-  
-  }
-)
-
 * add method macro
-** add Call with pos/target/return_pc
-** add Return op
 ** compile body with_env
-** add beg_pc
+** init Method.fn
+** finish Method.call()
 * fib_rec
 * --
 * add fix point readme
@@ -38,10 +27,6 @@ switch (
 *** add backing Stack methods
 ** make stack arg to push/pop/len optional
 ** add peek with offs
-* add switch
-** use branch op
-*** pop_if = true
-** add jump op
 * implement MethodSet.clone
 ** switch to use vector/upper_bound like env
 *** drop method Node
@@ -52,6 +37,10 @@ switch (
 ** use dispatch for expand
 * reimplement read_int manually like read_frac
 ** keep hex support
+* add switch
+** use branch op
+*** pop_if = true
+** add jump op
 * add Byte type
 ** Imp = uint8_t
 ** read hex as byte if < 256
