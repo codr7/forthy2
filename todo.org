@@ -36,6 +36,8 @@
 * add stash/splat
 ** stash (..)
 ** splat foo..
+* add stack interpolation
+** (1 3 5 (%{+})) -> (1 (8))
 * implement MethodSet.clone
 ** switch to use vector/upper_bound like env
 *** drop method Node
