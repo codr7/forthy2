@@ -1,11 +1,13 @@
 * switch Type.parents to sorted vector like Scope
 ** switch Scope.find to lower_bound?
-* add cx.int_zero, cx.int_pos, cx.int_neg
-** add IntType with get-override
 * add unsafe {...} macro
 ** add cx.unsafe
 *** default 0
 *** use as default safe in id compile
+* add StopOp
+** throw EStop
+*** catch in main
+** change cx.eval(beg) to loop without condition
 * --
 * add recall method
 ** goto beg_pc

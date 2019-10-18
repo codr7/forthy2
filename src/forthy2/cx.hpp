@@ -91,7 +91,7 @@ namespace forthy2 {
 
     Type &num_type;
     PoolType<Fix> &fix_type;
-    PoolType<Int> &int_type;
+    IntType &int_type;
 
     PoolType<Pair> &pair_type;
     PoolType<Stack> &stack_type;
@@ -107,7 +107,8 @@ namespace forthy2 {
 
     Nil _;
     Bool F, T;
-
+    Int int_zero;
+    
     Path load_path;
     istream *stdin;
     ostream *stdout, *stderr;
@@ -129,7 +130,7 @@ namespace forthy2 {
 
       num_type(*new Type(*this, sym("Num"), {&a_type})),
       fix_type(*new PoolType<Fix>(*this, sym("Fix"), {&num_type})),
-      int_type(*new PoolType<Int>(*this, sym("Int"), {&num_type})),
+      int_type(*new IntType(*this, sym("Int"), {&num_type})),
 
       pair_type(*new PoolType<Pair>(*this, sym("Pair"), {&a_type})),
       stack_type(*new PoolType<Stack>(*this, sym("Stack"), {&a_type})),
@@ -139,6 +140,7 @@ namespace forthy2 {
       call(nullptr),
       F(false),
       T(true),
+      int_zero(0),
       stdin(&cin),
       stdout(&cout),
       stderr(&cerr) { }
