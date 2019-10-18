@@ -3,7 +3,8 @@
 ** add test in add_method
 ** push first instead of set in id compile if !nargs
 * emit safe call in id compile if method set len is 1
-* switch Type.parents to sorted vector like env
+* switch Scope.find to lower_bound?
+* switch Type.parents to sorted vector like Scope
 * add static array of Int vals
 ** add MAX_FAST_INT
 * --

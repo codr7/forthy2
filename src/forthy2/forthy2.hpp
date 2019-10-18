@@ -3,7 +3,7 @@
 
 namespace forthy2 {
   const unsigned int VERSION(6);
-  const bool USE_POOL(false);
+  const bool USE_POOL(true);
 }
 
 #endif
