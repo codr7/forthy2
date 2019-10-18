@@ -23,24 +23,33 @@ namespace forthy2 {
   void Type::derive(Type &parent) { derive(parent, parent); }
 
   void Type::derive(Type &parent, Type &root) {
-    auto found(parents.find(&parent));
+    auto i(find_parent(parent));
 
-    if (found == parents.end()) {
+    if (i == parents.end() || i->first != &parent) {
       weight += parent.weight;
-      parents[&parent] = &root;
+      insert_parent(i, parent, root);
       for (auto &pp: parent.parents) { derive(*pp.first, root); }
     }
   }
 
   void Type::dump(ostream &out) { out << id; }
 
+  Type::ParentIter Type::find_parent(Type &parent) {
+    return lower_bound(parents.begin(), parents.end(), &parent,
+                       [&](auto &x, auto &y) { return x.first < y; });
+  }
+  
+  Type::ParentIter Type::insert_parent(ParentIter i, Type &parent, Type &root) {
+    return parents.emplace(i, &parent, &root);
+  }
+
   bool Type::is(Val &other) { return this == &other; }
 
   Type *Type::isa(Type &parent) {
     if (this == &parent) { return this; }
     
-    if (auto found(parents.find(&parent)); found != parents.end()) {
-      return found->second;
+    if (auto i(find_parent(parent)); i != parents.end() && i->first == &parent) {
+      return i->second;
     }
     
     return nullptr;
