@@ -1,5 +1,4 @@
-* inline val methods
-* inline int methods
+* inline ops
 * --
 * add recall method
 ** goto beg_pc

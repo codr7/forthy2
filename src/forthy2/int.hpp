@@ -13,17 +13,24 @@ namespace forthy2 {
     using Imp = int64_t;
     Imp imp;
 
-    Int(Imp imp);
+    Int(Imp imp): imp(imp) {}
+
     operator bool() override { return imp; }
-    Cmp cmp(Val &other) override;
+
+    Cmp cmp(Val &other) override {
+      return forthy2::cmp<Imp>(imp, dynamic_cast<Int &>(other).imp);
+    }
+
     void dump(ostream &out) override;
-    bool is(Val &other) override;
+
+    bool is(Val &other) override { return dynamic_cast<Int &>(other).imp == imp; }
+
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };
 
   struct IntType: PoolType<Int> {    
-    IntType(Cx &cx, Sym &id, vector<Type *> parents = {});
+    IntType(Cx &cx, Sym &id, vector<Type *> parents);
     Int &get(Cx &cx, Int::Imp imp);
   };
 }
