@@ -52,8 +52,8 @@ namespace forthy2 {
   }
 
   Scope::Iter Scope::find(Sym &id) {
-    return upper_bound(items.begin(), items.end(), id,
-                       [&](auto &x, auto &y) { return &x <= y.id; });
+    return lower_bound(items.begin(), items.end(), &id,
+                       [&](auto &x, auto &y) { return x.id < y; });
   }
     
   Val &Scope::get(Pos pos, Sym &id) {
