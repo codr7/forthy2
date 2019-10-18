@@ -2,7 +2,8 @@
 #include "forthy2/ops/call.hpp"
 
 namespace forthy2 {
-  CallOp::CallOp(Form &form, Node<Op> &prev, bool safe): Op(form, prev), safe(safe) {}
+  CallOp::CallOp(Form &form, Node<Op> &prev, Val *val, bool safe):
+    Op(form, prev), val(val), safe(safe) {}
   
   void CallOp::dealloc(Cx &cx) {
     Op::dealloc(cx);
@@ -12,6 +13,12 @@ namespace forthy2 {
   void CallOp::dump(ostream &out) { out << (safe ? "call-unsafe" : "call"); }
 
   Node<Op> &CallOp::eval(Cx &cx) {
-    return cx.pop(form.pos).call(cx, *this, *this, safe);
+    Val &v(val ? *val : cx.pop(form.pos));
+    return v.call(cx, *this, *this, safe);
+  }
+
+  void CallOp::mark_vals(Cx &cx) {
+    Op::mark_vals(cx);
+    if (val) { val->mark(cx); }
   }
 }

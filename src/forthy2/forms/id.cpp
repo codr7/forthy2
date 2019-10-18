@@ -28,8 +28,7 @@ namespace forthy2 {
         }
       }
       
-      op = &cx.push_op.get(*this, *op, *v);
-      return cx.call_op.get(*this, *op, safe);
+      return cx.call_op.get(*this, *op, v, safe);
     }
 
     return cx.push_op.get(*this, *op, *v);
