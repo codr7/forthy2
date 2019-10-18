@@ -1,12 +1,3 @@
-* add StopOp
-** throw EStop
-*** catch in main
-** change cx.eval(beg) to loop without condition
-* add unsafe {...} macro
-** add cx.unsafe
-*** default 0
-*** use as default safe in id compile
-* --
 * add recall method
 ** goto beg_pc
 ** optional arg for target
@@ -24,6 +15,10 @@
 *** add h/m/s/ms/us/ns accessors
 *** add +/-
 * --
+* add unsafe {...} macro
+** add cx.unsafe
+*** default 0
+*** use as default safe in id compile
 * add fix point readme
 * add next-method fun
 ** search call chain for method call
