@@ -268,7 +268,7 @@ Referencing unbound names results in compile time errors,
     bar
   }
   
-Error at row 2, col 0:
+Error at row 2, col 2:
 Unknown id: bar
 ```
 
