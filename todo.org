@@ -2,6 +2,9 @@
 ** switch Scope.find to lower_bound?
 * add static array of Int vals
 ** add MAX_FAST_INT
+* add unsafe { }
+** add cx.unsafe
+** use as default safe in id compile
 * --
 * add recall method
 ** goto beg_pc
