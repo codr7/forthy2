@@ -323,12 +323,10 @@ namespace forthy2 {
     }
   };
 
-  template <typename T>
-  template <typename...Args>
-  T &PoolType<T>::get(Cx &cx, Args &&...args) {
-    T &v(pool.get(forward<Args>(args)...));
-    cx.marked.push(v);
-    return v;
+  inline Bool &BoolType::get(Cx &cx, bool imp) { return imp ? cx.T : cx.F; }
+
+  inline Int &IntType::get(Cx &cx, Int::Imp imp) {
+    return imp ? PoolType<Int>::get(cx, imp) : cx.int_zero;
   }
 
   inline bool Method::applicable(Cx &cx) {
@@ -370,6 +368,14 @@ namespace forthy2 {
     }
 
     return nullptr;
+  }
+
+  template <typename T>
+  template <typename...Args>
+  T &PoolType<T>::get(Cx &cx, Args &&...args) {
+    T &v(pool.get(forward<Args>(args)...));
+    cx.marked.push(v);
+    return v;
   }
 }
 

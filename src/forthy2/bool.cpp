@@ -20,6 +20,4 @@ namespace forthy2 {
 
   BoolType::BoolType(Cx &cx, Sym &id, vector<Type *> parents):
     ValType<Bool>(cx, id, parents) {}
-
-  Bool &BoolType::get(Cx &cx, bool imp) { return imp ? cx.T : cx.F; }
 }
