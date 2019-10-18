@@ -1,12 +1,7 @@
 #include "forthy2/cx.hpp"
 #include "forthy2/fn.hpp"
 
-namespace forthy2 {
-  Node<Op> &Fn::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
-    cx.push_call(pc, *this, return_pc);
-    return *ops.next;
-  }
-  
+namespace forthy2 {  
   void Fn::dump(ostream &out) { out << "Fn@" << this; }
 
   Type &Fn::type(Cx &cx) { return cx.fn_type; }

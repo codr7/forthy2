@@ -340,6 +340,11 @@ namespace forthy2 {
     return v.call(cx, *this, *this, safe);
   }
 
+  inline Node<Op> &Fn::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
+    cx.push_call(pc, *this, return_pc);
+    return *ops.next;
+  }
+
   inline Int &IntType::get(Cx &cx, Int::Imp imp) {
     return imp ? PoolType<Int>::get(cx, imp) : cx.int_zero;
   }
