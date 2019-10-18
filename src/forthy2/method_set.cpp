@@ -23,20 +23,6 @@ namespace forthy2 {
 
   MethodSet::MethodSet(Sym &id, int nargs): id(id), nargs(nargs), len(0) {}
   
-  Node<Op> &MethodSet::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
-    Method *m(dispatch(cx));
-    if (!m) { throw ESys(pc.form.pos, "Method not applicable: ", id); }
-    return m->call(cx, pc, return_pc, false);
-  }
-
-  Method *MethodSet::dispatch(Cx &cx) {
-    for (Node<Method> *i(root.prev); i != &root; i = i->prev) {
-      if (Method &m(i->get()); m.applicable(cx)) { return &m; }
-    }
-
-    return nullptr;
-  }
-
   void MethodSet::dump(ostream &out) { out << "MethodSet@" << this; }
 
   bool MethodSet::mark(Cx &cx) {

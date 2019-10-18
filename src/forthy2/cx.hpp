@@ -346,6 +346,47 @@ namespace forthy2 {
     cx.marked.push(v);
     return v;
   }
+
+  inline bool Method::applicable(Cx &cx) {
+    Stack::Items &s(cx.stack->items);
+    auto ss(s.size());
+    if (ss < args.len()) { return false; }
+    Val **sv = &s[ss-args.len()];
+
+    for (Arg &a: args.items) {
+      if (a.val) {
+        if (!a.val->eq(**sv)) { return false; }
+      } else if (!(*sv)->type(cx).isa(*a.type)) {
+        return false;
+      }
+
+      sv++;
+    }
+
+    return true;
+  }
+  
+  inline Node<Op> &Method::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
+    if (safe && !applicable(cx)) {
+      throw ESys(pc.form.pos, "Method not applicable: ", id);
+    }
+    
+    return imp ? imp(cx, pc) : fn.call(cx, pc, return_pc, safe);
+  }
+
+  inline Node<Op> &MethodSet::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
+    Method *m(dispatch(cx));
+    if (!m) { throw ESys(pc.form.pos, "Method not applicable: ", id); }
+    return m->call(cx, pc, return_pc, false);
+  }
+
+  inline Method *MethodSet::dispatch(Cx &cx) {
+    for (Node<Method> *i(root.prev); i != &root; i = i->prev) {
+      if (Method &m(i->get()); m.applicable(cx)) { return &m; }
+    }
+
+    return nullptr;
+  }
 }
 
 #endif

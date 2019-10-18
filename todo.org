@@ -1,3 +1,5 @@
+* inline stack methods
+* --
 * add recall method
 ** goto beg_pc
 ** optional arg for target

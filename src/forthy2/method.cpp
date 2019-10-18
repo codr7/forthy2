@@ -5,33 +5,6 @@ namespace forthy2 {
   Method::Method(MethodSet &set, Sym &id, const vector<Arg> &args, uint64_t weight):
     set(set), id(id), args(args), weight(weight) {}
 
-  bool Method::applicable(Cx &cx) {
-    Stack::Items &s(cx.stack->items);
-    auto ss(s.size());
-    if (ss < args.len()) { return false; }
-    Val **sv = &s[ss-args.len()];
-
-    for (Arg &a: args.items) {
-      if (a.val) {
-        if (!a.val->eq(**sv)) { return false; }
-      } else if (!(*sv)->type(cx).isa(*a.type)) {
-        return false;
-      }
-
-      sv++;
-    }
-
-    return true;
-  }
-  
-  Node<Op> &Method::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
-    if (safe && !applicable(cx)) {
-      throw ESys(pc.form.pos, "Method not applicable: ", id);
-    }
-    
-    return imp ? imp(cx, pc) : fn.call(cx, pc, return_pc, safe);
-  }
-
   void Method::dump(ostream &out) { out << "Method@" << this; }
 
   bool Method::mark(Cx &cx) {
