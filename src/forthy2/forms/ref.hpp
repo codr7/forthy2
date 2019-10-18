@@ -1,15 +1,16 @@
-#ifndef FORTHY2_FORM_SCOPE_HPP
-#define FORTHY2_FORM_SCOPE_HPP
+#ifndef FORTHY2_FORM_REF_HPP
+#define FORTHY2_FORM_REF_HPP
 
 #include "forthy2/form.hpp"
 
 namespace forthy2 {
-  struct ScopeForm: Form {
-    Forms body;
+  struct Val;
+  
+  struct RefForm: Form {
+    Form &val;
     
-    ScopeForm(Pos pos);
+    RefForm(const Pos &pos, Form &val);
     Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) override;
-    Node<Op> &compile_ref(Cx &cx, Forms &in, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
     void dump(ostream &out) override;
     void mark_vals(Cx &cx) override;

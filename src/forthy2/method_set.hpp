@@ -18,7 +18,7 @@ namespace forthy2 {
     int len;
 
     MethodSet(Sym &id);
-    void call(Cx &cx, Pos pos) override;
+    Node<Op> &call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) override;
     Method *dispatch(Cx &cx);
     void dump(ostream &out) override;
     bool mark(Cx &cx) override;

@@ -2,7 +2,10 @@
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
-  void Val::call(Cx &cx, Pos pos) { cx.push(*this); }
+  Node<Op> &Val::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
+    cx.push(*this);
+    return *return_pc.next;
+  }
 
   bool Val::mark(Cx &cx) {
     if (marked) { return false; }

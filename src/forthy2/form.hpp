@@ -25,6 +25,7 @@ namespace forthy2 {
     Form(Pos pos);
     virtual ~Form();
     virtual Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) = 0;
+    virtual Node<Op> &compile_ref(Cx &cx, Forms &in, Node<Op> &out);
     virtual void dealloc(Cx &cx) = 0;
     void deref(Cx &cx);
     virtual void dump(ostream &out) = 0;

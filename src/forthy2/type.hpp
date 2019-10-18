@@ -8,7 +8,6 @@
 
 namespace forthy2 {
   struct Cx;
-  struct NilType;
   struct Sym;
   
   struct Type: Val {
@@ -26,7 +25,7 @@ namespace forthy2 {
     bool is(Val &other) override;
     Type *isa(Type &parent);
     bool mark(Cx &cx) override;
-    NilType &or_nil();
+    Type &or_();
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };

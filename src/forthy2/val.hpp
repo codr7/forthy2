@@ -11,6 +11,7 @@ namespace forthy2 {
   using namespace std;
 
   struct Cx;
+  struct Op;
   struct Pos;
   struct Type;
   
@@ -25,7 +26,7 @@ namespace forthy2 {
 
     virtual Val &clone(Cx &cx) { return *this; }
 
-    virtual void call(Cx &cx, Pos pos);
+    virtual Node<Op> &call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe);
 
     virtual Cmp cmp(Val &other) { return forthy2::cmp<Val *>(this, &other); }
 

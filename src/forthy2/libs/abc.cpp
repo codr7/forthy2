@@ -2,7 +2,7 @@
 #include "forthy2/libs/abc.hpp"
 
 namespace forthy2 {
-  static void mark_sweep_imp(Cx &cx, Pos pos) {
+  static Node<Op> &mark_sweep_imp(Cx &cx, Op &pc) {
     optional<uint64_t> max_ns;
 
     if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
@@ -14,9 +14,11 @@ namespace forthy2 {
     } else {
       cx.push(cx._);
     }
+
+    return *pc.next;
   }
 
-  static void mark_imp(Cx &cx, Pos pos) {
+  static Node<Op> &mark_imp(Cx &cx, Op &pc) {
     optional<uint64_t> max_ns;
 
     if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
@@ -28,9 +30,11 @@ namespace forthy2 {
     } else {
       cx.push(cx._);
     }
+
+    return *pc.next;
   }
 
-  static void sweep_imp(Cx &cx, Pos pos) {
+  static Node<Op> &sweep_imp(Cx &cx, Op &pc) {
     optional<uint64_t> max_ns;
 
     if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
@@ -42,45 +46,66 @@ namespace forthy2 {
     } else {
       cx.push(cx._);
     }
+
+    return *pc.next;
   }
 
-  static void eq_imp(Cx &cx, Pos pos) {
+  static Node<Op> &eq_imp(Cx &cx, Op &pc) {
     Val &y(cx.pop()), &x(cx.pop());
     bool ok(x.type(cx) == y.type(cx) && x.eq(y));
     cx.push(cx.bool_type.get(cx, ok));
+    return *pc.next;
   }
 
-  static void lt_imp(Cx &cx, Pos pos) {
+  static Node<Op> &lt_imp(Cx &cx, Op &pc) {
     Val &y(cx.pop()), &x(cx.pop());
     bool ok(x.type(cx) == y.type(cx) && x.cmp(y) == Cmp::Lt);
     cx.push(cx.bool_type.get(cx, ok));
+    return *pc.next;
   }
 
-  static void gt_imp(Cx &cx, Pos pos) {
+  static Node<Op> &gt_imp(Cx &cx, Op &pc) {
     Val &y(cx.pop()), &x(cx.pop());
     bool ok(x.type(cx) == y.type(cx) && x.cmp(y) == Cmp::Gt);
     cx.push(cx.bool_type.get(cx, ok));
+    return *pc.next;
   }
 
-  static void dup_imp(Cx &cx, Pos pos) { cx.push(cx.peek()); }
+  static Node<Op> &dup_imp(Cx &cx, Op &pc) {
+    cx.push(cx.peek());
+    return *pc.next;
+  }
 
-  static void drop_imp(Cx &cx, Pos pos) { cx.pop(); }
+  static Node<Op> &drop_imp(Cx &cx, Op &pc) {
+    cx.pop();
+    return *pc.next;
+  }
 
-  static void swap_imp(Cx &cx, Pos pos) { cx.stack->swap(); }
+  static Node<Op> &swap_imp(Cx &cx, Op &pc) {
+    cx.stack->swap();
+    return *pc.next;
+  }
 
-  static void pair_imp(Cx &cx, Pos pos) {
+  static Node<Op> &pair_imp(Cx &cx, Op &pc) {
     Val &r(cx.pop()), &l(cx.pop());
     cx.push(cx.pair_type.get(cx, l, r));
+    return *pc.next;
   }
 
-  static void unpair_imp(Cx &cx, Pos pos) {
+  static Node<Op> &unpair_imp(Cx &cx, Op &pc) {
     auto &p(dynamic_cast<Pair &>(cx.pop()).imp);
     cx.push(*p.first);
     cx.push(*p.second);
+    return *pc.next;
   }
 
-  static void bool_imp(Cx &cx, Pos pos) {
+  static Node<Op> &bool_imp(Cx &cx, Op &pc) {
     cx.push(cx.bool_type.get(cx, cx.pop()));
+    return *pc.next;
+  }
+
+  static Node<Op> &call_imp(Cx &cx, Op &pc) {
+    return cx.pop().call(cx, pc, pc, true);
   }
 
   static Node<Op> &check_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
@@ -100,25 +125,28 @@ namespace forthy2 {
     return end_pc;
   }
 
-  static void dump_imp(Cx &cx, Pos pos) {
+  static Node<Op> &dump_imp(Cx &cx, Op &pc) {
     auto &out(*cx.stdout);
     cx.pop().dump(out);
     out << endl;
+    return *pc.next;
   }
 
-  static void dump_stack_imp(Cx &cx, Pos pos) {
+  static Node<Op> &dump_stack_imp(Cx &cx, Op &pc) {
     auto &out(*cx.stdout);
     cx.stack->dump(out);
     out << endl;
+    return *pc.next;
   }
 
-  static void is_imp(Cx &cx, Pos pos) {
+  static Node<Op> &is_imp(Cx &cx, Op &pc) {
     Val &y(cx.pop()), &x(cx.pop());
     bool ok(x.type(cx) == y.type(cx) && x.is(y));
     cx.push(cx.bool_type.get(cx, ok));
+    return *pc.next;
   }
 
-  static void isa_imp(Cx &cx, Pos pos) {
+  static Node<Op> &isa_imp(Cx &cx, Op &pc) {
     Val &p(cx.pop()), &c(cx.pop());
 
     if (Type *t(dynamic_cast<Type &>(c).isa(dynamic_cast<Type &>(p))); t) {
@@ -126,6 +154,8 @@ namespace forthy2 {
     } else {
       cx.push(cx._);
     }
+
+    return *pc.next;
   }
 
   static Node<Op> &let_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
@@ -139,7 +169,10 @@ namespace forthy2 {
     return out;
   }
 
-  static void type_imp(Cx &cx, Pos pos) { cx.push(cx.pop().type(cx)); }
+  static Node<Op> &type_imp(Cx &cx, Op &pc) {
+    cx.push(cx.pop().type(cx));
+    return *pc.next;
+  }
 
   static Node<Op> &and_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
     Form &y(*in.back());
@@ -162,8 +195,9 @@ namespace forthy2 {
     return *op.pc;
   }
 
-  static void not_imp(Cx &cx, Pos pos) {
+  static Node<Op> &not_imp(Cx &cx, Op &pc) {
     cx.push(cx.bool_type.get(cx, !dynamic_cast<Bool &>(cx.pop()).imp));
+    return *pc.next;
   }
 
   static Node<Op> &if_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
@@ -200,27 +234,32 @@ namespace forthy2 {
     return branch_op;
   }
 
-  static void inc_imp(Cx &cx, Pos pos) {
-    Val &v(cx.pop(pos));
+  static Node<Op> &inc_imp(Cx &cx, Op &pc) {
+    Val &v(cx.pop());
     cx.push(cx.int_type.get(cx, dynamic_cast<Int &>(v).imp + 1));
+    return *pc.next;
   }
 
-  static void dec_imp(Cx &cx, Pos pos) {
-    Val &v(cx.pop(pos));
+  static Node<Op> &dec_imp(Cx &cx, Op &pc) {
+    Val &v(cx.pop());
     cx.push(cx.int_type.get(cx, dynamic_cast<Int &>(v).imp - 1));
+    return *pc.next;
   }
 
-  static void stack_len_imp(Cx &cx, Pos pos) {
+  static Node<Op> &stack_len_imp(Cx &cx, Op &pc) {
     cx.push(cx.int_type.get(cx, dynamic_cast<Stack &>(cx.pop()).len()));
+    return *pc.next;
   }
 
-  static void stack_pop_imp(Cx &cx, Pos pos) {
+  static Node<Op> &stack_pop_imp(Cx &cx, Op &pc) {
     cx.push(dynamic_cast<Stack &>(cx.pop()).try_pop(cx));
+    return *pc.next;
   }
 
-  static void stack_push_imp(Cx &cx, Pos pos) {
+  static Node<Op> &stack_push_imp(Cx &cx, Op &pc) {
     Val &v(cx.pop());
     dynamic_cast<Stack &>(cx.pop()).push(v);
+    return *pc.next;
   }
 
   void init_abc(Cx &cx, Pos pos, Scope &scope) {
@@ -237,57 +276,65 @@ namespace forthy2 {
     scope.bind_type(cx, pos, cx.stack_type);
     scope.bind_type(cx, pos, cx.sym_type);
 
+
     scope.bind(pos, cx.sym("_"), cx._);
     scope.bind(pos, cx.sym("F"), cx.F);
     scope.bind(pos, cx.sym("T"), cx.T);
 
+
     scope.add_method(cx, pos, cx.sym("mark-sweep"),
-                   {{cx.int_type.or_nil()}}).imp = mark_sweep_imp;
+                   {{cx.int_type.or_()}}).imp = mark_sweep_imp;
 
     scope.add_method(cx, pos, cx.sym("mark"),
-                   {{cx.int_type.or_nil()}}).imp = mark_imp;
+                   {{cx.int_type.or_()}}).imp = mark_imp;
 
     scope.add_method(cx, pos, cx.sym("sweep"),
-                   {{cx.int_type.or_nil()}}).imp = sweep_imp;
+                   {{cx.int_type.or_()}}).imp = sweep_imp;
 
+    
     scope.add_method(cx, pos, cx.sym("="),
-                   {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = eq_imp;
+                   {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = eq_imp;
 
     scope.add_method(cx, pos, cx.sym("<"),
-                   {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = lt_imp;
+                   {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = lt_imp;
 
     scope.add_method(cx, pos, cx.sym(">"),
-                   {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = gt_imp;
+                   {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = gt_imp;
 
-    scope.add_method(cx, pos, cx.sym(".:"), {{cx.a_type.or_nil()}}).imp = dup_imp;
-    scope.add_method(cx, pos, cx.sym(":."), {{cx.a_type.or_nil()}}).imp = drop_imp;
+
+    scope.add_method(cx, pos, cx.sym(".:"), {{cx.a_type.or_()}}).imp = dup_imp;
+    scope.add_method(cx, pos, cx.sym(":."), {{cx.a_type.or_()}}).imp = drop_imp;
 
     scope.add_method(cx, pos, cx.sym("::"),
-                   {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = swap_imp;
+                   {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = swap_imp;
+
 
     scope.add_method(cx, pos, cx.sym(","),
-                   {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = pair_imp;
+                   {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = pair_imp;
     
     scope.add_method(cx, pos, cx.sym(",,"), {{cx.pair_type}}).imp = unpair_imp;
-    scope.add_method(cx, pos, cx.sym("bool"), {{cx.a_type.or_nil()}}).imp = bool_imp;
-    scope.add_macro(cx, pos, cx.sym("check"), {{cx.a_type.or_nil()}}).imp = check_imp;
-    scope.add_macro(cx, pos, cx.sym("clock"), {{cx.a_type.or_nil()}}).imp = clock_imp;
-    scope.add_method(cx, pos, cx.sym("dump"), {{cx.a_type.or_nil()}}).imp = dump_imp;
+
+
+    scope.add_method(cx, pos, cx.sym("bool"), {{cx.a_type.or_()}}).imp = bool_imp;
+    scope.add_method(cx, pos, cx.sym("call"), {{cx.a_type.or_()}}).imp = call_imp;
+    scope.add_macro(cx, pos, cx.sym("check"), {{cx.a_type.or_()}}).imp = check_imp;
+    scope.add_macro(cx, pos, cx.sym("clock"), {{cx.a_type.or_()}}).imp = clock_imp;
+    scope.add_method(cx, pos, cx.sym("dump"), {{cx.a_type.or_()}}).imp = dump_imp;
     scope.add_method(cx, pos, cx.sym("dump-stack")).imp = dump_stack_imp;
     
     scope.add_method(cx, pos, cx.sym("is"),
-                   {{cx.a_type.or_nil()}, {cx.a_type.or_nil()}}).imp = is_imp;
+                   {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = is_imp;
 
     scope.add_method(cx, pos, cx.sym("isa"),
                    {{cx.meta_type}, {cx.meta_type}}).imp = isa_imp;
 
     scope.add_macro(cx, pos, cx.sym("let"),
-                  {{cx.sym_type}, {cx.a_type.or_nil()}}).imp = let_imp;
+                  {{cx.sym_type}, {cx.a_type.or_()}}).imp = let_imp;
 
-    scope.add_method(cx, pos, cx.sym("type"), {{cx.a_type.or_nil()}}).imp = type_imp;
+    scope.add_method(cx, pos, cx.sym("type"), {{cx.a_type.or_()}}).imp = type_imp;
 
-    scope.add_macro(cx, pos, cx.sym("and"), {{cx.a_type.or_nil()}}).imp = and_imp;
-    scope.add_macro(cx, pos, cx.sym("or"), {{cx.a_type.or_nil()}}).imp = or_imp;
+    scope.add_macro(cx, pos, cx.sym("and"), {{cx.a_type.or_()}}).imp = and_imp;
+    scope.add_macro(cx, pos, cx.sym("or"), {{cx.a_type.or_()}}).imp = or_imp;
     scope.add_method(cx, pos, cx.sym("not"), {{cx.bool_type}}).imp = not_imp;
 
     scope.add_macro(cx, pos, cx.sym("if"), {{cx.a_type}}).imp = if_imp;

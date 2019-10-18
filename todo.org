@@ -8,20 +8,26 @@ switch (
   }
 )
 
-* add ref-support
-** RefForm
-** resolve at compile time
-*** &foo -> Macro/Method(Set)
-*** &{} -> Lambda
-**** extract common base Target for Lambda/Method
-**** add call method
+* ref/lambda 
+** test/readme
+** build/test.f2
+** commit
+* --
 * add method macro
 ** add Call with pos/target/return_pc
 ** add Return op
 ** compile body with_env
 ** add beg_pc
-* profile fib_rec
+* fib_rec
 * --
+* add return-call method
+** goto beg_pc
+** optional arg for target
+*** update cx.call.beg_pc if specified
+* add next-method fun
+** search call-chain for method call
+*** return next from method.set
+**** _ if missing
 * switch Type.parents to sorted vector like env
 ** bench
 * add for macro

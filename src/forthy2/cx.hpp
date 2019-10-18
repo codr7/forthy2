@@ -6,16 +6,19 @@
 #include <unordered_map>
 
 #include "forthy2/bool.hpp"
+#include "forthy2/call.hpp"
 #include "forthy2/defer.hpp"
-#include "forthy2/scope.hpp"
+#include "forthy2/fn.hpp"
 #include "forthy2/fix.hpp"
 #include "forthy2/forms/dot.hpp"
 #include "forthy2/forms/id.hpp"
 #include "forthy2/forms/lit.hpp"
 #include "forthy2/forms/pair.hpp"
+#include "forthy2/forms/ref.hpp"
 #include "forthy2/forms/scope.hpp"
 #include "forthy2/forms/stack.hpp"
 #include "forthy2/int.hpp"
+#include "forthy2/lambda.hpp"
 #include "forthy2/macro.hpp"
 #include "forthy2/method.hpp"
 #include "forthy2/method_set.hpp"
@@ -25,14 +28,17 @@
 #include "forthy2/ops/call.hpp"
 #include "forthy2/ops/check.hpp"
 #include "forthy2/ops/clock.hpp"
+#include "forthy2/ops/lambda.hpp"
 #include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/push.hpp"
+#include "forthy2/ops/return.hpp"
 #include "forthy2/ops/stack.hpp"
 #include "forthy2/pair.hpp"
 #include "forthy2/path.hpp"
 #include "forthy2/pool.hpp"
 #include "forthy2/pool_type.hpp"
 #include "forthy2/read.hpp"
+#include "forthy2/scope.hpp"
 #include "forthy2/stack.hpp"
 #include "forthy2/sym.hpp"
 #include "forthy2/timer.hpp"
@@ -55,6 +61,7 @@ namespace forthy2 {
     Pool<IdForm> id_form;
     Pool<LitForm> lit_form;
     Pool<PairForm> pair_form;
+    Pool<RefForm> ref_form;
     Pool<ScopeForm> scope_form;
     Pool<StackForm> stack_form;
 
@@ -62,29 +69,42 @@ namespace forthy2 {
     Pool<CheckOp> check_op;
     Pool<ClockOp> clock_op;
     Pool<BranchOp> branch_op;
+    Pool<LambdaOp> lambda_op;
     Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
+    Pool<ReturnOp> return_op;
     Pool<StackOp> stack_op;
 
     uint64_t type_weight;
     Node<Val> marked, unmarked;
 
     NilType &nil_type;
-    Type &a_type, &num_type;
+    Type &a_type;
 
     BoolType &bool_type;
-    PoolType<Fix> &fix_type;
-    PoolType<Int> &int_type;
+
+    FnType &fn_type;
+    LambdaType &lambda_type;
+    PoolType<Method> &method_type;
+    PoolType<MethodSet> &method_set_type;
+
     PoolType<Macro> &macro_type;
     Type &meta_type;
-    PoolType<MethodSet> &method_set_type;
-    PoolType<Method> &method_type;
+
+    Type &num_type;
+    PoolType<Fix> &fix_type;
+    PoolType<Int> &int_type;
+
     PoolType<Pair> &pair_type;
     PoolType<Stack> &stack_type;
     Type &sym_type;
         
     Scope root_scope, *scope;
     Stack root_stack, *stack;
+    
+    Pool<Call> call_pool;
+    Call *call;
+
     Node<Op> ops;
 
     Nil _;
@@ -98,19 +118,27 @@ namespace forthy2 {
       type_weight(1),
       nil_type(*new NilType(*this, sym("Nil"))),
       a_type(*new Type(*this, sym("A"))),
-      num_type(*new Type(*this, sym("Num"), {&a_type})),
+
       bool_type(*new BoolType(*this, sym("Bool"), {&a_type})),
-      fix_type(*new PoolType<Fix>(*this, sym("Fix"), {&num_type})),
-      int_type(*new PoolType<Int>(*this, sym("Int"), {&num_type})),
+
+      fn_type(*new FnType(*this, sym("Fn"), {&a_type})),
+      lambda_type(*new LambdaType(*this, sym("Lambda"), {&fn_type})),
+      method_type(*new PoolType<Method>(*this, sym("Method"), {&fn_type})),
+      method_set_type(*new PoolType<MethodSet>(*this, sym("MethodSet"), {&fn_type})),
+
       macro_type(*new PoolType<Macro>(*this, sym("Macro"), {&a_type})),
       meta_type(*new Type(*this, sym("Meta"), {&a_type})),
-      method_set_type(*new PoolType<MethodSet>(*this, sym("MethodSet"), {&a_type})),
-      method_type(*new PoolType<Method>(*this, sym("Method"), {&a_type})),
+
+      num_type(*new Type(*this, sym("Num"), {&a_type})),
+      fix_type(*new PoolType<Fix>(*this, sym("Fix"), {&num_type})),
+      int_type(*new PoolType<Int>(*this, sym("Int"), {&num_type})),
+
       pair_type(*new PoolType<Pair>(*this, sym("Pair"), {&a_type})),
       stack_type(*new PoolType<Stack>(*this, sym("Stack"), {&a_type})),
       sym_type(*new Type(*this, sym("Sym"), {&a_type})),
       scope(&root_scope),
       stack(&root_stack),
+      call(nullptr),
       F(false),
       T(true),
       stdin(&cin),
@@ -240,8 +268,20 @@ namespace forthy2 {
       return dynamic_cast<T &>(v);
     }
 
+    Node<Op> &pop_call() {
+      assert(call);
+      Call &c(*call);
+      call = call->prev;
+      call_pool.put(c);
+      return c.return_pc;
+    }
+
     void push(Val &val) { stack->push(val); }
     
+    void push_call(Op &pc, Fn &fn, Node<Op> &return_pc) {
+      call = &call_pool.get(call, pc, fn, return_pc);
+    }
+
     void read(istream &in, Forms &out) {
       Pos p;
       Form *f(nullptr);

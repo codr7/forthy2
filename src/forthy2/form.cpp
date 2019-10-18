@@ -5,7 +5,11 @@ namespace forthy2 {
   Form::Form(Pos pos): pos(pos), cte(false), nrefs(1) { }
 
   Form::~Form() {}
-    
+
+  Node<Op> &Form::compile_ref(Cx &cx, Forms &in, Node<Op> &out) {
+    throw ESys(pos, "Invalid ref: ", *this);
+  }
+
   void Form::deref(Cx &cx) {
     if (!--nrefs) { dealloc(cx); }
   }

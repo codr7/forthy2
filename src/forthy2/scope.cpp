@@ -48,7 +48,7 @@ namespace forthy2 {
 
   void Scope::bind_type(Cx &cx, Pos pos, Type &type) {
     bind(pos, type.id, type);
-    if (type.nil_type != &type) { bind_type(cx, pos, type.or_nil()); }
+    if (type.nil_type != &type) { bind_type(cx, pos, type.or_()); }
   }
 
   Scope::Iter Scope::find(Sym &id) {

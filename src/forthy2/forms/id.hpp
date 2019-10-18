@@ -9,6 +9,7 @@ namespace forthy2 {
     
     IdForm(Pos pos, Sym &val);
     Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) override;
+    Node<Op> &compile_ref(Cx &cx, Forms &in, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
     void dump(ostream &out) override;
   };

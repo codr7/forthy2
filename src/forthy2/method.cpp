@@ -22,11 +22,13 @@ namespace forthy2 {
     return true;
   }
   
-  void Method::call(Cx &cx, Pos pos) {
-    if (imp) {
-      imp(cx, pos);
-    } else {
+  Node<Op> &Method::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
+    if (safe && !applicable(cx)) {
+      throw ESys(pc.form.pos, "Method not applicable: ", id);
     }
+    
+    if (imp) { return imp(cx, pc); }
+    return *return_pc.next;
   }
 
   void Method::dump(ostream &out) { out << "Method@" << this; }

@@ -7,6 +7,7 @@
 namespace forthy2 {
   struct Nil: Val {
     operator bool() override { return false; }
+    Node<Op> &call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) override;
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
     bool is(Val &other) override;
@@ -14,9 +15,7 @@ namespace forthy2 {
     Type &type(Cx &cx) override;
   };
 
-  struct NilType: ValType<Nil> {    
-    NilType(Cx &cx, Sym &id, vector<Type *> parents = {});
-  };
+  using NilType = ValType<Nil>;
 }
 
 #endif

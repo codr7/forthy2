@@ -58,6 +58,11 @@ namespace forthy2 {
         pos.col++;
         f = &read_dot(cx, pos, nullptr, in);
         break;
+      case '&':
+        pos.col++;
+        if (!(f = read_form(cx, pos, in))) { ESys(p, "Invalid ref"); }
+        f = &cx.ref_form.get(p, *f);
+        break;
       default:
         in.unget();
         
@@ -72,8 +77,15 @@ namespace forthy2 {
 
       if (in.get(c)) {
         if (c == '.') {
-          pos.col++;
-          f = &read_dot(cx, pos, f, in);
+          if (in.get(c)) {
+            if (c == ':') {
+              in.unget();
+              in.unget();
+            } else {
+              pos.col++;
+              f = &read_dot(cx, pos, f, in);
+            }
+          }
         } else {
           in.unget();
         }

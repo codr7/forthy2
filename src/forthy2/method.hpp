@@ -5,7 +5,7 @@
 #include <string>
 
 #include "forthy2/arg.hpp"
-#include "forthy2/val.hpp"
+#include "forthy2/fn.hpp"
 
 namespace forthy2 {
   using namespace std;
@@ -15,17 +15,18 @@ namespace forthy2 {
   struct Sym;
   
   struct Method: Node<Method>, Val {
-    using Imp = function<void (Cx &cx, Pos pos)>;
+    using Imp = function<Node<Op> &(Cx &, Op &)>;
 
     MethodSet &set;
     Sym &id;
     Args args;
     uint64_t weight;
+    optional<Fn> fn;
     Imp imp;
-
+    
     Method(MethodSet &set, Sym &id, const vector<Arg> &args, uint64_t weight);
     bool applicable(Cx &cx);
-    void call(Cx &cx, Pos pos) override;
+    Node<Op> &call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) override;
     void dump(ostream &out) override;
     bool mark(Cx &cx) override;
     void sweep(Cx &cx) override;    

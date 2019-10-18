@@ -52,7 +52,7 @@ namespace forthy2 {
     return true;
   }
 
-  NilType &Type::or_nil() { return *dynamic_cast<NilType *>(nil_type); }
+  Type &Type::or_() { return *nil_type; }
 
   void Type::sweep(Cx &cx) {
     Val::sweep(cx);

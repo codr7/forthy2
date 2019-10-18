@@ -17,10 +17,15 @@ namespace forthy2 {
 
     if (vt == &cx.method_type || vt == &cx.method_set_type) {
       op = &cx.push_op.get(*this, *op, v);
-      return cx.call_op.get(*this, *op);
+      return cx.call_op.get(*this, *op, false);
     }
 
     return cx.push_op.get(*this, *op, v);
+  }
+
+  Node<Op> &IdForm::compile_ref(Cx &cx, Forms &in, Node<Op> &out) {
+    Val &v(cx.scope->get(pos, val));
+    return cx.push_op.get(*this, out, v);
   }
 
   void IdForm::dealloc(Cx &cx) { cx.id_form.put(*this); }

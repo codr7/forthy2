@@ -17,10 +17,10 @@ namespace forthy2 {
 
   MethodSet::MethodSet(Sym &id): id(id), len(0) {}
   
-  void MethodSet::call(Cx &cx, Pos pos) {
+  Node<Op> &MethodSet::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
     Method *m(dispatch(cx));
-    if (!m) { throw ESys(pos, "Method not applicable: ", id); }
-    m->call(cx, pos);
+    if (!m) { throw ESys(pc.form.pos, "Method not applicable: ", id); }
+    return m->call(cx, pc, return_pc, safe);
   }
 
   Method *MethodSet::dispatch(Cx &cx) {
