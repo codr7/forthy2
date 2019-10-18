@@ -288,7 +288,12 @@ namespace forthy2 {
   }
 
   static Node<Op> &stack_pop_imp(Cx &cx, Op &pc) {
-    cx.push(dynamic_cast<Stack &>(cx.pop()).try_pop(cx));
+    if (Val *v(dynamic_cast<Stack &>(cx.pop()).try_pop(cx)); v) {
+      cx.push(*v);
+    } else {
+      cx.push(cx._);
+    }
+
     return *pc.next;
   }
 

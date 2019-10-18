@@ -17,15 +17,16 @@ namespace forthy2 {
     Stack *prev = nullptr;
     Items items;
 
-    Stack();
-    Stack(const Stack &in);
+    Stack() {}
+    Stack(const Stack &in): items(in.items) { }
 
     template <typename T>
     Stack(T beg, T end): items(beg, end) {}
 
     operator bool() override { return !items.empty(); }
 
-    Iter beg();
+    Iter beg() { return items.begin(); }
+    Iter end() { return items.end(); }
 
     void clear() { items.clear(); }
     
@@ -33,15 +34,25 @@ namespace forthy2 {
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
     void dump_items(ostream &out);
-    bool empty();
-    Iter end();
+
+    bool empty() { return items.empty(); }
+
     bool eq(Val &other) override;
-    size_t len();
+
+    size_t len() { return items.size(); }
+
     bool mark(Cx &cx) override;
     void mark_items(Cx &cx);
-    Val &peek(size_t offs = 0);
-    Val &pop();
-    void push(Val &v);
+
+    Val &peek(size_t offs) { return *items[items.size() - offs -1]; }
+
+    Val &pop() {
+      Val *v(items.back());
+      items.pop_back();
+      return *v;
+    }
+
+    void push(Val &v) { items.push_back(&v); }
 
     void swap() {
       size_t ss(items.size());
@@ -49,7 +60,9 @@ namespace forthy2 {
     }
     
     void sweep(Cx &cx) override;
-    Val &try_pop(Cx &cx);
+
+    Val *try_pop(Cx &cx) { return items.empty() ? nullptr : &pop(); }
+
     Type &type(Cx &cx) override;
   };  
 }

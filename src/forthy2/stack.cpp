@@ -3,11 +3,6 @@
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
-  Stack::Stack() {}
-
-  Stack::Stack(const Stack &in): items(in.items) { }
-
-  Stack::Iter Stack::beg() { return items.begin(); }
 
   Val &Stack::clone(Cx &cx) { return cx.stack_type.get(cx, *this); }
 
@@ -44,10 +39,6 @@ namespace forthy2 {
     }
   }
 
-  bool Stack::empty() { return items.empty(); }
-  
-  Stack::Iter Stack::end() { return items.end(); }
-
   bool Stack::eq(Val &other) {
     Items &other_items(dynamic_cast<Stack &>(other).items);
     if (items.size() != other_items.size()) { return false; }
@@ -61,8 +52,6 @@ namespace forthy2 {
     return true;
   }
 
-  size_t Stack::len() { return items.size(); }
-
   bool Stack::mark(Cx &cx) {
     if (!Val::mark(cx)) { return false; }
     mark_items(cx);
@@ -73,24 +62,10 @@ namespace forthy2 {
     for (Val *v: items) { v->mark(cx); }
   }
 
-  Val &Stack::peek(size_t offs) { return *items[items.size() - offs -1]; }
-
-  Val &Stack::pop() {
-    Val *v(items.back());
-    items.pop_back();
-    return *v;
-  }
-
-  void Stack::push(Val &v) { items.push_back(&v); }
 
   void Stack::sweep(Cx &cx) {
     Val::sweep(cx);
     cx.stack_type.pool.put(*this);
-  }
-
-  Val &Stack::try_pop(Cx &cx) {
-    if (items.empty()) { return cx._; }
-    return pop();
   }
 
   Type &Stack::type(Cx &cx) { return cx.stack_type; }
