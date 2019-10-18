@@ -24,6 +24,9 @@ switch (
 ** search call-chain for method call
 *** return next from method.set
 **** _ if missing
+* add |-support for values
+** eval in Lit.compile if cte
+** check readme example
 * switch Type.parents to sorted vector like env
 ** bench
 * add for macro
@@ -42,8 +45,6 @@ switch (
 * implement MethodSet.clone
 ** switch to use vector/upper_bound like env
 *** drop method Node
-* add |-support for values
-** eval in Lit.compile if cte
 * add static array of Int vals
 ** add MAX_FAST_INT
 * inherit macro from method

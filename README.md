@@ -82,7 +82,7 @@ _
 ```
 
 ### scopes
-[forthy2](https://github.com/codr7/forthy2) is fully block-scoped, there is no such thing as a toplevel definition. All definitions are tied to scopes and inaccessible from the outside.
+[forthy2](https://github.com/codr7/forthy2) is strictly block-scoped, definitions are tied to scopes and inaccessible from the outside.
 
 ```
   {|let foo 42}
@@ -168,25 +168,19 @@ T
 ```
 
 ### references
-Macros and methods support having their references captured using `&`.
+Macros and methods support capturing references using `&`.
 
 ```
   &*[Int Int]
 
 Method@0x24f59b0
-```
 
-```
-  &*
-
-(*[Fix Fix] *[Int Int])
   6 :: 7 :: call
-
 42
 ```
 
 #### lambdas
-Referenced scopes evaluate to anonymous functions.
+Scope-references evaluate to anonymous functions.
 
 ```
   &{42}
@@ -199,7 +193,7 @@ Lambda@0x24f73c8
 
 
 ### pairs
-Values may be paired using `,`, which pops arguments from the stack;
+Pairs may be created using `,`, which pops both values from the stack at runtime;
 
 ```
   1 3, 5 7,
@@ -213,7 +207,7 @@ or by prefixing at compile time;
   |,1 3 |,5 7
 ```
 
-and existing pairs split using `,,`.
+and split using `,,`.
 
 ```
   |,1 3,,
@@ -222,7 +216,7 @@ and existing pairs split using `,,`.
 ```
 
 ### types
-`type` may be used to get the type of any value.
+`type` may be called to get the type of any value.
 
 ```
   42 type
@@ -230,7 +224,7 @@ and existing pairs split using `,,`.
 Int
 ```
 
-`Nil` has exactly one value, `_`; which is used to indicate missing values.
+`Nil` only has one value, the missing value.
 
 ```
   _ type
@@ -238,7 +232,7 @@ Int
 Nil
 ```
 
-`A` is the root type, from which all types except `Nil` are derived. Type relationships may be queried using `isa`; which returns the direct parent type if any, and `_` otherwise.
+`A` is the root type, from which all types except `Nil` are derived. The type hierarchy may be queried using `isa`; which returns the direct parent type if any, and `_` otherwise.
 
 ```
   Nil.isa A
@@ -246,7 +240,7 @@ Nil
 _
 ```
 
-Nilable types may be obtained by suffixing type names with `?`.
+Nil:able types may be created by suffixing type names with `?`.
 
 ```
   Nil.isa A?
@@ -255,7 +249,7 @@ A?
 ```
 
 ### bindings
-`let` may be used to create compile time bindings.
+`let` may be used to bind names to values at compile time.
 
 ```
   {
@@ -306,7 +300,7 @@ while shadowing within child scopes is permitted.
 ```
   _ mark
 
-7616
+23257
 ```
 
 `sweep` provides an identical API to the second phase,
@@ -314,15 +308,15 @@ while shadowing within child scopes is permitted.
 ```
   _ sweep
 
-489
+1746
 ```
 
-and `mark-sweep` allows treating both phases as one.
+and `mark-sweep` allows performing both phases as one.
 
 ```
   _ mark-sweep
 
-16413
+26120
 ```
 
 ### license
