@@ -154,14 +154,8 @@ namespace forthy2 {
         Form &f(*tmp.back());
         tmp.pop_back();
         op = &f.compile(*this, tmp, *op);
-        
-        if (debug && op != &ops) {
-          op->get().dump(*stdout);
-          (*stdout) << endl;
-        }
       }
       
-      if (debug) { (*stdout) << endl; }
       return *op;
     }
     
@@ -284,17 +278,7 @@ namespace forthy2 {
     void read(istream &in, Forms &out) {
       Pos p;
       Form *f(nullptr);
-      
-      while ((f = read_form(*this, p, in))) {
-        out.push_back(f);
-
-        if (debug) {
-          f->dump(*stdout);
-          (*stdout) << endl;
-        }
-      }
-
-      if (debug) { (*stdout) << endl; }
+      while ((f = read_form(*this, p, in))) { out.push_back(f); }
     }
 
     optional<uint64_t> sweep(optional<uint64_t> max_ns = {}) {
@@ -367,7 +351,7 @@ namespace forthy2 {
   }
   
   inline Node<Op> &Method::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
-    if (safe && !applicable(cx)) {
+    if (cx.debug && safe && !applicable(cx)) {
       throw ESys(pc.form.pos, "Method not applicable: ", id);
     }
     
