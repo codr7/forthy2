@@ -4,8 +4,8 @@
 [forthy2](https://github.com/codr7/forthy2) is a higher level Forth-remix in C++.
 
 ```
-|method fib (0) {}
-|method fib (1) {}
+|method fib (0)   {}
+|method fib (1)   {}
 |method fib (Int) {-1 .: fib :: -1 fib +}
 ```
 
