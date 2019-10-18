@@ -364,7 +364,7 @@ namespace forthy2 {
   }
   
   inline Node<Op> &Method::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
-    if (cx.debug && safe && !applicable(cx)) {
+    if (safe && !applicable(cx)) {
       throw ESys(pc.form.pos, "Method not applicable: ", id);
     }
     
