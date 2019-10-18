@@ -8,6 +8,7 @@
 ** add test in add_method
 ** push first instead of set in id compile if !nargs
 * emit safe call in id compile if method set len is 1
+* switch Type.parents to sorted vector like env
 * --
 * add fix point readme
 * add return-call method
@@ -21,8 +22,6 @@
 * add |-support for values
 ** eval in Lit.compile if cte
 ** check readme example
-* switch Type.parents to sorted vector like env
-** bench
 * add for macro
 ** add Type.iter method with callback
 * add stack lib
