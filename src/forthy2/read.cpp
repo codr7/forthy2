@@ -59,9 +59,9 @@ namespace forthy2 {
         f = &read_dot(cx, pos, nullptr, in);
         break;
       case '&':
-        pos.col++;
+        pos.col++;        
         if (!(f = read_form(cx, pos, in))) { ESys(p, "Invalid ref"); }
-        f = &cx.ref_form.get(p, *f);
+        if (!dynamic_cast<RefForm *>(f)) { f = &cx.ref_form.get(p, *f); }
         break;
       default:
         in.unget();

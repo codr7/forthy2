@@ -167,6 +167,37 @@ while `=` returns true if they are equal; the difference only applies to referen
 T
 ```
 
+### references
+Macros and methods support having their references captured using `&`.
+
+```
+  &*[Int Int]
+
+Method@0x24f59b0
+```
+
+```
+  &*
+
+(*[Fix Fix] *[Int Int])
+  6 :: 7 :: call
+
+42
+```
+
+#### lambdas
+Referenced scopes evaluate to anonymous functions.
+
+```
+  &{42}
+  
+Lambda@0x24f73c8
+  call
+
+42
+```
+
+
 ### pairs
 Values may be paired using `,`, which pops arguments from the stack;
 

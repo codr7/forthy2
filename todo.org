@@ -8,11 +8,6 @@ switch (
   }
 )
 
-* ref/lambda 
-** test/readme
-** build/test.f2
-** commit
-* --
 * add method macro
 ** add Call with pos/target/return_pc
 ** add Return op
@@ -20,6 +15,7 @@ switch (
 ** add beg_pc
 * fib_rec
 * --
+* add fix point readme
 * add return-call method
 ** goto beg_pc
 ** optional arg for target

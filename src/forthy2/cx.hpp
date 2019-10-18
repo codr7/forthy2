@@ -272,8 +272,9 @@ namespace forthy2 {
       assert(call);
       Call &c(*call);
       call = call->prev;
+      Node<Op> &rpc(c.return_pc);
       call_pool.put(c);
-      return c.return_pc;
+      return rpc;
     }
 
     void push(Val &val) { stack->push(val); }
