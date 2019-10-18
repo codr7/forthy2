@@ -9,6 +9,8 @@
 ** push first instead of set in id compile if !nargs
 * emit safe call in id compile if method set len is 1
 * switch Type.parents to sorted vector like env
+* add static array of Int vals
+** add MAX_FAST_INT
 * --
 * add fix point readme
 * add return-call method
@@ -31,11 +33,12 @@
 *** add backing Stack methods
 ** make stack arg to push/pop/len optional
 ** add peek with offs
+* add stash/splat
+** stash (..)
+** splat foo..
 * implement MethodSet.clone
 ** switch to use vector/upper_bound like env
 *** drop method Node
-* add static array of Int vals
-** add MAX_FAST_INT
 * inherit macro from method
 ** add separate imp
 ** use dispatch for expand
