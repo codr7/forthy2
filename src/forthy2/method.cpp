@@ -3,7 +3,7 @@
 
 namespace forthy2 {
   Method::Method(MethodSet &set, Sym &id, const vector<Arg> &args, uint64_t weight):
-    set(set), id(id), args(args), weight(weight) { }
+    set(set), id(id), args(args), weight(weight) {}
 
   bool Method::applicable(Cx &cx) {
     Stack::Items &s(cx.stack->items);
@@ -17,6 +17,8 @@ namespace forthy2 {
       } else if (!(*sv)->type(cx).isa(*a.type)) {
         return false;
       }
+
+      sv++;
     }
 
     return true;

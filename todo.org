@@ -1,8 +1,3 @@
-* add bench/fib_rec.py
-* rewrite fib_rec-if using literal method args
-** update readme
-* commit
-* --
 * add MethodSet.nargs
 ** add constructor arg
 ** add test in add_method
