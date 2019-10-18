@@ -325,6 +325,21 @@ namespace forthy2 {
 
   inline Bool &BoolType::get(Cx &cx, bool imp) { return imp ? cx.T : cx.F; }
 
+  inline Node<Op> &BranchOp::eval(Cx &cx) {
+    if (cx.peek() == neg) {
+      if (pop_if) { cx.pop(); }
+      return *pc->next;
+    }
+    
+    if (pop_else) { cx.pop(); }
+    return *Node<Op>::next;
+  }
+
+  inline Node<Op> &CallOp::eval(Cx &cx) {
+    Val &v(val ? *val : cx.pop(form.pos));
+    return v.call(cx, *this, *this, safe);
+  }
+
   inline Int &IntType::get(Cx &cx, Int::Imp imp) {
     return imp ? PoolType<Int>::get(cx, imp) : cx.int_zero;
   }
@@ -377,6 +392,13 @@ namespace forthy2 {
     cx.marked.push(v);
     return v;
   }
+
+  inline Node<Op> &PushOp::eval(Cx &cx) {
+    cx.push(val.clone(cx));
+    return *Node<Op>::next;
+  }
+
+  inline Node<Op> &ReturnOp::eval(Cx &cx) { return *cx.pop_call().next; }
 }
 
 #endif

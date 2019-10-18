@@ -11,6 +11,4 @@ namespace forthy2 {
   }
 
   void ReturnOp::dump(ostream &out) { out << "return"; }
-
-  Node<Op> &ReturnOp::eval(Cx &cx) { return *cx.pop_call().next; }
 }

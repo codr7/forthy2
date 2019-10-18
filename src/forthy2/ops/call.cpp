@@ -12,11 +12,6 @@ namespace forthy2 {
 
   void CallOp::dump(ostream &out) { out << (safe ? "call-unsafe" : "call"); }
 
-  Node<Op> &CallOp::eval(Cx &cx) {
-    Val &v(val ? *val : cx.pop(form.pos));
-    return v.call(cx, *this, *this, safe);
-  }
-
   void CallOp::mark_vals(Cx &cx) {
     Op::mark_vals(cx);
     if (val) { val->mark(cx); }

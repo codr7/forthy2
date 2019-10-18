@@ -1,5 +1,3 @@
-* inline ops
-* --
 * add recall method
 ** goto beg_pc
 ** optional arg for target

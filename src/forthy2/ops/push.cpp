@@ -10,11 +10,6 @@ namespace forthy2 {
 
   void PushOp::dump(ostream &out) { out << "push " << val; }
 
-  Node<Op> &PushOp::eval(Cx &cx) {
-    cx.push(val.clone(cx));
-    return *Node<Op>::next;
-  }
-
   void PushOp::mark_vals(Cx &cx) {
     Op::mark_vals(cx);
     val.mark(cx);
