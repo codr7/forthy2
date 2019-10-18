@@ -17,7 +17,7 @@ namespace forthy2 {
   void Form::eval(Cx &cx, Forms &in) {
     Node<Op> &pc(*cx.ops.prev);
     compile(cx, in, pc);
-    cx.eval(pc);
+    cx.eval(pc, cx.ops);
     while (cx.ops.prev != &pc) { cx.ops.prev->get().dealloc(cx); }
   }
 

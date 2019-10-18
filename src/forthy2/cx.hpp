@@ -196,13 +196,11 @@ namespace forthy2 {
       Node<Op> &pc(*ops.prev);
       compile(forms, pc);
       deref(forms);
-      eval(pc);      
+      eval(pc, ops);      
     }
 
-    void eval(Node<Op> &pc) { eval(pc, ops); }
-    
-    void eval(Node<Op> &beg, Node<Op> &end) {
-      for (Node<Op> *op(beg.next); op != &end; op = &op->get().eval(*this));
+    void eval(Node<Op> &beg_pc, Node<Op> &end_pc) {
+      for (Node<Op> *op(beg_pc.next); op != &end_pc; op = &op->get().eval(*this));
     }
 
     void load(Pos pos, const Path &path) {
