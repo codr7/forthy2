@@ -3,6 +3,9 @@
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
+  PushOp::PushOp(Form &form, Node<Op> &prev, Val &val):
+    Op(form, prev), val(val) {}
+
   void PushOp::dealloc(Cx &cx) {
     Op::dealloc(cx);
     cx.push_op.put(*this);

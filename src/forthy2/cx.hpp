@@ -395,7 +395,7 @@ namespace forthy2 {
   }
 
   inline Node<Op> &PushOp::eval(Cx &cx) {
-    cx.push(val.clone(cx));
+    cx.push(val);
     return *Node<Op>::next;
   }
 
