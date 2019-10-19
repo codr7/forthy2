@@ -1,10 +1,9 @@
-o* add recall method
+* add fib_iter
+* add fib_tail
+* add recall method
 ** goto beg_pc
 ** optional arg for target
 *** update cx.call.beg_pc if specified
-* add fib_tail
-* --
-* add fib_iter
 * --
 * add Time type
 ** chrono::duration<double, nano>
