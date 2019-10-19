@@ -180,17 +180,17 @@ Lambda@0x24f73c8
 Pairs may be created at compile time by prefixing with `,`,
 
 ```
-  ,1 3,5 7
+  ,1 3
 
-,1 3 ,5 7
+,1 3
 ```
 
 or at run time using `pair`;
 
 ```
-  1.pair 3 5.pair 7
+  1.pair 3
   
-,1 3 ,5 7
+,1 3
 ```
 
 and split using `unpair`.
