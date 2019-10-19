@@ -17,8 +17,6 @@
 ** optional arg for target
 *** update cx.call.beg_pc if specified
 * --
-* add time Int constructors
-** 42 msecs
 * add next-method
 ** search call chain for method call
 *** return next from method.set
