@@ -59,6 +59,8 @@ int main(int argc, char *argv[]) {
     } else if (a == "-max-int") {
       max_int = stol(*++argv);
       argc--;
+    } else if (a == "-unsafe") {
+      cx.unsafe++;
     } else {
       files.push_back(a);
     }

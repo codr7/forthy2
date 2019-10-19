@@ -52,6 +52,7 @@ namespace forthy2 {
   
   struct Cx {
     bool debug = false;
+    int unsafe = 0;
     
     Pool<Sym> sym_pool;
     unordered_map<string, Sym *> syms;
@@ -376,7 +377,7 @@ namespace forthy2 {
   }
   
   inline Node<Op> &Method::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
-    if (safe && !applicable(cx)) {
+    if (cx.unsafe <= 0 && safe && !applicable(cx)) {
       throw ESys(pc.form.pos, "Method not applicable: ", id);
     }
     

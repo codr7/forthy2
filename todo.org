@@ -1,10 +1,3 @@
-* add -unsafe
-** add Int::Imp cx.unsafe
-** inc on flag
-** add unsafe {} macro
-** disable method type check if cx.unsafe > 0
-** bench
-* --
 * add quote
 ** 'foo '(1 2 3)
 ** add Val &Form.quote()
@@ -74,6 +67,8 @@
 *** print symbols with quote
 *** print stack items in sequence
 *** print pair items separated by space
+* add -unsafe
+** add unsafe {} macro
 * add C++ emit
 ** add -build mode
 ** use label/goto
