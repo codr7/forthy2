@@ -144,7 +144,7 @@ Methods and macros may be called infix by adding `.` between first argument and 
 ```
 
 ### identity vs. equality
-`is` may be used to check if two values refer to the same block of memory,
+`is` may be used to check if two values share the same memory address,
 
 ```
   T.is T
@@ -158,7 +158,7 @@ T
 F
 ```
 
-while `=` returns true if they have the same contents.
+while `=` returns true if they are equal.
 
 ```
   (1 2 3).= (1 2 3)
