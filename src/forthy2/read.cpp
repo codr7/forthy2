@@ -36,6 +36,10 @@ namespace forthy2 {
       case ';':
         in.unget();
         return nullptr;
+      case ',':
+        pos.col++;
+        f = &read_pair(cx, pos, in);
+        break;
       case '&':
         pos.col++;        
         if (!(f = read_form(cx, pos, in))) { ESys(p, "Invalid ref"); }
@@ -136,7 +140,6 @@ namespace forthy2 {
       }
 
       pos.col++;
-      if (c == ',') { break; }
       pc = c;
     }
 

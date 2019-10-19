@@ -350,19 +350,15 @@ namespace forthy2 {
   }
 
   inline bool Method::applicable(Cx &cx) {
-    Stack::Items &s(cx.stack->items);
-    auto ss(s.size());
+    Stack::Items &stack(cx.stack->items);
+    auto ss(stack.size());
     if (ss < args.len()) { return false; }
-    Val **sv = &s[ss-args.len()];
+    Val **s(&stack[ss - args.len()]);
 
     for (Arg &a: args.items) {
-      if (a.val) {
-        if (!a.val->eq(**sv)) { return false; }
-      } else if (!(*sv)->type(cx).isa(*a.type)) {
-        return false;
-      }
-
-      sv++;
+      Type &at(a.type ? *a.type : a.val->type(cx)), &st((*s)->type(cx));
+      if ((a.val && (&at != &st || !a.val->eq(**s))) || !st.isa(at)) { return false; }
+      s++;
     }
 
     return true;

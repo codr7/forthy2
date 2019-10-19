@@ -34,6 +34,15 @@ check {3.> 1}
   check {foo.= 42}
 }
 
+{
+  method foo(Bool) {:. 1}
+  method foo(Int)  {:. 3}
+  method foo(42)   {:. 5}
+  check {T foo.= 1}
+  check {41 foo.= 3}
+  check {42 foo.= 5}
+}
+
 check {&&&T call.is T}
 check {&{42} call.= 42}
 check {6 7 &* call.= 42}

@@ -1,4 +1,4 @@
-* add recall method
+o* add recall method
 ** goto beg_pc
 ** optional arg for target
 *** update cx.call.beg_pc if specified

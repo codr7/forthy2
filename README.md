@@ -177,7 +177,7 @@ Lambda@0x24f73c8
 ```
 
 ### pairs
-Pairs may be created at compile time by prefixing with `,`,
+Pairs may be created at read time by prefixing with `,`,
 
 ```
   ,1 3
@@ -199,6 +199,29 @@ and split using `unpair`.
   ,1 3 unpair
   
 1 3
+```
+
+### methods
+Much like Julia and Common Lisp, [forthy2](https://github.com/codr7/forthy2) supports generic multi-dispatch.
+
+```
+  method foo(Bool) {1}
+  method foo(Int)  {3}
+  foo T
+
+1
+  foo 42
+
+3
+```
+
+Any literal may be used as argument.
+
+```
+  method foo(42) {5}
+  foo 42
+
+5
 ```
 
 ### types

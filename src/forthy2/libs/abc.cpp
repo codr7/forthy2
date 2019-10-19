@@ -86,16 +86,7 @@ namespace forthy2 {
     return *pc.next;
   }
 
-  static Node<Op> &pair_macro_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
-    Form &l(*in.back());
-    in.pop_back();
-    Form &r(*in.back());
-    in.pop_back();
-    in.push_back(&cx.pair_form.get(form.pos, l, r));
-    return out;
-  }
-
-  static Node<Op> &pair_method_imp(Cx &cx, Op &pc) {
+  static Node<Op> &pair_imp(Cx &cx, Op &pc) {
     Val &r(cx.pop()), &l(cx.pop());
     cx.push(cx.pair_type.get(cx, l, r));
     return *pc.next;
@@ -359,11 +350,8 @@ namespace forthy2 {
                    {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = swap_imp;
 
 
-    scope.add_macro(cx, pos, cx.sym(","),
-                   {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = pair_macro_imp;
-
     scope.add_method(cx, pos, cx.sym("pair"),
-                   {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = pair_method_imp;
+                   {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = pair_imp;
     
     scope.add_method(cx, pos, cx.sym("unpair"), {{cx.pair_type}}).imp = unpair_imp;
 
