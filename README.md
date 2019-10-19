@@ -30,6 +30,9 @@ Empty input clears stack and Ctrl+D exits.
 42
 ```
 
+### status
+Examples from this document, as well as [tests](https://github.com/codr7/forthy2/blob/master/tests/) and [benchmarks](https://github.com/codr7/forthy2/blob/master/bench/); should do the right thing and run clean in Valgrind. Performance is currently hovering around Python3, I expect that to keep improving for a while.
+
 ### stacks
 The holy trinity of stack operations; `dup`, `drop` and `swap`; get their own two-char pictograms.
 
@@ -92,12 +95,6 @@ Error at row 2, col 0:
 Unknown id: foo
 ```
 
-`;` may be used to compile remaining forms in a separate scope.
-
-```
-  {; let foo 42}
-```
-
 ### booleans
 Booleans come in two flavors, `T` and `F`.
 
@@ -139,9 +136,9 @@ Methods and macros may be called infix by adding `.` between first argument and 
 ```
 
 ### macros
-Macros are methods which are called at compile time and potentially consume arguments from the input stream. `|` may be used to trigger compile time evaluation.
+Macros are methods which are mostly called at compile time and often consume arguments from the input stream. `|` may be used to trigger compile time evaluation for any expression.
 
-The following example pushes `1` and `5` at compile time, which are then added and printed when compiling the final expression. `3` and `7` are pushed at run time and added.
+The following example pushes `1` and `5` at compile time, which are then added and printed while compiling the final expression. `3` and `7` are pushed and added at run time.
 
 ```
   |1 3 |5 7 + |{+ dump}
@@ -254,6 +251,17 @@ A?
 ```
   {
     |let foo 42
+    foo
+  }
+
+42
+```
+
+Values are evaluated when bound.
+
+```
+  {
+    |let foo {6.* 7}
     foo
   }
 

@@ -19,9 +19,6 @@
 ** search call chain for method call
 *** return next from method.set
 **** _ if missing
-* add |-support for values
-** eval in Lit.compile if cte
-** check readme example
 * add for macro
 ** add Type.iter method with callback
 * add stack lib

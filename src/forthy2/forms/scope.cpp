@@ -4,12 +4,24 @@
 namespace forthy2 {
   ScopeForm::ScopeForm(Pos pos): Form(pos) {}
 
-  Node<Op> &ScopeForm::compile(Cx &cx, Forms &in, Node<Op> &out) {
+  Node<Op> &ScopeForm::compile(Cx &cx, Forms &in, Node<Op> &out) {    
+    Node<Op> *pc(&out);
     Scope scope(cx, *cx.scope);
-    
-    return cx.with_scope<Node<Op> &>(scope, [&]() -> Node<Op> & {
-        return cx.compile(body, out);
-      });
+    cx.with_scope<void>(scope, [&]() { pc = &cx.compile(body, *pc); });
+
+    if (cte) {
+      cx.eval(out, *pc->next);
+
+      while (pc != &out) {
+        Op &op(pc->get());
+        pc = pc->prev;
+        op.dealloc(cx);
+      }
+      
+      return out;
+    }
+
+    return *pc;
   }
 
   Node<Op> &ScopeForm::compile_ref(Cx &cx, Forms &in, Node<Op> &out) {
