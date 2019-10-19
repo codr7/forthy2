@@ -1,10 +1,10 @@
-|let N    20
-|let REPS 10
+let N    20
+let REPS 10
 
-|method fib (0)   {}
-|method fib (1)   {}
-|method fib (Int) {-1 .: fib :: -1 fib +[Int Int]}
+method fib (0)   {}
+method fib (1)   {}
+method fib (Int) {-1 .: fib :: -1 fib +[Int Int]}
 
 N fib dump
-REPS |clock {N fib :.} dump
+REPS clock {N fib :.} dump
 dump-stack

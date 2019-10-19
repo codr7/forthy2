@@ -4,9 +4,9 @@
 [forthy2](https://github.com/codr7/forthy2) is a higher level Forth-remix in C++.
 
 ```
-|method fib (0)   {}
-|method fib (1)   {}
-|method fib (Int) {-1 .: fib :: -1 fib +}
+method fib (0)   {}
+method fib (1)   {}
+method fib (Int) {-1 .: fib :: -1 fib +}
 ```
 
 ### setup
@@ -88,7 +88,7 @@ _
 [forthy2](https://github.com/codr7/forthy2) is strictly block-scoped, definitions are tied to scopes and inaccessible from the outside.
 
 ```
-  {|let foo 42}
+  {let foo 42}
   foo
 
 Error at row 2, col 0:
@@ -115,13 +115,13 @@ T
 `and`/`or` both pop the first argument off the stack and return the last evaluated value.
 
 ```
-  T |and 42
+  T and 42
 
 42
 ```
 
 ```
-  F |or 42
+  F or 42
 
 42
 ```
@@ -133,18 +133,6 @@ Methods and macros may be called infix by adding `.` between first argument and 
   6.* 7
 
 42
-```
-
-### macros
-Macros are methods which are mostly called at compile time and often consume arguments from the input stream. `|` may be used to trigger compile time evaluation for any expression.
-
-The following example pushes `1` and `5` at compile time, which are then added and printed while compiling the final expression. `3` and `7` are pushed and added at run time.
-
-```
-  |1 3 |5 7 + |{+ dump}
-
-6
-10
 ```
 
 ### identity vs. equality
@@ -176,7 +164,7 @@ Method@0x24f59b0
 42
 ```
 
-#### lambdas
+### lambdas
 Scope-references evaluate to anonymous functions.
 
 ```
@@ -188,26 +176,27 @@ Lambda@0x24f73c8
 42
 ```
 
-
 ### pairs
-Pairs may be created using `,`, which pops both values from the stack at runtime;
+Pairs may be created at compile time by prefixing with `,`,
 
 ```
-  1 3, 5 7,
+  ,1 3,5 7
+
+,1 3 ,5 7
+```
+
+or at run time using `pair`;
+
+```
+  1.pair 3 5.pair 7
   
-1 3, 5 7,
+,1 3 ,5 7
 ```
 
-or by prefixing at compile time;
+and split using `unpair`.
 
 ```
-  |,1 3 |,5 7
-```
-
-and split using `,,`.
-
-```
-  |,1 3,,
+  ,1 3 unpair
   
 1 3
 ```

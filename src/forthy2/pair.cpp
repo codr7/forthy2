@@ -13,10 +13,10 @@ namespace forthy2 {
   }
 
   void Pair::dump(ostream &out) {
+    out << ',';
     imp.first->dump(out);
     out << ' ';
     imp.second->dump(out);
-    out << ',';
   }
   
   bool Pair::is(Val &other) {

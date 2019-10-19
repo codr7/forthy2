@@ -9,7 +9,6 @@ namespace forthy2 {
     Type *vt(&v->type(cx));
 
     if (vt == &cx.macro_type) {
-      if (!cte) { throw ESys(pos, "Runtime macro dispatch: ", val); }
       return dynamic_cast<Macro *>(v)->expand(cx, *this, in, out);
     }
     

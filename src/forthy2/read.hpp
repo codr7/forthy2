@@ -17,7 +17,7 @@ namespace forthy2 {
   struct Val;
 
   DotForm &read_dot(Cx &cx, Pos &pos, Form *x, istream &in);
-  Form *read_form(Cx &cx, Pos &pos, istream &in, bool cte = false);
+  Form *read_form(Cx &cx, Pos &pos, istream &in);
   pair<uint64_t, uint8_t> read_frac(Cx &cx, Pos &pos, istream &in);
   IdForm &read_id(Cx &cx, Pos &pos, istream &in);
   Int::Imp read_int(Cx &cx, Pos &pos, istream &in, bool is_hex);

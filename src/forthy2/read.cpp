@@ -4,19 +4,13 @@
 #include "forthy2/read.hpp"
 
 namespace forthy2 {
-  Form *read_form(Cx &cx, Pos &pos, istream &in, bool cte) {
+  Form *read_form(Cx &cx, Pos &pos, istream &in) {
     skip_ws(pos, in);
     Pos p(pos);
     Form *f;
     
     if (char c(0); in.get(c)) {
       switch (c) {
-      case '|':
-        pos.col++;
-        f = read_form(cx, pos, in, true);
-        if (!f) { throw ESys(p, "Missing form"); }
-        cte = true;
-        break;
       case '{':
         pos.col++;
         f = &read_scope(cx, pos, in);
@@ -25,25 +19,6 @@ namespace forthy2 {
         pos.col++;
         f = &read_stack(cx, pos, in);
         break;
-      case ',':
-        pos.col++;
-        if (!in.get(c)) { ESys(p, "Invalid pair"); }
-        
-        if (c == ',') {
-          pos.col++;
-          f = &cx.id_form.get(p, cx.sym(",,"));
-        } else {
-          if (cte) {
-            in.unget();
-            f = &read_pair(cx, pos, in);
-          } else {
-            pos.col++;
-            f = &cx.id_form.get(p, cx.sym(","));
-          }
-        }
-
-        break;
-
       case '.':
         if (in.get(c)) {
           in.unget();
@@ -95,7 +70,6 @@ namespace forthy2 {
         }
       }
       
-      f->cte = cte;
       return f;
     }
     
@@ -134,7 +108,9 @@ namespace forthy2 {
     
     for (;;) {  
       if (!in.get(c) || (!arg_depth && (!isgraph(c) ||
-                                        c == '|' || c == ']' || c == ';' ||
+                                        c == '|' ||
+                                        c == ']' ||
+                                        c == ';' ||
                                         ((c == '.' || c == ':') &&
                                          pc && pc != '.' && pc != ':') ||
                                         (c != '.' && c != ':' &&
@@ -142,6 +118,7 @@ namespace forthy2 {
                                         (c == ',' && pc && pc != ',') ||
                                         c == '(' || c == ')' ||
                                         c == '{' || c == '}'))) {
+        in.unget();
         break;
       }
 
@@ -158,11 +135,11 @@ namespace forthy2 {
         break;
       }
 
-      pc = c;
       pos.col++;
+      if (c == ',') { break; }
+      pc = c;
     }
 
-    if (!in.eof()) { in.unget(); }
     return cx.id_form.get(p, cx.sym(out.str()));
   }
   

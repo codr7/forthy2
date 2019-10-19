@@ -2,7 +2,7 @@
 #include "forthy2/form.hpp"
 
 namespace forthy2 {
-  Form::Form(Pos pos): pos(pos), cte(false), nrefs(1) { }
+  Form::Form(Pos pos): pos(pos), nrefs(1) { }
 
   Form::~Form() {}
 

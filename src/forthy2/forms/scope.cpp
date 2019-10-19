@@ -8,19 +8,6 @@ namespace forthy2 {
     Node<Op> *pc(&out);
     Scope scope(cx, *cx.scope);
     cx.with_scope<void>(scope, [&]() { pc = &cx.compile(body, *pc); });
-
-    if (cte) {
-      cx.eval(out, *pc->next);
-
-      while (pc != &out) {
-        Op &op(pc->get());
-        pc = pc->prev;
-        op.dealloc(cx);
-      }
-      
-      return out;
-    }
-
     return *pc;
   }
 
