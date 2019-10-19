@@ -107,7 +107,7 @@ namespace forthy2 {
 
     Nil _;
     Bool F, T;
-    Int int_zero;
+    vector<Int> ints;
     
     Path load_path;
     istream *stdin;
@@ -140,11 +140,21 @@ namespace forthy2 {
       call(nullptr),
       F(false),
       T(true),
-      int_zero(0),
       stdin(&cin),
       stdout(&cout),
-      stderr(&cerr) { }
+      stderr(&cerr) {
+      ints.emplace_back(0);
+    }
 
+    void init_ints(Int::Imp max) {
+      ints.reserve(max * 2 + 1);
+      
+      for (Int::Imp i(ints.size()); i < max; i++) {
+        ints.emplace_back(-i);
+        ints.emplace_back(i);
+      }
+    }
+    
     Node<Op> &compile(Forms &in, Node<Op> &out) {
       Forms tmp(in);
       reverse(tmp.begin(), tmp.end());
@@ -346,7 +356,8 @@ namespace forthy2 {
   }
 
   inline Int &IntType::get(Cx &cx, Int::Imp imp) {
-    return imp ? PoolType<Int>::get(cx, imp) : cx.int_zero;
+    size_t i((imp < 0) ? -imp * 2 - 1: imp * 2);
+    return (i < cx.ints.size()) ? cx.ints[i] : PoolType<Int>::get(cx, imp);
   }
 
   inline bool Method::applicable(Cx &cx) {

@@ -1,3 +1,10 @@
+* add -unsafe
+** add Int::Imp cx.unsafe
+** inc on flag
+** add unsafe {} macro
+** disable method type check if cx.unsafe > 0
+** bench
+* --
 * add quote
 ** 'foo '(1 2 3)
 ** add Val &Form.quote()
