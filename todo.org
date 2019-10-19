@@ -15,19 +15,12 @@
 *** add h/m/s/ms/us/ns accessors
 *** add +/-
 * --
-* add next-method fun
+* add next-method
 ** search call chain for method call
 *** return next from method.set
 **** _ if missing
-* add for macro
+* add for-macro
 ** add Type.iter method with callback
-* add stack lib
-** move existing ops
-** import in main
-** add copy(Stack? n offs), clone(Stack? n offs), swap(Stack? x y) & drop(Stack? n offs) methods
-*** add backing Stack methods
-** make stack arg to push/pop/len optional
-** add peek with offs
 * add stash/splat
 ** stash (..)
 ** splat foo..
@@ -36,12 +29,13 @@
 * implement MethodSet.clone
 ** switch to use vector/upper_bound like env
 *** drop method Node
-* inherit macro from method
+* derive macro from method
 ** add separate imp
 ** use dispatch for expand
 * reimplement read_int manually like read_frac
 ** keep hex support
 * add switch
+** scratch
 ** use branch op
 *** pop_if = true
 ** add jump op
