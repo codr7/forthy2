@@ -16,7 +16,7 @@ namespace forthy2 {
   void CheckOp::dump(ostream &out) { out << "check " << body; }
 
   Node<Op> &CheckOp::eval(Cx &cx) {
-    if (!cx.pop(form.pos)) { throw ESys(form.pos, "Test failed: ", body); }
+    if (!cx.pop(form.pos)) { throw ESys(form.pos, "Check failed: ", body); }
     return *Node<Op>::next;
   }
 

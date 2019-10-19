@@ -338,7 +338,67 @@ Method@0x11216d0
 3
 ```
 
-### performance
+### time
+Time may be created using provided constructors (`hours`/`mins`/`secs`/`msecs`/`usecs`/`nsecs`) and support arithmetics and conversion.
+
+```
+  2 hours
+
+Time@7200000000000
+
+  .- {30 mins}
+
+Time@5400000000000
+  mins
+  
+90
+```
+
+### debugging
+`dump-stack` dumps the current stack to standard output without modifying it.
+
+```
+  1 2 3 dump-stack
+(1 2 3)
+1 2 3
+```
+
+`check` may be used to trigger informative errors when a condition doesn't hold.
+
+```
+  check {6.* 7 .is 41}
+
+Error at row 1, col 0:
+Check failed: {6.* 7 .is 41}
+```
+
+`-debug` may be passed on the command line to abort on error.
+
+```
+$ valgrind build/forthy2 -debug
+forthy2
+
+Press Return on empty row to evaluate.
+Empty input clears stack and Ctrl+D exits.
+
+  foo
+  
+terminate called after throwing an instance of 'forthy2::ESys'
+  what():  Error at row 1, col 0:
+Unknown id: foo
+ 
+Process terminating with default action of signal 6 (SIGABRT)
+  at 0x591C428: raise (raise.c:54)
+  by 0x591E029: abort (abort.c:89)
+  by 0x50D00F4: __gnu_cxx::__verbose_terminate_handler() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+  by 0x50CDCE5: ??? (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+  by 0x50CDD30: std::terminate() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+  by 0x50CDFC8: __cxa_rethrow (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.24)
+  by 0x429CCD: repl(forthy2::Cx&) (main.cpp:26)
+  by 0x42A31C: main (main.cpp:75)
+```
+
+### benchmarking
 `clock` may be used to measure the time it takes to run N repetitions of the specified expression.
 
 ```
@@ -350,7 +410,7 @@ Time@1503489
 1503
 ```
 
-Some type checks may be skipped in return for a 30% speed up by specifying `-unsafe` on the command line. Unsafe in this context means potentially crashing on failed dynamic C++ type casts as opposed to checking types manually and throwing more informative errors.
+Some type checks may be skipped in return for a 30% speed up by passing `-unsafe` on the command line. Unsafe in this context means potentially crashing on failed dynamic C++ type casts as opposed to checking types manually and throwing more informative errors.
 
 ```
 $ build/forthy2 bench/fib_rec.f2 

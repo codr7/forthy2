@@ -43,6 +43,8 @@ check {3.> 1}
   check {42 foo.= 5}
 }
 
+check {2 hours.-{30 mins} mins.= 90}
+
 check {&&&T call.is T}
 check {&{42} call.= 42}
 check {6 7 &* call.= 42}
