@@ -326,6 +326,18 @@ Literal arguments allow dispatching on specific values rather than types.
 5
 ```
 
+Each implementation is bound to its own unique, type-indexed name; and may be called directly.
+
+```
+  &foo[Int]
+
+Method@0x11216d0
+
+  42 :: call
+  
+3
+```
+
 ### garbage collection
 [forthy2](https://github.com/codr7/forthy2) supports incremental, time sliced manual garbage collection.
 
