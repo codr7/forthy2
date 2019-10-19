@@ -201,29 +201,6 @@ and split using `unpair`.
 1 3
 ```
 
-### methods
-Much like Julia and Common Lisp, [forthy2](https://github.com/codr7/forthy2) supports generic multi-dispatch.
-
-```
-  method foo(Bool) {1}
-  method foo(Int)  {3}
-  foo T
-
-1
-  foo 42
-
-3
-```
-
-Any literal may be used as argument.
-
-```
-  method foo(42) {5}
-  foo 42
-
-5
-```
-
 ### types
 `type` may be called to get the type of any value.
 
@@ -310,6 +287,29 @@ while shadowing within child scopes is permitted.
   foo
 
 1
+```
+
+### methods
+Any number of methods may share the same name as long as they take the same number of arguments but different types.
+
+```
+  method foo(Bool) {1}
+  method foo(Int)  {3}
+  foo T
+
+1
+  foo 42
+
+3
+```
+
+Literal arguments allow dispatching on specific values rather than types.
+
+```
+  method foo(42) {5}
+  foo 42
+
+5
 ```
 
 ### garbage collection
