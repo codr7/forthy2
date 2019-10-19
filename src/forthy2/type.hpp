@@ -26,7 +26,6 @@ namespace forthy2 {
     void dump(ostream &out) override;
     ParentIter find_parent(Type &parent);
     ParentIter insert_parent(ParentIter i, Type &parent, Type &root);
-    bool is(Val &other) override;
     Type *isa(Type &parent);
     bool mark(Cx &cx) override;
     Type &or_();

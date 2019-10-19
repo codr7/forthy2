@@ -10,7 +10,6 @@ namespace forthy2 {
     Node<Op> &call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) override;
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
-    bool is(Val &other) override;
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };

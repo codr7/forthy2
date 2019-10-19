@@ -141,8 +141,7 @@ namespace forthy2 {
 
   static Node<Op> &is_imp(Cx &cx, Op &pc) {
     Val &y(cx.pop()), &x(cx.pop());
-    bool ok(x.type(cx) == y.type(cx) && x.is(y));
-    cx.push(cx.bool_type.get(cx, ok));
+    cx.push(cx.bool_type.get(cx, &x == &y));
     return *pc.next;
   }
 

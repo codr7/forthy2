@@ -23,7 +23,7 @@ namespace forthy2 {
 
     void dump(ostream &out) override;
 
-    bool is(Val &other) override { return dynamic_cast<Int &>(other).imp == imp; }
+    bool eq(Val &other) override { return dynamic_cast<Int &>(other).imp == imp; }
 
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;

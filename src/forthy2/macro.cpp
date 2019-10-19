@@ -15,8 +15,6 @@ namespace forthy2 {
     return imp(cx, form, in, out);
   }
 
-  bool Macro::is(Val &other) { return this == &other; }
-
   bool Macro::mark(Cx &cx) {
     if (!Val::mark(cx)) { return false; }
     args.mark_items(cx);

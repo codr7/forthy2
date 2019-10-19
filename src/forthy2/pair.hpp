@@ -12,7 +12,7 @@ namespace forthy2 {
     Pair(Val &first, Val &second);
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
-    bool is(Val &other) override;
+    bool eq(Val &other) override;
     bool mark(Cx &cx) override;
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;

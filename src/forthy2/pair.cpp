@@ -19,9 +19,9 @@ namespace forthy2 {
     imp.second->dump(out);
   }
   
-  bool Pair::is(Val &other) {
+  bool Pair::eq(Val &other) {
     Imp &other_imp(dynamic_cast<Pair &>(other).imp);
-    return other_imp.first->is(*imp.first) && other_imp.second->is(*imp.second);
+    return other_imp.first->eq(*imp.first) && other_imp.second->eq(*imp.second);
   }
 
   bool Pair::mark(Cx &cx) {

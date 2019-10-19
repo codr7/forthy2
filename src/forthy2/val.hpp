@@ -32,9 +32,7 @@ namespace forthy2 {
 
     virtual void dump(ostream &out) = 0;
 
-    virtual bool eq(Val &other) { return is(other); }
-
-    virtual bool is(Val &other) { return this == &other; }
+    virtual bool eq(Val &other) { return this == &other; }
 
     virtual bool mark(Cx &cx);
     

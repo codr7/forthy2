@@ -12,8 +12,6 @@ namespace forthy2 {
 
   void Nil::dump(ostream &out) { out << '_'; }
 
-  bool Nil::is(Val &other) { return this == &other; }
-
   void Nil::sweep(Cx &cx) { assert(false); }
 
   Type &Nil::type(Cx &cx) { return cx.nil_type; }

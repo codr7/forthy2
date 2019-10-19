@@ -43,8 +43,6 @@ namespace forthy2 {
     return parents.emplace(i, &parent, &root);
   }
 
-  bool Type::is(Val &other) { return this == &other; }
-
   Type *Type::isa(Type &parent) {
     if (this == &parent) { return this; }
     

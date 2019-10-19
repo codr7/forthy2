@@ -12,8 +12,6 @@ namespace forthy2 {
     Cmp cmp(const Val &other) override {
       return forthy2::cmp<const Val *>(this, &other);
     }
-
-    bool is(const Val &other) override { return this == &other; }
   };
 }
 

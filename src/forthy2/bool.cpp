@@ -12,8 +12,6 @@ namespace forthy2 {
 
   void Bool::dump(ostream &out) { out << (imp ? 'T' : 'F'); }
 
-  bool Bool::is(Val &other) { return this == &other; }
-
   void Bool::sweep(Cx &cx) { assert(false); }
 
   Type &Bool::type(Cx &cx) { return cx.bool_type; }

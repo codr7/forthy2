@@ -42,14 +42,14 @@ namespace forthy2 {
 
     void dump(ostream &out) override;
 
+    bool eq(Val &other) override { return dynamic_cast<Fix &>(other).imp == imp; }
+
     int64_t frac() { return get() - trunc(); }
 
     int64_t get() {
       const uint64_t r(imp >> (SCALE_BITS + 1));
       return negative() ? -r : r;
     }
-
-    bool is(Val &other) override { return dynamic_cast<Fix &>(other).imp == imp; }
 
     bool negative() { return imp << 63; }
   

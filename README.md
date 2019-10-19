@@ -144,15 +144,21 @@ Methods and macros may be called infix by adding `.` between first argument and 
 ```
 
 ### identity vs. equality
-`is` may be used to check if two values are the same,
+`is` may be used to check if two values refer to the same block of memory,
 
 ```
-  6.* 7 .is 42
+  T.is T
 
 T
 ```
 
-while `=` returns true if they are equal; the difference only applies to reference types such as stacks.
+```
+  42.is 42
+
+F
+```
+
+while `=` returns true if they have the same contents.
 
 ```
   (1 2 3).= (1 2 3)

@@ -13,7 +13,6 @@ namespace forthy2 {
     operator bool() override { return imp; }
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
-    bool is(Val &other) override;
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };
