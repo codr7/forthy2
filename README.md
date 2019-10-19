@@ -290,7 +290,7 @@ while shadowing within child scopes is permitted.
 ```
 
 ### methods
-Any number of methods may share the same name as long as they take the same number of arguments but different types.
+Any number of methods may use the same name as long as they take the same number of arguments but different types.
 
 ```
   method foo(Bool) {1}
