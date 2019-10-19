@@ -2,31 +2,15 @@
 #include "forthy2/libs/abc.hpp"
 
 namespace forthy2 {
-  static Node<Op> &mark_sweep_imp(Cx &cx, Op &pc) {
-    optional<uint64_t> max_ns;
-
-    if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
-      max_ns = dynamic_cast<Int &>(v).imp;
-    }
-    
-    if (auto ok(cx.mark_sweep(max_ns)); ok) {
-      cx.push(cx.int_type.get(cx, *ok));
-    } else {
-      cx.push(cx._);
-    }
-
-    return *pc.next;
-  }
-
   static Node<Op> &mark_imp(Cx &cx, Op &pc) {
-    optional<uint64_t> max_ns;
+    optional<Time::Imp> max_time;
 
     if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
-      max_ns = dynamic_cast<Int &>(v).imp;
+      max_time = dynamic_cast<Time &>(v).imp;
     }
     
-    if (auto ok(cx.mark(max_ns)); ok) {
-      cx.push(cx.int_type.get(cx, *ok));
+    if (auto ok(cx.mark(max_time)); ok) {
+      cx.push(cx.time_type.get(cx, *ok));
     } else {
       cx.push(cx._);
     }
@@ -35,14 +19,30 @@ namespace forthy2 {
   }
 
   static Node<Op> &sweep_imp(Cx &cx, Op &pc) {
-    optional<uint64_t> max_ns;
+    optional<Time::Imp> max_time;
 
     if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
-      max_ns = dynamic_cast<Int &>(v).imp;
+      max_time = dynamic_cast<Time &>(v).imp;
     }
     
-    if (auto ok(cx.sweep(max_ns)); ok) {
-      cx.push(cx.int_type.get(cx, *ok));
+    if (auto ok(cx.sweep(max_time)); ok) {
+      cx.push(cx.time_type.get(cx, *ok));
+    } else {
+      cx.push(cx._);
+    }
+
+    return *pc.next;
+  }
+
+  static Node<Op> &mark_sweep_imp(Cx &cx, Op &pc) {
+    optional<Time::Imp> max_time;
+
+    if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
+      max_time = dynamic_cast<Time &>(v).imp;
+    }
+    
+    if (auto ok(cx.mark_sweep(max_time)); ok) {
+      cx.push(cx.time_type.get(cx, *ok));
     } else {
       cx.push(cx._);
     }
@@ -322,15 +322,14 @@ namespace forthy2 {
     scope.bind(pos, cx.sym("T"), cx.T);
 
 
-    scope.add_method(cx, pos, cx.sym("mark-sweep"),
-                   {{cx.int_type.or_()}}).imp = mark_sweep_imp;
-
     scope.add_method(cx, pos, cx.sym("mark"),
-                   {{cx.int_type.or_()}}).imp = mark_imp;
+                   {{cx.time_type.or_()}}).imp = mark_imp;
 
     scope.add_method(cx, pos, cx.sym("sweep"),
-                   {{cx.int_type.or_()}}).imp = sweep_imp;
+                   {{cx.time_type.or_()}}).imp = sweep_imp;
 
+    scope.add_method(cx, pos, cx.sym("mark-sweep"),
+                   {{cx.time_type.or_()}}).imp = mark_sweep_imp;
     
     scope.add_method(cx, pos, cx.sym("="),
                    {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = eq_imp;

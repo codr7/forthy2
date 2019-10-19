@@ -97,6 +97,7 @@ namespace forthy2 {
     PoolType<Pair> &pair_type;
     PoolType<Stack> &stack_type;
     Type &sym_type;
+    TimeType &time_type;
         
     Scope root_scope, *scope;
     Stack root_stack, *stack;
@@ -136,6 +137,7 @@ namespace forthy2 {
       pair_type(*new PoolType<Pair>(*this, sym("Pair"), {&a_type})),
       stack_type(*new PoolType<Stack>(*this, sym("Stack"), {&a_type})),
       sym_type(*new Type(*this, sym("Sym"), {&a_type})),
+      time_type(*new TimeType(*this, sym("Time"), {&a_type})),
       scope(&root_scope),
       stack(&root_stack),
       call(nullptr),
@@ -219,7 +221,7 @@ namespace forthy2 {
       eval(in);
     }
     
-    optional<uint64_t> mark(optional<uint64_t> max_ns = {}) {
+    optional<Time::Imp> mark(optional<Time::Imp> max_time = {}) {
       Timer t;
 
       if (!unmarked) {
@@ -228,27 +230,43 @@ namespace forthy2 {
       }
       
       for (Scope *e(scope); e; e = e->prev) {
-        if (max_ns && t.ns() >= *max_ns) { return {}; }
+        if (max_time && t.get() >= *max_time) { return {}; }
         e->mark_items(*this);
       }
       
       for (Stack *s(stack); s; s = s->prev) {
-        if (max_ns && t.ns() >= *max_ns) { return {}; }
+        if (max_time && t.get() >= *max_time) { return {}; }
         s->mark_items(*this);
       }
 
       for (Node<Op> *op(ops.next); op != &ops; op = op->next) {
-        if (max_ns && t.ns() >= *max_ns) { return {}; }
+        if (max_time && t.get() >= *max_time) { return {}; }
         op->get().mark_vals(*this);
       }
 
-      return t.ns();
+      return t.get();
     }
 
-    optional<uint64_t> mark_sweep(optional<uint64_t> max_ns = {}) {
-      if (auto mark_ns(mark(max_ns)); mark_ns) {
-        if (max_ns) { *max_ns -= min(*max_ns, *mark_ns); }
-        if (auto sweep_ns(sweep(max_ns)); sweep_ns) { return *mark_ns + *sweep_ns; }
+    optional<Time::Imp> sweep(optional<Time::Imp> max_time = {}) {
+      Timer t;
+
+      for (auto i(unmarked.prev); i != &unmarked;) {
+        if (max_time && t.get() >= *max_time) { return {}; }
+        Val &v(i->get());
+        i = i->prev;
+        v.sweep(*this);
+      }
+
+      return t.get();
+    }
+
+    optional<Time::Imp> mark_sweep(optional<Time::Imp> max_time = {}) {
+      if (auto mark_time(mark(max_time)); mark_time) {
+        if (max_time) { *max_time -= min(*max_time, *mark_time); }
+
+        if (auto sweep_time(sweep(max_time)); sweep_time) {
+          return *mark_time + *sweep_time;
+        }
       }
 
       return {};
@@ -290,19 +308,6 @@ namespace forthy2 {
       Pos p;
       Form *f(nullptr);
       while ((f = read_form(*this, p, in))) { out.push_back(f); }
-    }
-
-    optional<uint64_t> sweep(optional<uint64_t> max_ns = {}) {
-      Timer t;
-
-      for (auto i(unmarked.prev); i != &unmarked;) {
-        if (max_ns && t.ns() >= *max_ns) { return {}; }
-        Val &v(i->get());
-        i = i->prev;
-        v.sweep(*this);
-      }
-
-      return t.ns();
     }
     
     template <typename...Args>

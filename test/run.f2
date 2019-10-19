@@ -59,4 +59,4 @@ check {(1 3; 5 7) .: pop .= (5 7) and .= (1 3)}
 check {(1 3) .: 5 push .= (1 3 5)}
 
 dump-stack
-_ mark-sweep./ 1000 dump
+_ mark-sweep usecs dump

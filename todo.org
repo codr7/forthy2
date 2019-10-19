@@ -17,15 +17,6 @@
 ** optional arg for target
 *** update cx.call.beg_pc if specified
 * --
-* add Time type
-** chrono::duration<double, nano>
-** use in Timer
-** return from clock-macro
-** take as arg in mark-/sweep
-** add time lib
-*** add h/m/s/ms/us/ns accessors
-*** add +/-
-* --
 * add next-method
 ** search call chain for method call
 *** return next from method.set

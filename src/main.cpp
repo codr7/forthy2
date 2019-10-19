@@ -2,6 +2,7 @@
 #include "forthy2/forthy2.hpp"
 #include "forthy2/libs/abc.hpp"
 #include "forthy2/libs/math.hpp"
+#include "forthy2/libs/time.hpp"
 
 using namespace std;
 using namespace forthy2;
@@ -48,6 +49,8 @@ int main(int argc, char *argv[]) {
   Cx cx;
   init_abc(cx, Pos::_, cx.root_scope);
   init_math(cx, Pos::_, cx.root_scope);
+  init_time(cx, Pos::_, cx.root_scope);
+  
   Mode mode(Mode::Default);
   vector<string> files;
   

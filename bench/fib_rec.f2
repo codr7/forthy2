@@ -6,5 +6,5 @@ method fib (1)   {}
 method fib (Int) {-1 .: fib :: -1 fib +[Int Int]}
 
 N fib dump
-REPS clock {N fib :.} dump
+REPS clock {N fib :.} msecs dump
 dump-stack
