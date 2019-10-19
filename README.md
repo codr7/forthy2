@@ -338,13 +338,35 @@ Method@0x11216d0
 3
 ```
 
+### performance
+`clock` may be used to measure the time it takes to run N repetitions of the specified expression.
+
+```
+  1000000 clock {}
+  
+Time@1503489
+  usecs
+
+1503
+```
+
+Some type checks may be skipped in return for a 30% speed up by specifying `-unsafe` on the command line. Unsafe in this context means potentially crashing on failed dynamic C++ type casts as opposed to checking types manually and throwing more informative errors.
+
+```
+$ build/forthy2 bench/fib_rec.f2 
+60
+
+$ build/forthy2 -unsafe bench/fib_rec.f2 
+46
+```
+
 ### garbage collection
 [forthy2](https://github.com/codr7/forthy2) supports incremental, time sliced manual garbage collection.
 
-`mark` takes an optional deadline in nanoseconds and returns the total time if completed, `_` otherwise.
+`mark` takes an optional max time and returns the total time if completed, `_` otherwise.
 
 ```
-  _ mark
+  _ mark nsecs
 
 23257
 ```
@@ -352,7 +374,7 @@ Method@0x11216d0
 `sweep` provides an identical API to the second phase,
 
 ```
-  _ sweep
+  _ sweep nsecs
 
 1746
 ```
@@ -360,7 +382,7 @@ Method@0x11216d0
 and `mark-sweep` allows performing both phases as one.
 
 ```
-  _ mark-sweep
+  _ mark-sweep nsecs
 
 26120
 ```
