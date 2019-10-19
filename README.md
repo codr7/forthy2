@@ -54,7 +54,15 @@ The holy trinity of stack operations; `dup`, `drop` and `swap`; get their own tw
 1 3 2
 ```
 
-Stack literals are enclosed in parens, `;` may be used to push remaining values on a separate stack.
+Stack literals are enclosed in parens.
+
+```
+  (1 2 3)
+
+(1 2 3)
+```
+
+`;` may be used to push remaining values on a separate stack.
 
 ```
   (1 2 3; 4 5)
@@ -85,7 +93,7 @@ _
 ```
 
 ### scopes
-[forthy2](https://github.com/codr7/forthy2) is strictly block-scoped, definitions are tied to scopes and inaccessible from the outside.
+[forthy2](https://github.com/codr7/forthy2) is strictly block-scoped, definitions are tied to scopes and invisible from the outside.
 
 ```
   {let foo 42}
@@ -239,18 +247,18 @@ A?
 
 ```
   {
-    |let foo 42
+    let foo 42
     foo
   }
 
 42
 ```
 
-Values are evaluated when bound.
+Values are evaluated before bound.
 
 ```
   {
-    |let foo {6.* 7}
+    let foo {6.* 7}
     foo
   }
 
@@ -261,7 +269,7 @@ Referencing unbound names results in compile time errors,
 
 ```
   {
-    |let foo 42
+    let foo 42
     bar
   }
   
@@ -272,8 +280,8 @@ Unknown id: bar
 as do attempts to shadow bindings within the same scope,
 
 ```
-  |let foo 1
-  |let foo 3
+  let foo 1
+  let foo 3
 
 Error at row 2, col 1:
 Dup binding: foo
@@ -282,8 +290,8 @@ Dup binding: foo
 while shadowing within child scopes is permitted.
 
 ```
-  |let foo 1
-  {|let foo 3}
+  let foo 1
+  {let foo 3}
   foo
 
 1
