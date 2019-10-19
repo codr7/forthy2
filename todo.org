@@ -1,3 +1,14 @@
+* add quote
+** 'foo '(1 2 3)
+** add Val &Form.quote()
+*** id -> sym
+*** lit -> val
+*** default push Form
+**** add FormType < ValType
+***** dump as Form@...
+**** call Form.ref().mark(cx)
+***** deref on sweep
+* --
 * add fib_iter
 * add fib_tail
 * add recall method
@@ -48,8 +59,6 @@
 *** \r \n \t \s \e
 *** \0x2a \90 \\A \\a \\\
 ** add conversion to/from int/byte
-* add quote
-** '(1 2 3) 'foo
 * add string type
 * add say method
 ** add val.print

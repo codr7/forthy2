@@ -16,7 +16,6 @@ namespace forthy2 {
     return true;
   }
 
-
   ostream &operator <<(ostream &out, const Val &val) {
     const_cast<Val &>(val).dump(out);
     return out;
