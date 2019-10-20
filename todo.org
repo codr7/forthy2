@@ -9,6 +9,12 @@
 **** call Form.ref().mark(cx)
 ***** deref on sweep
 * --
+* add Date type
+** 1977 JULY 5 date.+{23 59 59 time}
+** add date/time constructors
+** add Timestamp +/- Time
+** add today/now
+* --
 * add fix bench
 * add fib_iter
 * add fib_tail
