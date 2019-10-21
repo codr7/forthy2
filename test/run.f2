@@ -8,6 +8,7 @@ check {Nil.isa A? .= A?}
 
 check {'foo.is 'foo}
 check {'foo.is 'bar not}
+check {'{6 7 *} compile call .= 42}
 
 check {42.type .= Int}
 check {Int.isa A .= Num}

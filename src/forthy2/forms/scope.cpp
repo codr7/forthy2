@@ -32,5 +32,10 @@ namespace forthy2 {
     for (Form *f: body) { f->mark_vals(cx); }
   }
 
+  Form &ScopeForm::quote(Cx &cx) {
+    Form::quote(cx);
+    return cx.lit_form.get(pos, *this);
+  }
+
   void ScopeForm::write(ostream &out) { out << '{' << body << '}'; }
 }

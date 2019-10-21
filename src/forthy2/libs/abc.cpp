@@ -125,6 +125,16 @@ namespace forthy2 {
     return end_pc;
   }
 
+  static Node<Op> &compile_imp(Cx &cx, Op &pc) {
+    auto &f(dynamic_cast<Form &>(cx.pop()));
+    Lambda &l(cx.lambda_type.get(cx));
+    Forms in;
+    Node<Op> &f_pc(f.compile(cx, in, *l.ops.prev));
+    cx.return_op.get(f, f_pc);
+    cx.push(l);
+    return *pc.next;
+  }
+
   static Node<Op> &dump_imp(Cx &cx, Op &pc) {
     auto &out(*cx.stdout);
     cx.pop().dump(out);
@@ -322,16 +332,13 @@ namespace forthy2 {
     scope.bind(pos, cx.sym("_"), cx._);
     scope.bind(pos, cx.sym("F"), cx.F);
     scope.bind(pos, cx.sym("T"), cx.T);
+    
+    scope.add_method(cx, pos, cx.sym(".:"), {{cx.a_type.or_()}}).imp = dup_imp;
+    scope.add_method(cx, pos, cx.sym(":."), {{cx.a_type.or_()}}).imp = drop_imp;
 
+    scope.add_method(cx, pos, cx.sym("::"),
+                   {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = swap_imp;
 
-    scope.add_method(cx, pos, cx.sym("mark"),
-                   {{cx.time_type.or_()}}).imp = mark_imp;
-
-    scope.add_method(cx, pos, cx.sym("sweep"),
-                   {{cx.time_type.or_()}}).imp = sweep_imp;
-
-    scope.add_method(cx, pos, cx.sym("mark-sweep"),
-                   {{cx.time_type.or_()}}).imp = mark_sweep_imp;
     
     scope.add_method(cx, pos, cx.sym("="),
                    {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = eq_imp;
@@ -343,58 +350,62 @@ namespace forthy2 {
                    {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = gt_imp;
 
 
-    scope.add_method(cx, pos, cx.sym(".:"), {{cx.a_type.or_()}}).imp = dup_imp;
-    scope.add_method(cx, pos, cx.sym(":."), {{cx.a_type.or_()}}).imp = drop_imp;
+    scope.add_method(cx, pos, cx.sym("+1"), {{cx.int_type}}).imp = inc_imp;
+    scope.add_method(cx, pos, cx.sym("-1"), {{cx.int_type}}).imp = dec_imp;
 
-    scope.add_method(cx, pos, cx.sym("::"),
-                   {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = swap_imp;
-
-
-    scope.add_method(cx, pos, cx.sym("pair"),
-                   {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = pair_imp;
     
-    scope.add_method(cx, pos, cx.sym("unpair"), {{cx.pair_type}}).imp = unpair_imp;
-
-
+    scope.add_macro(cx, pos, cx.sym("and"), {{cx.a_type.or_()}}).imp = and_imp;
     scope.add_method(cx, pos, cx.sym("bool"), {{cx.a_type.or_()}}).imp = bool_imp;
     scope.add_method(cx, pos, cx.sym("call"), {{cx.a_type.or_()}}).imp = call_imp;
     scope.add_macro(cx, pos, cx.sym("check"), {{cx.a_type.or_()}}).imp = check_imp;
     scope.add_macro(cx, pos, cx.sym("clock"), {{cx.a_type.or_()}}).imp = clock_imp;
+    scope.add_method(cx, pos, cx.sym("compile"), {{cx.form_type}}).imp = compile_imp;
     scope.add_method(cx, pos, cx.sym("dump"), {{cx.a_type.or_()}}).imp = dump_imp;
-    scope.add_method(cx, pos, cx.sym("dump-stack")).imp = dump_stack_imp;
-    
+    scope.add_method(cx, pos, cx.sym("dump-stack")).imp = dump_stack_imp;    
+    scope.add_macro(cx, pos, cx.sym("else"), {{cx.a_type}}).imp = else_imp;
+    scope.add_macro(cx, pos, cx.sym("if"), {{cx.a_type}}).imp = if_imp;
+
     scope.add_method(cx, pos, cx.sym("is"),
                    {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = is_imp;
 
     scope.add_method(cx, pos, cx.sym("isa"),
                    {{cx.meta_type}, {cx.meta_type}}).imp = isa_imp;
 
+    scope.add_method(cx, pos, cx.sym("len"),
+                     {{cx.stack_type}}).imp = stack_len_imp;
+
     scope.add_macro(cx, pos, cx.sym("let"),
                   {{cx.sym_type}, {cx.a_type.or_()}}).imp = let_imp;
+
+    scope.add_method(cx, pos, cx.sym("mark"),
+                   {{cx.time_type.or_()}}).imp = mark_imp;
+
+    scope.add_method(cx, pos, cx.sym("mark-sweep"),
+                   {{cx.time_type.or_()}}).imp = mark_sweep_imp;
 
     scope.add_macro(cx, pos, cx.sym("method"),
                     {{cx.sym_type}, {cx.stack_type}, {cx.a_type}}).imp = method_imp;
 
-    scope.add_method(cx, pos, cx.sym("type"), {{cx.a_type.or_()}}).imp = type_imp;
-
-    scope.add_macro(cx, pos, cx.sym("and"), {{cx.a_type.or_()}}).imp = and_imp;
-    scope.add_macro(cx, pos, cx.sym("or"), {{cx.a_type.or_()}}).imp = or_imp;
     scope.add_method(cx, pos, cx.sym("not"), {{cx.a_type}}).imp = not_imp;
+    scope.add_macro(cx, pos, cx.sym("or"), {{cx.a_type.or_()}}).imp = or_imp;
 
-    scope.add_macro(cx, pos, cx.sym("if"), {{cx.a_type}}).imp = if_imp;
-    scope.add_macro(cx, pos, cx.sym("else"), {{cx.a_type}}).imp = else_imp;
-    scope.add_macro(cx, pos, cx.sym("while"), {{cx.a_type}}).imp = while_imp;
-
-    scope.add_method(cx, pos, cx.sym("+1"), {{cx.int_type}}).imp = inc_imp;
-    scope.add_method(cx, pos, cx.sym("-1"), {{cx.int_type}}).imp = dec_imp;
-
-    scope.add_method(cx, pos, cx.sym("len"),
-                     {{cx.stack_type}}).imp = stack_len_imp;
-    
+    scope.add_method(cx, pos, cx.sym("pair"),
+                     {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = pair_imp;
+        
     scope.add_method(cx, pos, cx.sym("pop"),
                      {{cx.stack_type}}).imp = stack_pop_imp;    
 
     scope.add_method(cx, pos, cx.sym("push"),
                    {{cx.stack_type}, {cx.a_type}}).imp = stack_push_imp;    
+
+    scope.add_method(cx, pos, cx.sym("sweep"),
+                   {{cx.time_type.or_()}}).imp = sweep_imp;
+
+    scope.add_method(cx, pos, cx.sym("type"), {{cx.a_type.or_()}}).imp = type_imp;
+
+    scope.add_method(cx, pos, cx.sym("unpair"), {{cx.pair_type}}).imp = unpair_imp;
+
+    scope.add_macro(cx, pos, cx.sym("while"), {{cx.a_type}}).imp = while_imp;
+
   }
 }

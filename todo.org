@@ -1,8 +1,6 @@
 * add %/splice support in reader
 ** wrap next in SpliceForm
 ** compile form as usual in SpliceForm.compile
-* add compile(form) fn
-** compile to lambda
 * add quote/if/else/while to readme
 * --
 * add fix bench
