@@ -19,6 +19,11 @@ namespace forthy2 {
         pos.col++;
         f = &read_stack(cx, pos, in);
         break;
+      case '\'':
+        pos.col++;
+        if (!(f = read_form(cx, pos, in))) { throw ESys(p, "Invalid quote"); }
+        f = &f->quote(cx);
+        break;
       case '.':
         if (in.get(c)) {
           in.unget();
@@ -42,7 +47,7 @@ namespace forthy2 {
         break;
       case '&':
         pos.col++;        
-        if (!(f = read_form(cx, pos, in))) { ESys(p, "Invalid ref"); }
+        if (!(f = read_form(cx, pos, in))) { throw ESys(p, "Invalid ref"); }
         if (!dynamic_cast<RefForm *>(f)) { f = &cx.ref_form.get(p, *f); }
         break;
       default:

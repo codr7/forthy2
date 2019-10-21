@@ -6,7 +6,7 @@
 namespace forthy2 {
   Sym::Sym(const string &name): name(name) {}
 
-  void Sym::dump(ostream &out) { out << name; }
+  void Sym::dump(ostream &out) { out << '\'' << name; }
 
   void Sym::sweep(Cx &cx) { assert(false); }
 

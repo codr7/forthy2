@@ -40,5 +40,10 @@ namespace forthy2 {
 
   void IdForm::dealloc(Cx &cx) { cx.id_form.put(*this); }
 
-  void IdForm::dump(ostream &out) { out << val; }
+  Form &IdForm::quote(Cx &cx) {
+    Form::quote(cx);
+    return cx.lit_form.get(pos, val);
+  }
+
+  void IdForm::write(ostream &out) { out << val; }
 }

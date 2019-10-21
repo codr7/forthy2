@@ -16,9 +16,9 @@ namespace forthy2 {
     cx.stack_form.put(*this);
   }
 
-  void StackForm::dump(ostream &out) { out << '(' << body << ')'; }
-
   void StackForm::mark_vals(Cx &cx) {
     for (Form *f: body) { f->mark_vals(cx); }
   }
+
+  void StackForm::write(ostream &out) { out << '(' << body << ')'; }
 }

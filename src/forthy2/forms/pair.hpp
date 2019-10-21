@@ -12,8 +12,8 @@ namespace forthy2 {
     PairForm(const Pos &pos, Form &left, Form &right);
     Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
-    void dump(ostream &out) override;
     void mark_vals(Cx &cx) override;
+    void write(ostream &out) override;
   };
 }
 

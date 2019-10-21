@@ -10,7 +10,7 @@ namespace forthy2 {
     if (id.name == "Nil" || id.name.back() == '?') {
       nil_type = this;
     } else {
-      nil_type = new NilType(cx, cx.sym(id, '?'));
+      nil_type = new NilType(cx, cx.sym(id.name, '?'));
       cx.nil_type.derive(*nil_type);
       derive(*nil_type);
     }
@@ -32,7 +32,7 @@ namespace forthy2 {
     }
   }
 
-  void Type::dump(ostream &out) { out << id; }
+  void Type::dump(ostream &out) { out << id.name; }
 
   Type::ParentIter Type::find_parent(Type &parent) {
     return lower_bound(parents.begin(), parents.end(), &parent,

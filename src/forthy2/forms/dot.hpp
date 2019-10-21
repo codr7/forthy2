@@ -12,8 +12,9 @@ namespace forthy2 {
     DotForm(Pos pos, Form *x, Form *y, Form &z);
     Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
-    void dump(ostream &out) override;
     void mark_vals(Cx &cx) override;
+    Form &quote(Cx &cx) override;
+    void write(ostream &out) override;
   };
 }
 

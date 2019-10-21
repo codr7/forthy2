@@ -58,7 +58,11 @@ namespace forthy2 {
     
   Val &Scope::get(Pos pos, Sym &id) {
     auto i(find(id));
-    if (i == items.end() || i->id != &id) { throw ESys(pos, "Unknown id: ", id); }
+
+    if (i == items.end() || i->id != &id) {
+      throw ESys(pos, "Unknown id: ", id.name);
+    }
+    
     return *i->val;
   }
     

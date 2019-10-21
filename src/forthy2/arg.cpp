@@ -21,7 +21,7 @@ namespace forthy2 {
       if (a.val) {
         a.val->dump(out);
       } else {
-        out << a.type->id;
+        out << a.type->id.name;
       }
     }
 
@@ -30,7 +30,7 @@ namespace forthy2 {
 
   Sym &Args::get_id(Cx &cx, Sym &root, const vector<Arg> &items) {
     stringstream buf;
-    buf << root;
+    buf << root.name;
     forthy2::dump(items, buf);
     return cx.sym(buf.str());
   }

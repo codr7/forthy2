@@ -4,8 +4,9 @@
 #include <iostream>
 #include <vector>
 
-#include "forthy2/node.hpp"
 #include "forthy2/pos.hpp"
+#include "forthy2/val.hpp"
+#include "forthy2/val_type.hpp"
 
 namespace forthy2 {
   using namespace std;
@@ -17,7 +18,7 @@ namespace forthy2 {
   using Forms = vector<Form *>;
   using FormIter = Forms::iterator;
 
-  struct Form {
+  struct Form: Val {
     Pos pos;
     int nrefs;
     
@@ -27,11 +28,26 @@ namespace forthy2 {
     virtual Node<Op> &compile_ref(Cx &cx, Forms &in, Node<Op> &out);
     virtual void dealloc(Cx &cx) = 0;
     void deref(Cx &cx);
-    virtual void dump(ostream &out) = 0;
+    void dump(ostream &out) override;
     void eval(Cx &cx, Forms &in);
+
+    bool mark(Cx &cx) override {
+      if (!Val::mark(cx)) { return false; }
+      mark_vals(cx);
+      return true;
+    }
+    
     virtual void mark_vals(Cx &cx);
+    virtual Form &quote(Cx &cx);
     Form &ref();
+    
+    void sweep(Cx &cx) override { deref(cx); }
+
+    Type &type(Cx &cx) override;
+    virtual void write(ostream &out) = 0;
   };
+
+  using FormType = ValType<Form>;
 
   ostream &operator <<(ostream &out, const Form &form);
   ostream &operator <<(ostream &out, const Forms &forms);

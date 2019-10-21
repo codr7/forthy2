@@ -9,8 +9,8 @@ namespace forthy2 {
   }
 
   void LitForm::dealloc(Cx &cx) { cx.lit_form.put(*this); }
-
-  void LitForm::dump(ostream &out) { val.dump(out); }
   
   void LitForm::mark_vals(Cx &cx) { val.mark(cx); }
+
+  void LitForm::write(ostream &out) { val.dump(out); }
 }

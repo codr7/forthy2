@@ -35,7 +35,7 @@ namespace forthy2 {
     virtual bool eq(Val &other) { return this == &other; }
 
     virtual bool mark(Cx &cx);
-    
+
     virtual void sweep(Cx &cx) { Node<Val>::unlink(); }
 
     virtual Type &type(Cx &cx) = 0;

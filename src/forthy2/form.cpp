@@ -4,7 +4,7 @@
 namespace forthy2 {
   Form::Form(Pos pos): pos(pos), nrefs(1) { }
 
-  Form::~Form() {}
+  Form::~Form() { Node<Val>::unlink(); }
 
   Node<Op> &Form::compile_ref(Cx &cx, Forms &in, Node<Op> &out) {
     throw ESys(pos, "Invalid ref: ", *this);
@@ -13,6 +13,8 @@ namespace forthy2 {
   void Form::deref(Cx &cx) {
     if (!--nrefs) { dealloc(cx); }
   }
+
+  void Form::dump(ostream &out) { out << "Form@" << this; }
 
   void Form::eval(Cx &cx, Forms &in) {
     Node<Op> &pc(*cx.ops.prev);
@@ -23,10 +25,17 @@ namespace forthy2 {
 
   void Form::mark_vals(Cx &cx) {}
 
+  Form &Form::quote(Cx &cx) {
+    cx.marked.push(*this);
+    return *this;
+  }
+
   Form &Form::ref() {
     nrefs++;
     return *this;
   }
+
+  Type &Form::type(Cx &cx) { return cx.form_type; }
 
   ostream &operator <<(ostream &out, const Form &in) {
     const_cast<Form &>(in).dump(out);

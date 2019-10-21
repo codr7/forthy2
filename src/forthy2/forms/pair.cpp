@@ -17,16 +17,16 @@ namespace forthy2 {
     right.deref(cx);
     cx.pair_form.put(*this);
   }
-
-  void PairForm::dump(ostream &out) {
-    out << ',';
-    left.dump(out);
-    out << ' ';
-    right.dump(out);
-  }
   
   void PairForm::mark_vals(Cx &cx) {
     left.mark_vals(cx);
     right.mark_vals(cx);
+  }
+
+  void PairForm::write(ostream &out) {
+    out << ',';
+    left.write(out);
+    out << ' ';
+    right.write(out);
   }
 }

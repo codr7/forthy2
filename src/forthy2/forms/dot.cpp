@@ -30,21 +30,26 @@ namespace forthy2 {
     z.deref(cx);
     cx.dot_form.put(*this);
   }
-
-  void DotForm::dump(ostream &out) {
-    if (x) { x->dump(out); }
-    out << '.';
-    z.dump(out);
-
-    if (y) {
-      out << ' ';
-      y->dump(out);
-    }
-  }
   
   void DotForm::mark_vals(Cx &cx) {
     if (x) { x->mark_vals(cx); }
     if (y) { y->mark_vals(cx); }
     z.mark_vals(cx);
+  }
+
+  Form &DotForm::quote(Cx &cx) {
+    if (x) { x = &x->quote(cx); }
+    return Form::quote(cx);
+  }
+
+  void DotForm::write(ostream &out) {
+    if (x) { x->write(out); }
+    out << '.';
+    z.write(out);
+
+    if (y) {
+      out << ' ';
+      y->write(out);
+    }
   }
 }

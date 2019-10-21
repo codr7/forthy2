@@ -12,8 +12,8 @@ namespace forthy2 {
     val.deref(cx);
     cx.ref_form.put(*this);
   }
-
-  void RefForm::dump(ostream &out) { out << '&' << val; }
   
   void RefForm::mark_vals(Cx &cx) { val.mark_vals(cx); }
+
+  void RefForm::write(ostream &out) { out << '&' << val; }
 }

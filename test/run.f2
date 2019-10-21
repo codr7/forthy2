@@ -6,6 +6,9 @@ check {_.type .= Nil}
 check {Nil.isa A .= _}
 check {Nil.isa A? .= A?}
 
+check {'foo.is 'foo}
+check {'foo.is 'bar not}
+
 check {42.type .= Int}
 check {Int.isa A .= Num}
 

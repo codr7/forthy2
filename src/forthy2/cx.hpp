@@ -87,6 +87,7 @@ namespace forthy2 {
     PoolType<Method> &method_type;
     PoolType<MethodSet> &method_set_type;
 
+    FormType &form_type;
     PoolType<Macro> &macro_type;
     Type &meta_type;
 
@@ -127,6 +128,7 @@ namespace forthy2 {
       method_type(*new PoolType<Method>(*this, sym("Method"), {&fn_type})),
       method_set_type(*new PoolType<MethodSet>(*this, sym("MethodSet"), {&fn_type})),
 
+      form_type(*new FormType(*this, sym("Form"), {&a_type})),
       macro_type(*new PoolType<Macro>(*this, sym("Macro"), {&a_type})),
       meta_type(*new Type(*this, sym("Meta"), {&a_type})),
 

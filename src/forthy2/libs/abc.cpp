@@ -231,7 +231,7 @@ namespace forthy2 {
   }
 
   static Node<Op> &not_imp(Cx &cx, Op &pc) {
-    cx.push(cx.bool_type.get(cx, !dynamic_cast<Bool &>(cx.pop()).imp));
+    cx.push(cx.bool_type.get(cx, !cx.pop()));
     return *pc.next;
   }
 
@@ -305,6 +305,8 @@ namespace forthy2 {
   void init_abc(Cx &cx, Pos pos, Scope &scope) {
     scope.bind_type(cx, pos, cx.a_type);
     scope.bind_type(cx, pos, cx.bool_type);
+    scope.bind_type(cx, pos, cx.fn_type);
+    scope.bind_type(cx, pos, cx.form_type);
     scope.bind_type(cx, pos, cx.int_type);
     scope.bind_type(cx, pos, cx.macro_type);
     scope.bind_type(cx, pos, cx.meta_type);
@@ -377,7 +379,7 @@ namespace forthy2 {
 
     scope.add_macro(cx, pos, cx.sym("and"), {{cx.a_type.or_()}}).imp = and_imp;
     scope.add_macro(cx, pos, cx.sym("or"), {{cx.a_type.or_()}}).imp = or_imp;
-    scope.add_method(cx, pos, cx.sym("not"), {{cx.bool_type}}).imp = not_imp;
+    scope.add_method(cx, pos, cx.sym("not"), {{cx.a_type}}).imp = not_imp;
 
     scope.add_macro(cx, pos, cx.sym("if"), {{cx.a_type}}).imp = if_imp;
     scope.add_macro(cx, pos, cx.sym("else"), {{cx.a_type}}).imp = else_imp;
