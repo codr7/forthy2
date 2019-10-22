@@ -406,6 +406,5 @@ namespace forthy2 {
     scope.add_method(cx, pos, cx.sym("unpair"), {{cx.pair_type}}).imp = unpair_imp;
 
     scope.add_macro(cx, pos, cx.sym("while"), {{cx.a_type}}).imp = while_imp;
-
   }
 }

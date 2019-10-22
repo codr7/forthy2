@@ -6,13 +6,22 @@
 * derive macro from method
 ** add separate imp
 ** use dispatch for expand
+* add let-sym bound-id prefix?
+** generate unique symbol with optional prefix at compile time
+* convert while to client macro
+** extract to LoopOp
+** loop until break
+** add break macro
+*** add LoopOp *cx.loop
+* add SplatForm
+** add support for .. suffix in reader
+** add '%(1 2 3).. test
 *  update readme
 ** quoting
 ** macros
 ** conditions
 *** if/else
 ** loops
-*** while
 * --
 * add fix bench
 * add fib_iter
