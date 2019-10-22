@@ -4,7 +4,7 @@
 namespace forthy2 {
   LitForm::LitForm(Pos pos, Val &val): Form(pos), val(val) {}
 
-  Node<Op> &LitForm::compile(Cx &cx, Forms &in, Node<Op> &out) {
+  Node<Op> &LitForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {
     return cx.push_op.get(*this, out, val);
   }
 

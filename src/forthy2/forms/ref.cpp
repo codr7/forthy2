@@ -4,7 +4,7 @@
 namespace forthy2 {
   RefForm::RefForm(const Pos &pos, Form &val): Form(pos), val(val) {}
 
-  Node<Op> &RefForm::compile(Cx &cx, Forms &in, Node<Op> &out) {
+  Node<Op> &RefForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {
     return val.compile_ref(cx, in, out);
   }
 
@@ -15,5 +15,8 @@ namespace forthy2 {
   
   void RefForm::mark_vals(Cx &cx) { val.mark_vals(cx); }
 
-  void RefForm::write(ostream &out) { out << '&' << val; }
+  void RefForm::write(ostream &out) {
+    out << '&';
+    val.write(out);
+  }
 }

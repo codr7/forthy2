@@ -22,7 +22,7 @@ namespace forthy2 {
       case '\'':
         pos.col++;
         if (!(f = read_form(cx, pos, in))) { throw ESys(p, "Invalid quote"); }
-        f = &f->quote(cx);
+        f = &cx.quote_form.get(p, *f);
         break;
       case '.':
         if (in.get(c)) {

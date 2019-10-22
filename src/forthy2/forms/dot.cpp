@@ -4,19 +4,19 @@
 namespace forthy2 {
   DotForm::DotForm(Pos pos, Form *x, Form *y, Form &z): Form(pos), x(x), y(y), z(z) {}
 
-  Node<Op> &DotForm::compile(Cx &cx, Forms &in, Node<Op> &out) {
+  Node<Op> &DotForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {
     Sym &id(dynamic_cast<IdForm &>(z).val);
     Val &v(cx.scope->get(pos, id));
     Type &vt(v.type(cx));
 
     if (&vt == &cx.macro_type) {
       if (y) { in.push_back(y); }
-      if (x) { in.push_back(x); }
+      if (x) { in.push_back((quote > 0) ? &cx.quote_form.get(pos, *x) : x); }
       in.push_back(&z);
     } else if (&vt == &cx.method_type || &vt == &cx.method_set_type) {
       in.push_back(&z);
       if (y) { in.push_back(y); }
-      if (x) { in.push_back(x); }
+      if (x) { in.push_back((quote > 0) ? &cx.quote_form.get(pos, *x) : x); }
     } else {
       throw ESys(pos, "Invalid dot z: ", vt.id);
     }
@@ -35,11 +35,6 @@ namespace forthy2 {
     if (x) { x->mark_vals(cx); }
     if (y) { y->mark_vals(cx); }
     z.mark_vals(cx);
-  }
-
-  Form &DotForm::quote(Cx &cx) {
-    if (x) { x = &x->quote(cx); }
-    return Form::quote(cx);
   }
 
   void DotForm::write(ostream &out) {

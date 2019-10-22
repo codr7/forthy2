@@ -4,7 +4,8 @@
 namespace forthy2 {
   IdForm::IdForm(Pos pos, Sym &val): Form(pos), val(val) {}
 
-  Node<Op> &IdForm::compile(Cx &cx, Forms &in, Node<Op> &out) {
+  Node<Op> &IdForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {
+    if (quote > 0) { return cx.push_op.get(*this, out, val); }
     Val *v(&cx.scope->get(pos, val));
     Type *vt(&v->type(cx));
 
@@ -40,10 +41,5 @@ namespace forthy2 {
 
   void IdForm::dealloc(Cx &cx) { cx.id_form.put(*this); }
 
-  Form &IdForm::quote(Cx &cx) {
-    Form::quote(cx);
-    return cx.lit_form.get(pos, val);
-  }
-
-  void IdForm::write(ostream &out) { out << val; }
+  void IdForm::write(ostream &out) { out << val.name; }
 }

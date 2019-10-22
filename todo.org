@@ -1,7 +1,23 @@
 * add %/splice support in reader
 ** wrap next in SpliceForm
-** compile form as usual in SpliceForm.compile
-* add quote/if/else/while to readme
+*** eval on separate stack if !--depth and compile results
+* add Form.eq
+** implement and forward from Val
+** rename Val.eq
+* derive macro from method
+** add separate imp
+** use dispatch for expand
+* add macro macro
+** quote macro args before calling
+** compile result
+* --
+*  update readme
+** quoting
+** macros
+** conditions
+*** if/else
+** loops
+*** while
 * --
 * add fix bench
 * add fib_iter
@@ -25,8 +41,6 @@
 ** add Timestamp +/- Time
 ** add today/now
 * --
-* replace USE_POOL with cx.debug
-** convert if statements
 * add next-method
 ** search call chain for method call
 *** return next from method.set
@@ -36,14 +50,11 @@
 * add stash/splat
 ** stash (..)
 ** splat foo..
-* add stack interpolation
+* add stack splice
 ** (1 3 5 (%{+})) -> (1 (8))
 * implement MethodSet.clone
 ** switch to use vector/upper_bound like env
 *** drop method Node
-* derive macro from method
-** add separate imp
-** use dispatch for expand
 * reimplement read_int manually like read_frac
 ** keep hex support
 * add switch

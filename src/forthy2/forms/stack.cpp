@@ -2,11 +2,11 @@
 #include "forthy2/forms/stack.hpp"
 
 namespace forthy2 {
-  StackForm::StackForm(Pos pos): Form(pos) {}
+  StackForm::StackForm(Pos pos, const Forms &body): Form(pos), body(body) {}
 
-  Node<Op> &StackForm::compile(Cx &cx, Forms &in, Node<Op> &out) {
+  Node<Op> &StackForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {
     StackOp &s(cx.stack_op.get(*this, out));
-    Node<Op> &end_pc(cx.compile(body, s));
+    Node<Op> &end_pc(cx.compile(body, s, quote));
     s.end_pc = &end_pc;
     return end_pc;
   }

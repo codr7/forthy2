@@ -18,17 +18,12 @@ namespace forthy2 {
 
   void Form::eval(Cx &cx, Forms &in) {
     Node<Op> &pc(*cx.ops.prev);
-    compile(cx, in, pc);
+    compile(cx, in, pc, 0);
     cx.eval(pc, cx.ops);
     while (cx.ops.prev != &pc) { cx.ops.prev->get().dealloc(cx); }
   }
 
   void Form::mark_vals(Cx &cx) {}
-
-  Form &Form::quote(Cx &cx) {
-    cx.marked.push(*this);
-    return *this;
-  }
 
   Form &Form::ref() {
     nrefs++;

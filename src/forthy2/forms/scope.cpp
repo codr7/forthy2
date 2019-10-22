@@ -4,7 +4,12 @@
 namespace forthy2 {
   ScopeForm::ScopeForm(Pos pos): Form(pos) {}
 
-  Node<Op> &ScopeForm::compile(Cx &cx, Forms &in, Node<Op> &out) {    
+  Node<Op> &ScopeForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {    
+    if (quote > 0) {
+      cx.marked.push(ref());
+      return cx.push_op.get(*this, out, *this);
+    }
+    
     Node<Op> *pc(&out);
     Scope scope(cx, *cx.scope);
     cx.with_scope<void>(scope, [&]() { pc = &cx.compile(body, *pc); });
@@ -16,7 +21,7 @@ namespace forthy2 {
     Scope scope(cx, *cx.scope);
     
     cx.with_scope<void>(scope, [&]() {
-        Node<Op> &pc(compile(cx, in, *l.ops.prev));
+        Node<Op> &pc(compile(cx, in, *l.ops.prev, 0));
         cx.return_op.get(*this, pc);
       });
     
@@ -30,11 +35,6 @@ namespace forthy2 {
 
   void ScopeForm::mark_vals(Cx &cx) {
     for (Form *f: body) { f->mark_vals(cx); }
-  }
-
-  Form &ScopeForm::quote(Cx &cx) {
-    Form::quote(cx);
-    return cx.lit_form.get(pos, *this);
   }
 
   void ScopeForm::write(ostream &out) { out << '{' << body << '}'; }

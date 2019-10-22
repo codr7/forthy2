@@ -24,7 +24,12 @@ namespace forthy2 {
     
     Form(Pos pos);
     virtual ~Form();
-    virtual Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) = 0;
+    virtual Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out, int quote) = 0;
+
+    virtual Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) {
+      return compile(cx, in, out, 0);
+    }
+    
     virtual Node<Op> &compile_ref(Cx &cx, Forms &in, Node<Op> &out);
     virtual void dealloc(Cx &cx) = 0;
     void deref(Cx &cx);
@@ -38,7 +43,6 @@ namespace forthy2 {
     }
     
     virtual void mark_vals(Cx &cx);
-    virtual Form &quote(Cx &cx);
     Form &ref();
     
     void sweep(Cx &cx) override { deref(cx); }
