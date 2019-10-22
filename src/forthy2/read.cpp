@@ -24,6 +24,11 @@ namespace forthy2 {
         if (!(f = read_form(cx, pos, in))) { throw ESys(p, "Invalid quote"); }
         f = &cx.quote_form.get(p, *f);
         break;
+      case '%':
+        pos.col++;
+        if (!(f = read_form(cx, pos, in))) { throw ESys(p, "Invalid splice"); }
+        f = &cx.splice_form.get(p, *f);
+        break;
       case '.':
         if (in.get(c)) {
           in.unget();

@@ -1,6 +1,3 @@
-* add %/splice support in reader
-** wrap next in SpliceForm
-*** eval on separate stack if !--depth and compile results
 * add Form.eq
 ** implement and forward from Val
 ** rename Val.eq

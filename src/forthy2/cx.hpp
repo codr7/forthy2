@@ -17,6 +17,7 @@
 #include "forthy2/forms/quote.hpp"
 #include "forthy2/forms/ref.hpp"
 #include "forthy2/forms/scope.hpp"
+#include "forthy2/forms/splice.hpp"
 #include "forthy2/forms/stack.hpp"
 #include "forthy2/int.hpp"
 #include "forthy2/lambda.hpp"
@@ -65,6 +66,7 @@ namespace forthy2 {
     Pool<QuoteForm> quote_form;
     Pool<RefForm> ref_form;
     Pool<ScopeForm> scope_form;
+    Pool<SpliceForm> splice_form;
     Pool<StackForm> stack_form;
 
     Pool<CallOp> call_op;
@@ -175,14 +177,17 @@ namespace forthy2 {
       
       return *op;
     }
-    
-    void deinit() {
-      for (Node<Op> *op(ops.next); op != &ops;) {
+
+    void dealloc(Node<Op> &root) {
+      for (Node<Op> *op(root.next); op != &root;) {
         Node<Op> *next(op->next);
         op->get().dealloc(*this);
         op = next;
       }
+    }
 
+    void deinit() {
+      dealloc(ops);
       unmarked.extend(marked);
       sweep();
 
