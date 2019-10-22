@@ -16,6 +16,8 @@ namespace forthy2 {
     return true;
   }
 
+  Form &Val::unquote(Cx &cx, Pos pos) { return cx.lit_form.get(pos, *this); }
+
   ostream &operator <<(ostream &out, const Val &val) {
     const_cast<Val &>(val).dump(out);
     return out;

@@ -6,8 +6,7 @@ namespace forthy2 {
 
   Node<Op> &ScopeForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {    
     if (quote > 0) {
-      Node<Op> ops;
-      Node<Op> *pc(&ops);
+      Node<Op> ops, *pc(&ops);
       Scope scope(cx, *cx.scope);
       cx.with_scope<void>(scope, [&]() { pc = &cx.compile(body, *pc, quote); });
 
@@ -17,15 +16,7 @@ namespace forthy2 {
       
       ScopeForm &s(cx.scope_form.get(pos));
       cx.marked.push(s);
-
-      for (Val *v: stack.items) {
-        if (&v->type(cx) == &cx.sym_type) {
-          s.body.push_back(&cx.id_form.get(pos, *dynamic_cast<Sym *>(v)));
-        } else {
-          s.body.push_back(&cx.lit_form.get(pos, *v));
-        }
-      }
-      
+      for (Val *v: stack.items) { s.body.push_back(&v->unquote(cx, pos)); }
       return cx.push_op.get(s, out, s);
     }
     

@@ -8,15 +8,15 @@ namespace forthy2 {
     Sym &id(dynamic_cast<IdForm &>(z).val);
     Val &v(cx.scope->get(pos, id));
     Type &vt(v.type(cx));
-
+    
     if (&vt == &cx.macro_type) {
-      if (y) { in.push_back(y); }
-      if (x) { in.push_back((quote > 0) ? &cx.quote_form.get(pos, *x) : x); }
-      in.push_back(&z);
+      if (y) { in.push_back((quote > 0) ? &cx.splice_form.get(pos, *y) : y); }
+      if (x) { in.push_back(x); }
+      in.push_back((quote > 0) ? &cx.splice_form.get(pos, z) : &z);
     } else if (&vt == &cx.method_type || &vt == &cx.method_set_type) {
-      in.push_back(&z);
-      if (y) { in.push_back(y); }
-      if (x) { in.push_back((quote > 0) ? &cx.quote_form.get(pos, *x) : x); }
+      in.push_back((quote > 0) ? &cx.splice_form.get(pos, z) : &z);
+      if (y) { in.push_back((quote > 0) ? &cx.splice_form.get(pos, *y) : y); }
+      if (x) { in.push_back(x); }
     } else {
       throw ESys(pos, "Invalid dot z: ", vt.id);
     }

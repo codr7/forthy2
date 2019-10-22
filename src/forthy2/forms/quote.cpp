@@ -5,7 +5,8 @@ namespace forthy2 {
   QuoteForm::QuoteForm(const Pos &pos, Form &val): Form(pos), val(val) {}
 
   Node<Op> &QuoteForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {
-    return val.compile(cx, in, out, quote + 1);
+    val.eval(cx, quote + 1);
+    return cx.push_op.get(*this, out, cx.pop(pos));
   }
 
   void QuoteForm::dealloc(Cx &cx) {

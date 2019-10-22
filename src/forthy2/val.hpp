@@ -11,6 +11,7 @@ namespace forthy2 {
   using namespace std;
 
   struct Cx;
+  struct Form;
   struct Op;
   struct Pos;
   struct Type;
@@ -41,6 +42,8 @@ namespace forthy2 {
     virtual Type &type(Cx &cx) = 0;
 
     virtual void unmark() { marked = false; }
+
+    virtual Form &unquote(Cx &cx, Pos pos);
   };
 
   ostream &operator <<(ostream &out, const Val &val);

@@ -34,7 +34,7 @@ namespace forthy2 {
     virtual void dealloc(Cx &cx) = 0;
     void deref(Cx &cx);
     void dump(ostream &out) override;
-    void eval(Cx &cx, Forms &in);
+    void eval(Cx &cx, int quote = 0);
 
     bool mark(Cx &cx) override {
       if (!Val::mark(cx)) { return false; }

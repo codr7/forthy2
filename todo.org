@@ -1,13 +1,11 @@
-* add Form.eq
-** implement and forward from Val
-** rename Val.eq
-* derive macro from method
-** add separate imp
-** use dispatch for expand
 * add macro macro
 ** quote macro args before calling
 ** compile result
-* --
+* add Form.eq
+** forward from Val
+* derive macro from method
+** add separate imp
+** use dispatch for expand
 *  update readme
 ** quoting
 ** macros

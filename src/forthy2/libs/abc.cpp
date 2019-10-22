@@ -173,7 +173,7 @@ namespace forthy2 {
     Sym &id(dynamic_cast<IdForm &>(id_form).val);
     Form &val_form(*in.back());
     in.pop_back();
-    val_form.eval(cx, in);
+    val_form.eval(cx);
     cx.scope->bind(form.pos, id, cx.pop(form.pos));
     return out;
   }
@@ -185,7 +185,7 @@ namespace forthy2 {
     Form &args_form(*in.back());
     in.pop_back();
 
-    args_form.eval(cx, in);
+    args_form.eval(cx);
     Stack &args_val(cx.pop(form.pos, cx.stack_type));
     vector<Arg> args;
 

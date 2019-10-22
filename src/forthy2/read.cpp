@@ -3,7 +3,7 @@
 #include "forthy2/pos.hpp"
 #include "forthy2/read.hpp"
 
-namespace forthy2 {
+namespace forthy2 {  
   Form *read_form(Cx &cx, Pos &pos, istream &in) {
     skip_ws(pos, in);
     Pos p(pos);
@@ -21,8 +21,7 @@ namespace forthy2 {
         break;
       case '\'':
         pos.col++;
-        if (!(f = read_form(cx, pos, in))) { throw ESys(p, "Invalid quote"); }
-        f = &cx.quote_form.get(p, *f);
+        f = &read_quote(cx, pos, in);
         break;
       case '%':
         pos.col++;
@@ -98,7 +97,7 @@ namespace forthy2 {
     DotForm &d(cx.dot_form.get(p, x, y, *z));
     return d;
   }
-  
+
   pair<uint64_t, uint8_t> read_frac(Cx &cx, Pos &pos, istream &in) {
     char c(0);    
     uint64_t v(0);
@@ -216,7 +215,14 @@ namespace forthy2 {
     PairForm &d(cx.pair_form.get(p, *l, *r));
     return d;
   }
-  
+
+  Form &read_quote(Cx &cx, Pos &pos, istream &in) {
+    Pos p(pos);
+    Form *f(read_form(cx, pos, in));
+    if (!f) { throw ESys(p, "Invalid quote"); }
+    return cx.quote_form.get(p, *f);
+  }
+
   ScopeForm &read_scope(Cx &cx, Pos &pos, istream &in) {
     ScopeForm &root(cx.scope_form.get(pos)), *out(&root);
     char c(0);

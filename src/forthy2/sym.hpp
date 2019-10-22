@@ -18,6 +18,7 @@ namespace forthy2 {
     void dump(ostream &out) override;
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
+    Form &unquote(Cx &cx, Pos pos) override;
   };
 }
 

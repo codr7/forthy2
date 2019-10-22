@@ -16,11 +16,13 @@ namespace forthy2 {
 
   void Form::dump(ostream &out) { out << "Form@" << this; }
 
-  void Form::eval(Cx &cx, Forms &in) {
-    Node<Op> &pc(*cx.ops.prev);
-    compile(cx, in, pc, 0);
-    cx.eval(pc, cx.ops);
-    while (cx.ops.prev != &pc) { cx.ops.prev->get().dealloc(cx); }
+  void Form::eval(Cx &cx, int quote) {
+    Node<Op> ops;
+    Forms in;
+    in.push_back(this);
+    cx.compile(in, ops, quote);
+    cx.eval(ops, ops);
+    cx.dealloc(ops);
   }
 
   void Form::mark_vals(Cx &cx) {}

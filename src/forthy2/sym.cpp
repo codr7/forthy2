@@ -11,4 +11,6 @@ namespace forthy2 {
   void Sym::sweep(Cx &cx) { assert(false); }
 
   Type &Sym::type(Cx &cx) { return cx.sym_type; }
+
+  Form &Sym::unquote(Cx &cx, Pos pos) { return cx.id_form.get(pos, *this); }
 }
