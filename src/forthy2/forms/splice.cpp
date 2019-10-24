@@ -2,21 +2,13 @@
 #include "forthy2/forms/splice.hpp"
 
 namespace forthy2 {
-  SpliceForm::SpliceForm(const Pos &pos, Form &val): Form(pos), val(val) {}
+  SpliceForm::SpliceForm(const Pos &pos): Form(pos) {}
 
   Node<Op> &SpliceForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {
-    return val.compile(cx, in, out, quote - 1);
+    throw ESys(pos, (quote > 0) ? "Missing splice" : "Splice outside of quote");
   }
 
-  void SpliceForm::dealloc(Cx &cx) {
-    val.deref(cx);
-    cx.splice_form.put(*this);
-  }
+  void SpliceForm::dealloc(Cx &cx) { cx.splice_form.put(*this); }
 
-  void SpliceForm::mark_vals(Cx &cx) { val.mark_vals(cx); }
-
-  void SpliceForm::write(ostream &out) {
-    out << '%';
-    val.write(out);
-  }
+  void SpliceForm::write(ostream &out) { out << '%'; }
 }

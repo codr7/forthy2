@@ -2,54 +2,6 @@
 #include "forthy2/libs/abc.hpp"
 
 namespace forthy2 {
-  static Node<Op> &mark_imp(Cx &cx, Op &pc) {
-    optional<Time::Imp> max_time;
-
-    if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
-      max_time = dynamic_cast<Time &>(v).imp;
-    }
-    
-    if (auto ok(cx.mark(max_time)); ok) {
-      cx.push(cx.time_type.get(cx, *ok));
-    } else {
-      cx.push(cx._);
-    }
-
-    return *pc.next;
-  }
-
-  static Node<Op> &sweep_imp(Cx &cx, Op &pc) {
-    optional<Time::Imp> max_time;
-
-    if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
-      max_time = dynamic_cast<Time &>(v).imp;
-    }
-    
-    if (auto ok(cx.sweep(max_time)); ok) {
-      cx.push(cx.time_type.get(cx, *ok));
-    } else {
-      cx.push(cx._);
-    }
-
-    return *pc.next;
-  }
-
-  static Node<Op> &mark_sweep_imp(Cx &cx, Op &pc) {
-    optional<Time::Imp> max_time;
-
-    if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
-      max_time = dynamic_cast<Time &>(v).imp;
-    }
-    
-    if (auto ok(cx.mark_sweep(max_time)); ok) {
-      cx.push(cx.time_type.get(cx, *ok));
-    } else {
-      cx.push(cx._);
-    }
-
-    return *pc.next;
-  }
-
   static Node<Op> &eq_imp(Cx &cx, Op &pc) {
     Val &y(cx.pop()), &x(cx.pop());
     bool ok(x.type(cx) == y.type(cx) && x.eq(y));
@@ -83,6 +35,18 @@ namespace forthy2 {
 
   static Node<Op> &swap_imp(Cx &cx, Op &pc) {
     cx.stack->swap();
+    return *pc.next;
+  }
+
+  static Node<Op> &inc_imp(Cx &cx, Op &pc) {
+    Val &v(cx.pop());
+    cx.push(cx.int_type.get(cx, dynamic_cast<Int &>(v).imp + 1));
+    return *pc.next;
+  }
+
+  static Node<Op> &dec_imp(Cx &cx, Op &pc) {
+    Val &v(cx.pop());
+    cx.push(cx.int_type.get(cx, dynamic_cast<Int &>(v).imp - 1));
     return *pc.next;
   }
 
@@ -178,6 +142,38 @@ namespace forthy2 {
     return out;
   }
 
+  static Node<Op> &mark_imp(Cx &cx, Op &pc) {
+    optional<Time::Imp> max_time;
+
+    if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
+      max_time = dynamic_cast<Time &>(v).imp;
+    }
+    
+    if (auto ok(cx.mark(max_time)); ok) {
+      cx.push(cx.time_type.get(cx, *ok));
+    } else {
+      cx.push(cx._);
+    }
+
+    return *pc.next;
+  }
+
+  static Node<Op> &mark_sweep_imp(Cx &cx, Op &pc) {
+    optional<Time::Imp> max_time;
+
+    if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
+      max_time = dynamic_cast<Time &>(v).imp;
+    }
+    
+    if (auto ok(cx.mark_sweep(max_time)); ok) {
+      cx.push(cx.time_type.get(cx, *ok));
+    } else {
+      cx.push(cx._);
+    }
+
+    return *pc.next;
+  }
+  
   static Node<Op> &method_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
     Sym &id(dynamic_cast<IdForm *>(in.back())->val);
     in.pop_back();
@@ -268,27 +264,10 @@ namespace forthy2 {
     return *op.pc;
   }
 
-  static Node<Op> &while_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
-    Form &body(*in.back());
+  static Node<Op> &splice_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    Form &vals(*in.back());
     in.pop_back();
-
-    Node<Op> *op(&body.compile(cx, in, out));
-    BranchOp &branch_op(cx.branch_op.get(form, *op));
-    branch_op.pc = &out;
-    branch_op.neg = true;
-    return branch_op;
-  }
-
-  static Node<Op> &inc_imp(Cx &cx, Op &pc) {
-    Val &v(cx.pop());
-    cx.push(cx.int_type.get(cx, dynamic_cast<Int &>(v).imp + 1));
-    return *pc.next;
-  }
-
-  static Node<Op> &dec_imp(Cx &cx, Op &pc) {
-    Val &v(cx.pop());
-    cx.push(cx.int_type.get(cx, dynamic_cast<Int &>(v).imp - 1));
-    return *pc.next;
+    return cx.splice_op.get(form, out, vals.ref());
   }
 
   static Node<Op> &stack_len_imp(Cx &cx, Op &pc) {
@@ -312,6 +291,33 @@ namespace forthy2 {
     return *pc.next;
   }
 
+  static Node<Op> &sweep_imp(Cx &cx, Op &pc) {
+    optional<Time::Imp> max_time;
+
+    if (Val &v(cx.pop()); v.type(cx) == cx.int_type) {
+      max_time = dynamic_cast<Time &>(v).imp;
+    }
+    
+    if (auto ok(cx.sweep(max_time)); ok) {
+      cx.push(cx.time_type.get(cx, *ok));
+    } else {
+      cx.push(cx._);
+    }
+
+    return *pc.next;
+  }
+
+  static Node<Op> &while_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    Form &body(*in.back());
+    in.pop_back();
+
+    Node<Op> *op(&body.compile(cx, in, out));
+    BranchOp &branch_op(cx.branch_op.get(form, *op));
+    branch_op.pc = &out;
+    branch_op.neg = true;
+    return branch_op;
+  }
+
   void init_abc(Cx &cx, Pos pos, Scope &scope) {
     scope.bind_type(cx, pos, cx.a_type);
     scope.bind_type(cx, pos, cx.bool_type);
@@ -327,7 +333,6 @@ namespace forthy2 {
     scope.bind_type(cx, pos, cx.pair_type);
     scope.bind_type(cx, pos, cx.stack_type);
     scope.bind_type(cx, pos, cx.sym_type);
-
 
     scope.bind(pos, cx.sym("_"), cx._);
     scope.bind(pos, cx.sym("F"), cx.F);
@@ -349,10 +354,8 @@ namespace forthy2 {
     scope.add_method(cx, pos, cx.sym(">"),
                    {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = gt_imp;
 
-
     scope.add_method(cx, pos, cx.sym("+1"), {{cx.int_type}}).imp = inc_imp;
     scope.add_method(cx, pos, cx.sym("-1"), {{cx.int_type}}).imp = dec_imp;
-
     
     scope.add_macro(cx, pos, cx.sym("and"), {{cx.a_type.or_()}}).imp = and_imp;
     scope.add_method(cx, pos, cx.sym("bool"), {{cx.a_type.or_()}}).imp = bool_imp;
@@ -398,8 +401,10 @@ namespace forthy2 {
     scope.add_method(cx, pos, cx.sym("push"),
                    {{cx.stack_type}, {cx.a_type}}).imp = stack_push_imp;    
 
+    scope.add_macro(cx, pos, cx.sym("splice"), {{cx.a_type}}).imp = splice_imp;
+
     scope.add_method(cx, pos, cx.sym("sweep"),
-                   {{cx.time_type.or_()}}).imp = sweep_imp;
+                     {{cx.time_type.or_()}}).imp = sweep_imp;
 
     scope.add_method(cx, pos, cx.sym("type"), {{cx.a_type.or_()}}).imp = type_imp;
 

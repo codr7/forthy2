@@ -6,18 +6,8 @@ namespace forthy2 {
 
   Node<Op> &ScopeForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {    
     if (quote > 0) {
-      Node<Op> ops, *pc(&ops);
-      Scope scope(cx, *cx.scope);
-      cx.with_scope<void>(scope, [&]() { pc = &cx.compile(body, *pc, quote); });
-
-      Stack stack;
-      cx.with_stack<void>(stack, [&]() { cx.eval(ops, ops); });
-      cx.dealloc(ops);
-      
-      ScopeForm &s(cx.scope_form.get(pos));
-      cx.marked.push(s);
-      for (Val *v: stack.items) { s.body.push_back(&v->unquote(cx, pos)); }
-      return cx.push_op.get(s, out, s);
+      cx.marked.push(*this);
+      return cx.push_op.get(*this, out, *this);
     }
     
     Node<Op> *pc(&out);
@@ -45,6 +35,14 @@ namespace forthy2 {
 
   void ScopeForm::mark_vals(Cx &cx) {
     for (Form *f: body) { f->mark_vals(cx); }
+  }
+
+  void ScopeForm::splice(Cx &cx, Stack &vals) {
+    for (auto i(body.begin()); !vals.empty() && i != body.end(); i++) {
+      if (auto *sf(dynamic_cast<SpliceForm *>(*i)); sf) {
+        *i = &vals.pop().unquote(cx, pos);
+      }
+    }
   }
 
   void ScopeForm::write(ostream &out) { out << '{' << body << '}'; }

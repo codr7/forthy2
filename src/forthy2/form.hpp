@@ -14,7 +14,8 @@ namespace forthy2 {
   struct Cx;
   struct Form;
   struct Op;
-
+  struct Stack;
+  
   using Forms = vector<Form *>;
   using FormIter = Forms::iterator;
 
@@ -44,7 +45,7 @@ namespace forthy2 {
     
     virtual void mark_vals(Cx &cx);
     Form &ref();
-    
+    virtual void splice(Cx &cx, Stack &vals) {}
     void sweep(Cx &cx) override { deref(cx); }
 
     Type &type(Cx &cx) override;

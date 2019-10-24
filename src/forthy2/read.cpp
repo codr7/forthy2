@@ -4,8 +4,8 @@
 #include "forthy2/read.hpp"
 
 namespace forthy2 {  
-  Form *read_form(Cx &cx, Pos &pos, istream &in) {
-    skip_ws(pos, in);
+  Form *read_form(Cx &cx, Pos &pos, istream &in, bool skip) {
+    if (skip) { skip_ws(pos, in); }
     Pos p(pos);
     Form *f;
     
@@ -25,8 +25,7 @@ namespace forthy2 {
         break;
       case '%':
         pos.col++;
-        if (!(f = read_form(cx, pos, in))) { throw ESys(p, "Invalid splice"); }
-        f = &cx.splice_form.get(p, *f);
+        f = &cx.splice_form.get(p);
         break;
       case '.':
         if (in.get(c)) {
@@ -51,7 +50,7 @@ namespace forthy2 {
         break;
       case '&':
         pos.col++;        
-        if (!(f = read_form(cx, pos, in))) { throw ESys(p, "Invalid ref"); }
+        if (!(f = read_form(cx, pos, in, false))) { throw ESys(p, "Invalid ref"); }
         if (!dynamic_cast<RefForm *>(f)) { f = &cx.ref_form.get(p, *f); }
         break;
       default:
@@ -91,9 +90,9 @@ namespace forthy2 {
 
   DotForm &read_dot(Cx &cx, Pos &pos, Form *x, istream &in) {
     Pos p(pos);
-    Form *z = read_form(cx, pos, in);
+    Form *z = read_form(cx, pos, in, true);
     if (!z) { throw ESys(p, "Missing z-form"); }
-    Form *y = read_form(cx, pos, in);
+    Form *y = read_form(cx, pos, in, true);
     DotForm &d(cx.dot_form.get(p, x, y, *z));
     return d;
   }
@@ -208,9 +207,9 @@ namespace forthy2 {
 
   PairForm &read_pair(Cx &cx, Pos &pos, istream &in) {
     Pos p(pos);
-    Form *l = read_form(cx, pos, in);
+    Form *l = read_form(cx, pos, in, false);
     if (!l) { throw ESys(p, "Missing left form"); }
-    Form *r = read_form(cx, pos, in);
+    Form *r = read_form(cx, pos, in, true);
     if (!r) { throw ESys(p, "Missing right form"); }
     PairForm &d(cx.pair_form.get(p, *l, *r));
     return d;
@@ -218,7 +217,7 @@ namespace forthy2 {
 
   Form &read_quote(Cx &cx, Pos &pos, istream &in) {
     Pos p(pos);
-    Form *f(read_form(cx, pos, in));
+    Form *f(read_form(cx, pos, in, false));
     if (!f) { throw ESys(p, "Invalid quote"); }
     return cx.quote_form.get(p, *f);
   }
@@ -243,7 +242,7 @@ namespace forthy2 {
         prev.body.push_back(out);
       } else {
         in.unget();
-        Form *f(read_form(cx, pos, in));
+        Form *f(read_form(cx, pos, in, true));
         if (!f) { throw ESys(out->pos, "Open scope"); }
         out->body.push_back(f);
       }
@@ -272,7 +271,7 @@ namespace forthy2 {
         prev.body.push_back(out);
       } else {
         in.unget();
-        Form *f(read_form(cx, pos, in));
+        Form *f(read_form(cx, pos, in, true));
         if (!f) { throw ESys(out->pos, "Open stack"); }
         out->body.push_back(f);
       }

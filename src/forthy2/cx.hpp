@@ -33,6 +33,7 @@
 #include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/push.hpp"
 #include "forthy2/ops/return.hpp"
+#include "forthy2/ops/splice.hpp"
 #include "forthy2/ops/stack.hpp"
 #include "forthy2/pair.hpp"
 #include "forthy2/path.hpp"
@@ -76,6 +77,7 @@ namespace forthy2 {
     Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
     Pool<ReturnOp> return_op;
+    Pool<SpliceOp> splice_op;
     Pool<StackOp> stack_op;
 
     uint64_t type_weight;
@@ -209,9 +211,13 @@ namespace forthy2 {
     void eval(istream &in) {
       Forms forms;
       read(in, forms);
+      eval(forms);
+    }
+
+    void eval(Forms &in, int quote = 0) {
       Node<Op> &pc(*ops.prev);
-      compile(forms, pc);
-      deref(forms);
+      compile(in, pc, quote);
+      deref(in);
       eval(pc, ops);      
     }
 
@@ -283,6 +289,15 @@ namespace forthy2 {
 
     Val &peek(size_t offs = 0) { return stack->peek(offs); }
 
+    template <typename T>
+    T &peek(Pos pos, ValType<T> &type, size_t offs = 0) {
+      if (stack->len() < offs + 1) { throw ESys(pos, "Stack offset out of bounds"); }
+      Val &v(peek(offs));
+      Type &vt(v.type(*this));
+      if (!vt.isa(type)) { ESys(pos, "Expected ", type.id, ": ", vt.id); }
+      return dynamic_cast<T &>(v);
+    }
+
     Val &pop() { return stack->pop(); }
 
     Val &pop(Pos pos) {
@@ -316,7 +331,7 @@ namespace forthy2 {
     void read(istream &in, Forms &out) {
       Pos p;
       Form *f(nullptr);
-      while ((f = read_form(*this, p, in))) { out.push_back(f); }
+      while ((f = read_form(*this, p, in, true))) { out.push_back(f); }
     }
     
     template <typename...Args>

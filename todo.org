@@ -1,3 +1,5 @@
+* test/run.f2
+* --
 * add Form.eq
 ** forward from Val
 * add times loop
@@ -6,6 +8,8 @@
 ** conditions
 *** if/else
 ** while
+* add macro arg typecheck
+** fix types in abc/math
 * --
 * add fix bench
 * add fib_iter
