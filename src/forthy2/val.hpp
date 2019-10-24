@@ -27,7 +27,7 @@ namespace forthy2 {
 
     virtual Val &clone(Cx &cx) { return *this; }
 
-    virtual Node<Op> &call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe);
+    virtual Node<Op> &call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe);
 
     virtual Cmp cmp(Val &other) { return forthy2::cmp<Val *>(this, &other); }
 

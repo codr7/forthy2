@@ -4,7 +4,7 @@
 #include "forthy2/nil.hpp"
 
 namespace forthy2 {
-  Node<Op> &Nil::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
+  Node<Op> &Nil::call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe) {
     return *return_pc.next;
   }
 

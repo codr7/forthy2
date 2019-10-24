@@ -15,7 +15,7 @@ namespace forthy2 {
   struct Sym;
   
   struct Method: Node<Method>, Val {
-    using Imp = function<Node<Op> &(Cx &, Op &)>;
+    using Imp = function<Node<Op> &(Cx &, Pos pos, Node<Op> &)>;
 
     MethodSet &set;
     Sym &id;
@@ -26,7 +26,7 @@ namespace forthy2 {
     
     Method(MethodSet &set, Sym &id, const vector<Arg> &args, uint64_t weight);
     bool applicable(Cx &cx);
-    Node<Op> &call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) override;
+    Node<Op> &call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe) override;
     void dump(ostream &out) override;
     bool mark(Cx &cx) override;
     void sweep(Cx &cx) override;    

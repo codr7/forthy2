@@ -9,12 +9,12 @@ namespace forthy2 {
   
   struct Call {
     Call *prev;
-    Op &pc;
+    Pos pos;
     Fn &fn;
     Node<Op> &return_pc;
     
-    Call(Call *prev, Op &pc, Fn &fn, Node<Op> &return_pc):
-      prev(prev), pc(pc), fn(fn), return_pc(return_pc) {}
+    Call(Call *prev, Pos pos, Fn &fn, Node<Op> &return_pc):
+      prev(prev), pos(pos), fn(fn), return_pc(return_pc) {}
   };
 }
 

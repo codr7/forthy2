@@ -332,8 +332,8 @@ namespace forthy2 {
 
     void push(Val &val) { stack->push(val); }
     
-    void push_call(Op &pc, Fn &fn, Node<Op> &return_pc) {
-      call = &call_pool.get(call, pc, fn, return_pc);
+    void push_call(Pos &pos, Fn &fn, Node<Op> &return_pc) {
+      call = &call_pool.get(call, pos, fn, return_pc);
     }
 
     void read(istream &in, Forms &out) {
@@ -385,11 +385,11 @@ namespace forthy2 {
 
   inline Node<Op> &CallOp::eval(Cx &cx) {
     Val &v(val ? *val : cx.pop(form.pos));
-    return v.call(cx, *this, *this, safe);
+    return v.call(cx, form.pos, *this, safe);
   }
 
-  inline Node<Op> &Fn::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
-    cx.push_call(pc, *this, return_pc);
+  inline Node<Op> &Fn::call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe) {
+    cx.push_call(pos, *this, return_pc);
     return *ops.next;
   }
 
@@ -413,18 +413,18 @@ namespace forthy2 {
     return true;
   }
   
-  inline Node<Op> &Method::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
+  inline Node<Op> &Method::call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe) {
     if (cx.unsafe <= 0 && safe && !applicable(cx)) {
-      throw ESys(pc.form.pos, "Method not applicable: ", id.name, '\n', *cx.stack);
+      throw ESys(pos, "Method not applicable: ", id.name, '\n', *cx.stack);
     }
     
-    return imp ? imp(cx, pc) : fn.call(cx, pc, return_pc, safe);
+    return imp ? imp(cx, pos, return_pc) : fn.call(cx, pos, return_pc, safe);
   }
 
-  inline Node<Op> &MethodSet::call(Cx &cx, Op &pc, Node<Op> &return_pc, bool safe) {
+  inline Node<Op> &MethodSet::call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe) {
     Method *m(dispatch(cx));
-    if (!m) { throw ESys(pc.form.pos, "Method not applicable: ", id.name); }
-    return m->call(cx, pc, return_pc, false);
+    if (!m) { throw ESys(pos, "Method not applicable: ", id.name); }
+    return m->call(cx, pos, return_pc, false);
   }
 
   inline Method *MethodSet::dispatch(Cx &cx) {
