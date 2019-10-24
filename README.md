@@ -93,7 +93,7 @@ _
 ```
 
 ### scopes
-[forthy2](https://github.com/codr7/forthy2) is strictly block-scoped, definitions are tied to scopes and invisible from the outside.
+[forthy2](https://github.com/codr7/forthy2) is strictly block scoped, definitions are tied to the containing scope and invisible from the outside.
 
 ```
   {let foo 42}
@@ -213,6 +213,27 @@ and split using `unpair`.
   ,1 3 unpair
   
 1 3
+```
+
+### branching
+`if`/`else` both take a condition on the stack and a body to execute when the condition is true/false.
+
+```
+  42 if 'ok
+
+'ok
+```
+
+```
+  0 else 'ok
+
+'ok
+```
+
+`while` keeps iterating the specified body until it returns false.
+
+```
+  3 while {-1 .:} :.
 ```
 
 ### types
@@ -336,6 +357,61 @@ Method@0x11216d0
   42 :: call
   
 3
+```
+
+### quoting
+Any value may be quoted using `'`.
+
+Literals return themselves as is,
+
+```
+  '42
+
+42
+```
+
+while identifiers return symbols,
+
+```
+  'let
+
+'let
+```
+
+and scopes return forms.
+
+```
+  '{6 7 *}
+
+Form@0x2527cc0
+```
+
+Forms may be turned into lambdas using `compile`.
+
+```
+  '{6 7 *} compile
+
+Lambda@0x252dab0
+
+  call
+
+42
+```
+
+Forms may contain placeholders where external values can be spliced in.
+
+```
+  '{6 % *}
+
+Form@0x252dcd0
+
+  7 splice
+
+Form@0x252dcd0
+
+  compile call
+
+42
 ```
 
 ### time
