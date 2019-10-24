@@ -9,10 +9,11 @@ check {Nil.isa A? .= A?}
 check {'foo.is 'foo}
 check {'foo.is 'bar not}
 check {'{6 7 *} compile call .= 42}
+check {'{6 % *} 7 splice compile call .= 42}
 
 {
   let foo 7
-  '{6 % *} splice (foo)
+  '{6 % *} foo splice
 } check {compile call .= 42}
 
 check {42.type .= Int}

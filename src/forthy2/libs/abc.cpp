@@ -264,11 +264,10 @@ namespace forthy2 {
     return *op.pc;
   }
 
-  static Node<Op> &splice_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
-    Form &vals(*in.back());
-    in.pop_back();
-    Node<Op> &pc(vals.compile(cx, in, out));
-    return cx.splice_op.get(form, pc);
+  static Node<Op> &splice_imp(Cx &cx, Op &pc) {
+    Form &dst(cx.peek(cx.form_type, 1));
+    if (dst.splice(cx, 1)) { throw ESys(pc.form.pos, "Missing splice"); }
+    return *pc.next;
   }
 
   static Node<Op> &stack_len_imp(Cx &cx, Op &pc) {
@@ -402,7 +401,8 @@ namespace forthy2 {
     scope.add_method(cx, pos, cx.sym("push"),
                    {{cx.stack_type}, {cx.a_type}}).imp = stack_push_imp;    
 
-    scope.add_macro(cx, pos, cx.sym("splice"), {{cx.a_type}}).imp = splice_imp;
+    scope.add_method(cx, pos, cx.sym("splice"),
+                     {{cx.form_type}, {cx.a_type}}).imp = splice_imp;
 
     scope.add_method(cx, pos, cx.sym("sweep"),
                      {{cx.time_type.or_()}}).imp = sweep_imp;

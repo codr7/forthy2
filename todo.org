@@ -1,6 +1,6 @@
-* add Form.eq
-** forward from Val
-*  update readme
+* update method arg list
+** add pos arg and switch pc to Node<Op>
+* update readme
 ** quoting/splicing
 ** branching
 *** if/else/while
@@ -27,6 +27,7 @@
 ** add Timestamp +/- Time
 ** add today/now
 * --
+* add Form.eq overrides
 * add macro arg typecheck
 ** fix types in abc/math
 * add next-method

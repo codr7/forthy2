@@ -37,12 +37,18 @@ namespace forthy2 {
     for (Form *f: body) { f->mark_vals(cx); }
   }
 
-  void ScopeForm::splice(Cx &cx, Stack &vals) {
-    for (auto i(body.begin()); !vals.empty() && i != body.end(); i++) {
+  int ScopeForm::splice(Cx &cx, int n) {
+    for (auto i(body.begin()); n && i != body.end(); i++) {
       if (auto *sf(dynamic_cast<SpliceForm *>(*i)); sf) {
-        *i = &vals.pop().unquote(cx, pos);
+        (*i)->deref(cx);
+        *i = &cx.pop(pos).unquote(cx, pos);
+        n--;
+      } else {
+        n = (*i)->splice(cx, n);
       }
     }
+
+    return n;
   }
 
   void ScopeForm::write(ostream &out) { out << '{' << body << '}'; }

@@ -12,7 +12,7 @@ namespace forthy2 {
     Node<Op> &compile_ref(Cx &cx, Forms &in, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
     void mark_vals(Cx &cx) override;
-    void splice(Cx &cx, Stack &vals) override;
+    int splice(Cx &cx, int n) override;
     void write(ostream &out) override;
   };
 }

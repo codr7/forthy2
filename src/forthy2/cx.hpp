@@ -34,7 +34,6 @@
 #include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/push.hpp"
 #include "forthy2/ops/return.hpp"
-#include "forthy2/ops/splice.hpp"
 #include "forthy2/ops/stack.hpp"
 #include "forthy2/pair.hpp"
 #include "forthy2/path.hpp"
@@ -79,7 +78,6 @@ namespace forthy2 {
     Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
     Pool<ReturnOp> return_op;
-    Pool<SpliceOp> splice_op;
     Pool<StackOp> stack_op;
 
     uint64_t type_weight;
@@ -292,6 +290,11 @@ namespace forthy2 {
     Val &peek(size_t offs = 0) { return stack->peek(offs); }
 
     template <typename T>
+    T &peek(ValType<T> &type, size_t offs = 0) {
+      return dynamic_cast<T &>(peek(offs));
+    }
+
+    template <typename T>
     T &peek(Pos pos, ValType<T> &type, size_t offs = 0) {
       if (stack->len() < offs + 1) { throw ESys(pos, "Stack offset out of bounds"); }
       Val &v(peek(offs));
@@ -306,6 +309,9 @@ namespace forthy2 {
       if (stack->empty()) { throw ESys(pos, "Stack is empty"); }
       return pop();
     }
+
+    template <typename T>
+    T &pop(ValType<T> &type) { return dynamic_cast<T &>(pop()); }
 
     template <typename T>
     T &pop(Pos pos, ValType<T> &type) {

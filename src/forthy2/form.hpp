@@ -45,7 +45,7 @@ namespace forthy2 {
     
     virtual void mark_vals(Cx &cx);
     Form &ref();
-    virtual void splice(Cx &cx, Stack &vals) {}
+    virtual int splice(Cx &cx, int n) { return n; }
     void sweep(Cx &cx) override { deref(cx); }
 
     Type &type(Cx &cx) override;
