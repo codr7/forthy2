@@ -1,6 +1,7 @@
 #ifndef FORTHY2_VAL_HPP
 #define FORTHY2_VAL_HPP
 
+#include <functional>
 #include <iostream>
 #include <utility>
 
@@ -17,6 +18,8 @@ namespace forthy2 {
   struct Type;
   
   struct Val: Node<Val> {
+    using IterBody = function<bool (Val &)>;
+    
     bool marked;
 
     Val(): marked(true) {}
@@ -35,6 +38,8 @@ namespace forthy2 {
 
     virtual bool eq(Val &other) { return this == &other; }
 
+    virtual void iter(Cx &cx, IterBody body);
+    
     virtual bool mark(Cx &cx);
 
     virtual void sweep(Cx &cx) { Node<Val>::unlink(); }

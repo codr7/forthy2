@@ -264,6 +264,22 @@ namespace forthy2 {
     return *op.pc;
   }
 
+  static Node<Op> &for_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    ForOp &op(cx.for_op.get(form, out));
+    Form &body(*in.back());
+    in.pop_back();
+    op.end_pc = (&body == &cx.nil_form) ? &op : &body.compile(cx, in, op);
+    return *op.end_pc;
+  }
+
+  static Node<Op> &repeat_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    RepeatOp &op(cx.repeat_op.get(form, out));
+    Form &body(*in.back());
+    in.pop_back();
+    op.end_pc = &body.compile(cx, in, op);
+    return *op.end_pc;
+  }
+
   static Node<Op> &splice_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     Form &dst(cx.peek(cx.form_type, 1));
     if (dst.splice(cx, 1)) { throw ESys(pos, "Missing splice"); }
@@ -334,7 +350,6 @@ namespace forthy2 {
     scope.bind_type(cx, pos, cx.stack_type);
     scope.bind_type(cx, pos, cx.sym_type);
 
-    scope.bind(pos, cx.sym("_"), cx._);
     scope.bind(pos, cx.sym("F"), cx.F);
     scope.bind(pos, cx.sym("T"), cx.T);
     
@@ -366,6 +381,7 @@ namespace forthy2 {
     scope.add_method(cx, pos, cx.sym("dump"), {{cx.a_type.or_()}}).imp = dump_imp;
     scope.add_method(cx, pos, cx.sym("dump-stack")).imp = dump_stack_imp;    
     scope.add_macro(cx, pos, cx.sym("else"), {{cx.a_type}}).imp = else_imp;
+    scope.add_macro(cx, pos, cx.sym("for"), {{cx.a_type}}).imp = for_imp;
     scope.add_macro(cx, pos, cx.sym("if"), {{cx.a_type}}).imp = if_imp;
 
     scope.add_method(cx, pos, cx.sym("is"),
@@ -400,6 +416,8 @@ namespace forthy2 {
 
     scope.add_method(cx, pos, cx.sym("push"),
                      {{cx.stack_type}, {cx.a_type}}).imp = stack_push_imp;    
+
+    scope.add_macro(cx, pos, cx.sym("repeat"), {{cx.a_type}}).imp = repeat_imp;
 
     scope.add_method(cx, pos, cx.sym("splice"),
                      {{cx.form_type}, {cx.a_type}}).imp = splice_imp;

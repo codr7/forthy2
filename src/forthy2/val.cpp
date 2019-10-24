@@ -7,6 +7,8 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
+  void Val::iter(Cx &cx, IterBody body) { body(*this); }
+
   bool Val::mark(Cx &cx) {
     if (marked) { return false; }
     if (Type &t(type(cx)); this != &t) { t.mark(cx); }

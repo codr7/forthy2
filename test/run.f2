@@ -31,7 +31,10 @@ check {T and 42 .= 42}
 check {T if {42} .= 42}
 check {F else {42} .= 42}
 
-check {3 while {.: -1} + + + .= 6}
+check {(3 for _).= (0 1 2)}
+check {(3 for +1).= (1 2 3)}
+check {(3 repeat 42).= (42 42 42)}
+check {(3 while {-1 .:} :.).= (2 1 0)}
 
 check {41 +1 .= 42}
 check {43 -1 .= 42}

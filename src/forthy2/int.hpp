@@ -2,6 +2,7 @@
 #define FORTHY2_INT_HPP
 
 #include <cstdint>
+#include <functional>
 
 #include "forthy2/val.hpp"
 #include "forthy2/pool_type.hpp"
@@ -25,6 +26,8 @@ namespace forthy2 {
 
     bool eq(Val &other) override { return dynamic_cast<Int &>(other).imp == imp; }
 
+    void iter(Cx &cx, IterBody body) override;
+    
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };

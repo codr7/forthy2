@@ -13,6 +13,7 @@
 #include "forthy2/forms/dot.hpp"
 #include "forthy2/forms/id.hpp"
 #include "forthy2/forms/lit.hpp"
+#include "forthy2/forms/nil.hpp"
 #include "forthy2/forms/pair.hpp"
 #include "forthy2/forms/quote.hpp"
 #include "forthy2/forms/ref.hpp"
@@ -31,8 +32,10 @@
 #include "forthy2/ops/call.hpp"
 #include "forthy2/ops/check.hpp"
 #include "forthy2/ops/clock.hpp"
+#include "forthy2/ops/for.hpp"
 #include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/push.hpp"
+#include "forthy2/ops/repeat.hpp"
 #include "forthy2/ops/return.hpp"
 #include "forthy2/ops/stack.hpp"
 #include "forthy2/pair.hpp"
@@ -75,8 +78,10 @@ namespace forthy2 {
     Pool<CheckOp> check_op;
     Pool<ClockOp> clock_op;
     Pool<BranchOp> branch_op;
+    Pool<ForOp> for_op;
     Pool<PairOp> pair_op;
     Pool<PushOp> push_op;
+    Pool<RepeatOp> repeat_op;
     Pool<ReturnOp> return_op;
     Pool<StackOp> stack_op;
 
@@ -114,7 +119,9 @@ namespace forthy2 {
 
     Node<Op> ops;
 
+    NilForm nil_form;
     Nil _;
+
     Bool F, T;
     vector<Int> ints;
     
@@ -393,6 +400,18 @@ namespace forthy2 {
     return *ops.next;
   }
 
+  inline Node<Op> &ForOp::eval(Cx &cx) {
+    Val &in(cx.pop(form.pos));
+
+    in.iter(cx, [&](Val &val) {
+        cx.push(val);
+        if (end_pc != this) { cx.eval(*this, *end_pc->next); }
+        return true;
+      });
+
+    return *end_pc->next;
+  }
+
   inline Int &IntType::get(Cx &cx, Int::Imp imp) {
     size_t i((imp < 0) ? -imp * 2 - 1: imp * 2);
     return (i < cx.ints.size()) ? cx.ints[i] : PoolType<Int>::get(cx, imp);
@@ -446,6 +465,12 @@ namespace forthy2 {
   inline Node<Op> &PushOp::eval(Cx &cx) {
     cx.push(val);
     return *Node<Op>::next;
+  }
+
+  inline Node<Op> &RepeatOp::eval(Cx &cx) {
+    Int::Imp end(cx.pop(form.pos, cx.int_type).imp);
+    for (Int::Imp i(0); i < end; i++) { cx.eval(*this, *end_pc->next); }
+    return *end_pc->next;
   }
 
   inline Node<Op> &ReturnOp::eval(Cx &cx) { return *cx.pop_call().next; }

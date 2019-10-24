@@ -11,6 +11,9 @@ namespace forthy2 {
     
     if (char c(0); in.get(c)) {
       switch (c) {
+      case '_':
+        pos.col++;
+        return &cx.nil_form.ref();
       case '{':
         pos.col++;
         f = &read_scope(cx, pos, in);

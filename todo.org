@@ -1,10 +1,16 @@
-* add fix bench
+* implement Nil unquote as ref(cx.nil_form)
+* implement Form unquote to return ref(*this)
 * add fib_iter
 * add fib_tail
 * add recall method
 ** goto beg_pc
 ** optional arg for target
 *** update cx.call.beg_pc if specified
+* --
+* add let-id
+** let-id foo 
+** bind unique symbol with name as prefix
+** add to readme
 * --
 * add enum
 ** add UserType
@@ -28,11 +34,13 @@
 ** search call chain for method call
 *** return next from method.set
 **** _ if missing
-* add for-macro
-** add Type.iter method with callback
 * add stash/splat
-** stash (..)
-** splat foo..
+* add loop macro
+** loop until break
+** add LoopOp
+** add LoopOp *cx.loop;
+** add break macro
+*** skip to end
 * add stack splice
 ** (1 3 5 (%{+})) -> (1 (8))
 * implement MethodSet.clone

@@ -230,10 +230,30 @@ and split using `unpair`.
 'ok
 ```
 
-`while` keeps iterating the specified body until it returns false.
+### iteration
+
+`while` evaluates its body until it returns false.
 
 ```
   3 while {-1 .:} :.
+
+2 1 0
+```
+
+`for` pops a sequence from the stack and evaluates its body once for every value. A missing body leaves the entire sequence on the stack unchanged. The following example builds a list of integers.
+
+```
+  (3 for _)
+
+(0 1 2)
+```
+
+`repeat` pops a number from the stack and evaluates its body that many times.
+
+```
+  3 repeat 42
+
+42 42 42
 ```
 
 ### types
