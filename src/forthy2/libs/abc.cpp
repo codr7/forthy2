@@ -267,7 +267,8 @@ namespace forthy2 {
   static Node<Op> &splice_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
     Form &vals(*in.back());
     in.pop_back();
-    return cx.splice_op.get(form, out, vals.ref());
+    Node<Op> &pc(vals.compile(cx, in, out));
+    return cx.splice_op.get(form, pc);
   }
 
   static Node<Op> &stack_len_imp(Cx &cx, Op &pc) {

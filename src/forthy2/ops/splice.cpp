@@ -4,27 +4,19 @@
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
-  SpliceOp::SpliceOp(Form &form, Node<Op> &prev, Form &vals):
-    Op(form, prev), vals(vals) {}
+  SpliceOp::SpliceOp(Form &form, Node<Op> &prev): Op(form, prev) {}
   
   void SpliceOp::dealloc(Cx &cx) {
     Op::dealloc(cx);
-    vals.deref(cx);
     cx.splice_op.put(*this);
   }
 
-  void SpliceOp::dump(ostream &out) { out << "splice " << vals; }
+  void SpliceOp::dump(ostream &out) { out << "splice"; }
 
   Node<Op> &SpliceOp::eval(Cx &cx) {
+    Stack &vals(cx.pop(form.pos, cx.stack_type));
     Form &dest(cx.peek(form.pos, cx.form_type));
-    vals.eval(cx, 0);
-    Stack &vs(cx.pop(form.pos, cx.stack_type));
-    dest.splice(cx, vs);
+    dest.splice(cx, vals);
     return *Node<Op>::next;
-  }
-
-  void SpliceOp::mark_vals(Cx &cx) {
-    Op::mark_vals(cx);
-    vals.mark_vals(cx);
   }
 }

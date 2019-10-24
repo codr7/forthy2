@@ -1,15 +1,9 @@
-* test/run.f2
-* --
 * add Form.eq
 ** forward from Val
-* add times loop
 *  update readme
-** quoting
-** conditions
-*** if/else
-** while
-* add macro arg typecheck
-** fix types in abc/math
+** quoting/splicing
+** branching
+*** if/else/while
 * --
 * add fix bench
 * add fib_iter
@@ -33,6 +27,8 @@
 ** add Timestamp +/- Time
 ** add today/now
 * --
+* add macro arg typecheck
+** fix types in abc/math
 * add next-method
 ** search call chain for method call
 *** return next from method.set

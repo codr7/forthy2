@@ -19,6 +19,7 @@
 #include "forthy2/forms/scope.hpp"
 #include "forthy2/forms/splice.hpp"
 #include "forthy2/forms/stack.hpp"
+#include "forthy2/forms/unquote.hpp"
 #include "forthy2/int.hpp"
 #include "forthy2/lambda.hpp"
 #include "forthy2/macro.hpp"
@@ -69,6 +70,7 @@ namespace forthy2 {
     Pool<ScopeForm> scope_form;
     Pool<SpliceForm> splice_form;
     Pool<StackForm> stack_form;
+    Pool<UnquoteForm> unquote_form;
 
     Pool<CallOp> call_op;
     Pool<CheckOp> check_op;

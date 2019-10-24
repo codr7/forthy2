@@ -10,12 +10,12 @@ namespace forthy2 {
     Type &vt(v.type(cx));
     
     if (&vt == &cx.macro_type) {
-      if (y) { in.push_back(y); }
+      if (y) { in.push_back((quote > 0) ? &cx.unquote_form.get(pos, *y) : y); }
       if (x) { in.push_back(x); }
-      in.push_back(&z);
+      in.push_back((quote > 0) ? &cx.unquote_form.get(pos, z) : &z);
     } else if (&vt == &cx.method_type || &vt == &cx.method_set_type) {
-      in.push_back(&z);
-      if (y) { in.push_back(y); }
+      in.push_back((quote > 0) ? &cx.unquote_form.get(pos, z) : &z);
+      if (y) { in.push_back((quote > 0) ? &cx.unquote_form.get(pos, *y) : y); }
       if (x) { in.push_back(x); }
     } else {
       throw ESys(pos, "Invalid dot z: ", vt.id);

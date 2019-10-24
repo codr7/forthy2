@@ -7,13 +7,10 @@ namespace forthy2 {
   struct Val;
   
   struct SpliceOp: Op {
-    Form &vals;
-
-    SpliceOp(Form &form, Node<Op> &prev, Form &vals);
+    SpliceOp(Form &form, Node<Op> &prev);
     void dealloc(Cx &cx) override;
     void dump(ostream &out) override;
     Node<Op> &eval(Cx &cx) override;
-    void mark_vals(Cx &cx) override; 
   };
 }
 
