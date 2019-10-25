@@ -6,6 +6,7 @@
 ** goto beg_pc
 ** optional arg for target
 *** update cx.call.beg_pc if specified
+* add fix readme
 * --
 * add let-id
 ** let-id foo 

@@ -16,7 +16,8 @@ namespace forthy2 {
     static const uint8_t SCALE_MAX = 1 << SCALE_BITS;
     
     static constexpr array<int64_t, SCALE_MAX> POW = {
-        1, 10, 100, 1000, 10000, 100000, 1000000, 10000000};
+        1, 10, 100, 1000, 10000, 100000, 1000000, 10000000
+    };
 
     static Imp make(int64_t rep, uint8_t scale) {
       const bool negative(rep < 0);
