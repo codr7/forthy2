@@ -145,7 +145,7 @@ Fix points derive their precision from literals.
 Operations preserve left hand precision.
 
 ```
-  0.30 .+ 0.03
+  0.23 .+ 0.1
   
 0.33
 ```
