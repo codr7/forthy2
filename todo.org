@@ -1,3 +1,4 @@
+* Fix 0.300
 * implement Nil unquote as ref(cx.nil_form)
 * implement Form unquote as ref(*this)
 * add Int/Fix clone override

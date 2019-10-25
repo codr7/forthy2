@@ -396,7 +396,7 @@ Method@0x11216d0
 ```
 
 ### quoting
-Any value may be quoted using `'`.
+Any form may be quoted by prefixing with `'`.
 
 Literals return themselves as is,
 
