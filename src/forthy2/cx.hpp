@@ -426,7 +426,7 @@ namespace forthy2 {
     Val **s(&stack[ss - args.len()]);
 
     for (Arg &a: args.items) {
-      Type &at(a.type ? *a.type : a.val->type(cx)), &st((*s)->type(cx));
+      Type &at(a.val ? a.val->type(cx) : *a.type), &st((*s)->type(cx));
       if ((a.val && (&at != &st || !a.val->eq(**s))) || !st.isa(at)) { return false; }
       s++;
     }

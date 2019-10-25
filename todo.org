@@ -1,5 +1,7 @@
 * implement Nil unquote as ref(cx.nil_form)
-* implement Form unquote to return ref(*this)
+* implement Form unquote as ref(*this)
+* add Int/Fix clone override
+** clone via pool unless < max
 * --
 * add fib_iter
 * add fib_tail
@@ -28,6 +30,8 @@
 ** add Timestamp +/- Time
 ** add today/now
 * --
+* convert dup/drop/is/isa/not/swap/type to macros/ops
+** bench
 * plug valgrind quote memory leak
 * add Form.eq overrides
 * add macro arg typecheck

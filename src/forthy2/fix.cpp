@@ -3,12 +3,11 @@
 
 namespace forthy2 {
   void Fix::dump(ostream &out) {
-    const uint8_t s(scale());
-    const int64_t v(trunc() / pow(s));
+    const int64_t v(trunc());
     const bool neg(negative());
     if (neg && !v) { out << '-'; }
     const int64_t f(frac());
-    out << v << '.' << setw(s) << setfill('0') << (neg ? -f : f);
+    out << v << '.' << setw(scale()) << setfill('0') << (neg ? -f : f);
   }
 
   void Fix::sweep(Cx &cx) {

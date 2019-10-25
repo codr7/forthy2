@@ -16,6 +16,18 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
+  inline Node<Op> &int_add_bang_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
+    Int::Imp &y(cx.pop(cx.int_type).imp), &x(cx.peek(cx.int_type).imp), z(x+y);
+
+    if (z < cx.ints.back()) {
+      cx.poke(cx.int_type.get(cx, z));
+    } else {
+      x = z;
+    }
+
+    return *return_pc.next;
+  }
+
   inline Node<Op> &int_div_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     Val &y(cx.pop()), &x(cx.pop());
     
@@ -47,15 +59,15 @@ namespace forthy2 {
   }
   
   inline Node<Op> &fix_add_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    auto &y(dynamic_cast<Fix &>(cx.pop())), &x(dynamic_cast<Fix &>(cx.pop()));
-    const uint8_t xs(x.scale()), ys(y.scale());
-    const int64_t yv(y.get());
-      
-    cx.push(cx.fix_type.get(cx,
-                            x.get() +
-                            ((xs == ys) ? yv : yv * Fix::pow(xs) / Fix::pow(ys)),
-                            xs));
+    Fix &y(cx.pop(cx.fix_type)), &x(cx.fix_type.get(cx, cx.pop(cx.fix_type)));
+    x.add(y);
+    cx.push(x);
+    return *return_pc.next;
+  }
 
+  inline Node<Op> &fix_add_bang_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
+    Fix &y(cx.pop(cx.fix_type)), &x(cx.peek(cx.fix_type));
+    x.add(y);
     return *return_pc.next;
   }
 

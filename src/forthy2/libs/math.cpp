@@ -7,6 +7,9 @@ namespace forthy2 {
     scope.add_method(cx, pos, cx.sym("+"),
                      {{cx.int_type}, {cx.int_type}}).imp = int_add_imp;
 
+    scope.add_method(cx, pos, cx.sym("+!"),
+                     {{cx.int_type}, {cx.int_type}}).imp = int_add_bang_imp;
+
     scope.add_method(cx, pos, cx.sym("/"),
                      {{cx.int_type}, {cx.int_type}}).imp = int_div_imp;
 
@@ -18,6 +21,9 @@ namespace forthy2 {
 
     scope.add_method(cx, pos, cx.sym("+"),
                      {{cx.fix_type}, {cx.fix_type}}).imp = fix_add_imp;
+
+    scope.add_method(cx, pos, cx.sym("+!"),
+                     {{cx.fix_type}, {cx.fix_type}}).imp = fix_add_bang_imp;
 
     scope.add_method(cx, pos, cx.sym("/"),
                      {{cx.fix_type}, {cx.fix_type}}).imp = fix_div_imp;

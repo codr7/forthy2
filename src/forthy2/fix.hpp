@@ -34,6 +34,12 @@ namespace forthy2 {
     
     Fix(int64_t rep, uint8_t scale): imp(make(rep, scale)) {}
 
+    void add(Fix &other) {
+      const uint8_t xs(scale()), ys(other.scale());
+      const int64_t yv(other.get());
+      imp = make(get() + ((xs == ys) ? yv : yv * Fix::pow(xs) / Fix::pow(ys)), xs);
+    }
+    
     Cmp cmp(Val &other) override {
       auto &y(dynamic_cast<Fix &>(other));
       const int64_t xv(get()), yv(y.get());
@@ -45,7 +51,10 @@ namespace forthy2 {
 
     bool eq(Val &other) override { return dynamic_cast<Fix &>(other).imp == imp; }
 
-    int64_t frac() { return get() - trunc(); }
+    int64_t frac() {
+      const uint8_t s(pow(scale()));
+      return get() - get() / s * s;
+    }
 
     int64_t get() {
       const uint64_t r(imp >> (SCALE_BITS + 1));
@@ -54,14 +63,16 @@ namespace forthy2 {
 
     bool negative() { return imp << 63; }
   
-    uint8_t scale() { return (imp >> 1) & ((1 << SCALE_BITS) - 1); }
-  
-    int64_t trunc(uint8_t to_s = 0) {
+    int64_t rescale(uint8_t to_s = 0) {
       const uint8_t from_s(scale());
       const uint8_t s((from_s == to_s) ? from_s : from_s - to_s);
       const int64_t m(pow(s)), v(get() / m);
       return v * m;
     }
+
+    uint8_t scale() { return (imp >> 1) & ((1 << SCALE_BITS) - 1); }
+
+    int64_t trunc() { return get() / pow(scale()); }
 
     Type &type(Cx &cx) override;
 

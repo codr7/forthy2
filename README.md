@@ -6,7 +6,7 @@
 ```
 method fib (0)   {}
 method fib (1)   {}
-method fib (Int) {-1 .: fib :: -1 fib +}
+method fib (Int) {-1! .: fib :: -1! fib +}
 ```
 
 ### setup
@@ -134,7 +134,23 @@ T
 42
 ```
 
-### dot-notation
+### fix points
+Fix points derive their precision from literals.
+
+```
+  0.30
+
+0.30
+```
+Operations preserve left hand precision.
+
+```
+  0.30 .+ 0.03
+  
+0.33
+```
+
+### dot notation
 Methods and macros may be called infix by adding `.` between first argument and operation.
 
 ```
@@ -143,7 +159,7 @@ Methods and macros may be called infix by adding `.` between first argument and 
 42
 ```
 
-### identity vs. equality
+### identity & equality
 `is` may be used to check if two values share the same memory address,
 
 ```
@@ -235,7 +251,7 @@ and split using `unpair`.
 `while` evaluates its body until it returns false.
 
 ```
-  3 while {-1 .:} :.
+  3 while {-1! .:} :.
 
 2 1 0
 ```

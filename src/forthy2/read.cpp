@@ -196,7 +196,7 @@ namespace forthy2 {
             pos.col++;
             auto f(read_frac(cx, pos, in));
             int64_t v(i * Fix::pow(f.second) + f.first);
-            Fix &fv(cx.fix_type.get(cx, v, false));
+            Fix &fv(cx.fix_type.get(cx, v, f.second));
             return cx.lit_form.get(p, fv);
           }
         }
