@@ -44,7 +44,9 @@ namespace forthy2 {
     bool mark(Cx &cx) override;
     void mark_items(Cx &cx);
 
-    Val &peek(size_t offs) { return *items[items.size() - offs -1]; }
+    Val &peek(size_t offs = 0) { return *items[items.size() - offs -1]; }
+
+    void poke(Val &val, size_t offs = 0) { items[items.size() - offs -1] = &val; }
 
     Val &pop() {
       Val *v(items.back());

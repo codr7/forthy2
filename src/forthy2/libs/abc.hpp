@@ -43,14 +43,26 @@ namespace forthy2 {
   }
 
   inline Node<Op> &inc_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    Val &v(cx.pop());
-    cx.push(cx.int_type.get(cx, dynamic_cast<Int &>(v).imp + 1));
+    Int::Imp &v(cx.peek(cx.int_type).imp);
+
+    if (v >= cx.ints.back().imp) {
+      v++;
+    } else {
+      cx.poke(cx.int_type.get(cx, v + 1));
+    }
+    
     return *return_pc.next;
   }
 
   inline Node<Op> &dec_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    Val &v(cx.pop());
-    cx.push(cx.int_type.get(cx, dynamic_cast<Int &>(v).imp - 1));
+    Int::Imp &v(cx.peek(cx.int_type).imp);
+
+    if (v > cx.ints.back().imp + 1) {
+      v--;
+    } else {
+      cx.poke(cx.int_type.get(cx, v - 1));
+    }
+    
     return *return_pc.next;
   }
 

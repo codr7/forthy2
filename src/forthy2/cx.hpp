@@ -296,6 +296,8 @@ namespace forthy2 {
 
     Val &peek(size_t offs = 0) { return stack->peek(offs); }
 
+    void poke(Val &val, size_t offs = 0) { stack->poke(val, offs); }
+
     template <typename T>
     T &peek(ValType<T> &type, size_t offs = 0) {
       return dynamic_cast<T &>(peek(offs));

@@ -26,7 +26,6 @@ namespace forthy2 {
 
     scope.add_method(cx, pos, cx.sym("::"),
                      {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = swap_imp;
-
     
     scope.add_method(cx, pos, cx.sym("="),
                      {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = eq_imp;

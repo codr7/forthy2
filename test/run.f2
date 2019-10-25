@@ -2,12 +2,14 @@ check {1 .: + .= 2}
 check {1 3 5 :. + .= 4}
 check {1 3 :: - .= 2}
 
+check {1000 .: +1 is}
+check {1000 .: -1 is}
+
 check {_.type .= Nil}
 check {Nil.isa A .= _}
 check {Nil.isa A? .= A?}
 
 check {'42.= 42}
-
 
 check {'foo.is 'foo}
 check {'foo.is 'bar not}
