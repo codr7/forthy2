@@ -1,11 +1,20 @@
+* add restack macro/op
+** interpret rest as result
+** eval scopes with value pushed & replace with result
+** bench & commit fib_tail
+* convert fib_rec/iter to use restack
+* replace drop/copy/swap with restack
+* --
+* add recall macro
+** only client methods
+** optional target
+*** current if nil
+**** goto beg_pc
+*** perform dispatch if set
+** bench/fib_tail
+* --
 * implement Nil unquote as ref(cx.nil_form)
 * implement Form unquote as ref(*this)
-* --
-* add fib_tail
-* add recall method
-** goto beg_pc
-** optional arg for target
-*** update cx.call.beg_pc if specified
 * --
 * add let-id
 ** let-id foo 

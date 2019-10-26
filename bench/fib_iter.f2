@@ -1,10 +1,9 @@
-let REPS  100000
-let N     20
+let REPS 100000
+let N    20
 
-method fib (Int) {
+method fib(Int) {
   0 1 rotr repeat {copy rotl +} drop
 }
 
-REPS clock {N fib[Int] drop} msecs dump
-N fib
-dump-stack
+REPS clock {N fib drop} msecs dump
+N fib dump-stack
