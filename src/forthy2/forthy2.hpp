@@ -2,7 +2,7 @@
 #define FORTHY2_HPP
 
 namespace forthy2 {
-  const unsigned int VERSION(21);
+  const unsigned int VERSION(22);
   const bool USE_POOL(true);
 }
 

@@ -296,6 +296,14 @@ namespace forthy2 {
     return *op.end_pc;
   }
 
+  inline Node<Op> &rotl_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    return cx.rotl_op.get(form, out);
+  }
+
+  inline Node<Op> &rotr_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    return cx.rotr_op.get(form, out);
+  }
+
   inline Node<Op> &splice_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     Form &dst(cx.peek(cx.form_type, 1));
     if (dst.splice(cx, 1)) { throw ESys(pos, "Missing splice"); }

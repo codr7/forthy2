@@ -4,10 +4,10 @@
 namespace forthy2 {
   void Fix::dump(ostream &out) {
     const int64_t v(trunc());
-    const bool neg(negative());
-    if (neg && !v) { out << '-'; }
+    const bool _neg(neg());
+    if (_neg && !v) { out << '-'; }
     const int64_t f(frac());
-    out << v << '.' << setw(scale()) << setfill('0') << (neg ? -f : f);
+    out << v << '.' << setw(scale()) << setfill('0') << (_neg ? -f : f);
   }
 
   void Fix::sweep(Cx &cx) {

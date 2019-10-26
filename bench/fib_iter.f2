@@ -1,0 +1,10 @@
+let REPS  100000
+let N     20
+
+method fib (Int) {
+  0 1 rotr repeat {.: rotl +} :.
+}
+
+REPS clock {N fib[Int] :.} msecs dump
+N fib
+dump-stack

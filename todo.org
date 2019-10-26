@@ -1,15 +1,20 @@
+0 1 rotr repeat {copy rotl +!}
+
+* rename .: to copy
+** grep dup
+* rename :: to swap
+* rename :. to drop
+* convert copy/drop/swap to macros/ops
+** bench
+* --
 * implement Nil unquote as ref(cx.nil_form)
 * implement Form unquote as ref(*this)
-* add Int/Fix clone override
-** clone via pool unless < max
 * --
-* add fib_iter
 * add fib_tail
 * add recall method
 ** goto beg_pc
 ** optional arg for target
 *** update cx.call.beg_pc if specified
-* add fix readme
 * --
 * add let-id
 ** let-id foo 
@@ -30,8 +35,7 @@
 ** add Timestamp +/- Time
 ** add today/now
 * --
-* convert dup/drop/is/isa/not/swap/type to macros/ops
-** bench
+* convert is/isa/not/type to macros/ops
 * plug valgrind quote memory leak
 * add Form.eq overrides
 * add macro arg typecheck

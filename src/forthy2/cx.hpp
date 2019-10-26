@@ -37,6 +37,8 @@
 #include "forthy2/ops/push.hpp"
 #include "forthy2/ops/repeat.hpp"
 #include "forthy2/ops/return.hpp"
+#include "forthy2/ops/rotl.hpp"
+#include "forthy2/ops/rotr.hpp"
 #include "forthy2/ops/stack.hpp"
 #include "forthy2/pair.hpp"
 #include "forthy2/path.hpp"
@@ -83,6 +85,8 @@ namespace forthy2 {
     Pool<PushOp> push_op;
     Pool<RepeatOp> repeat_op;
     Pool<ReturnOp> return_op;
+    Pool<RotlOp> rotl_op;
+    Pool<RotrOp> rotr_op;
     Pool<StackOp> stack_op;
 
     uint64_t type_weight;
@@ -476,6 +480,20 @@ namespace forthy2 {
   }
 
   inline Node<Op> &ReturnOp::eval(Cx &cx) { return *cx.pop_call().next; }
+
+  inline Node<Op> &RotlOp::eval(Cx &cx) {
+    auto &s(*cx.stack);
+    if (s.len() < 3) { throw ESys(form.pos, "Nothing to rotl: ", s); }
+    rotate(s.end() - 3, s.end() - 1, s.end());
+    return *Node<Op>::next;
+  }
+
+  inline Node<Op> &RotrOp::eval(Cx &cx) {
+    auto &s(*cx.stack);
+    if (s.len() < 3) { throw ESys(form.pos, "Nothing to rotr: ", s); }
+    rotate(s.end() - 3, s.end() - 2, s.end());
+    return *Node<Op>::next;
+  }
 }
 
 #endif
