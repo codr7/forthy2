@@ -1,6 +1,5 @@
-* use restack
 * add recall macro
-** only client methods
+** only allow client methods
 ** optional target
 *** current if nil
 **** goto beg_pc
@@ -11,7 +10,7 @@
 * implement Form unquote as ref(*this)
 * move nil (_) from reader to scope like T/F
 ** add scope lookup in read_id
-* --
+* ---
 * add let-id
 ** let-id foo 
 ** bind unique symbol with name as prefix
