@@ -42,7 +42,7 @@ Examples from this document, as well as [tests](https://github.com/codr7/forthy2
 42 42
 ```
 
-while `drop` throws it away.
+while `drop` removes it.
 
 ```
   1 2 3 drop
@@ -56,6 +56,15 @@ while `drop` throws it away.
   1 2 3 swap
   
 1 3 2
+```
+
+`$` may be used to simplify and speed up more elaborate stack transformations. Existing items may be bound to local names that are used to specify the transformed stack.
+
+```
+  1 3 5 7
+  $(a b c _; b {a c +})
+
+3 6
 ```
 
 Stack literals are enclosed in parens.
