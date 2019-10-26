@@ -13,16 +13,16 @@ namespace forthy2 {
     using Imp = uint64_t;
 
     static const uint8_t SCALE_BITS = 3;
-    static const uint8_t SCALE_MAX = 1 << SCALE_BITS;
+    static const uint32_t SCALE_MAX = 1 << SCALE_BITS;
     
     static constexpr array<int64_t, SCALE_MAX> POW = {
         1, 10, 100, 1000, 10000, 100000, 1000000, 10000000
     };
 
     static Imp make(int64_t rep, uint8_t scale) {
-      const bool negative(rep < 0);
-      const uint64_t r(negative ? -rep : rep);
-      return negative + (scale << 1) + (r << (SCALE_BITS + 1));
+      const bool neg(rep < 0);
+      const uint64_t r(neg ? -rep : rep);
+      return neg + (scale << 1) + (r << (SCALE_BITS + 1));
     }
 
     static int64_t pow(uint8_t scale) {    
@@ -51,17 +51,14 @@ namespace forthy2 {
 
     bool eq(Val &other) override { return dynamic_cast<Fix &>(other).imp == imp; }
 
-    int64_t frac() {
-      const uint8_t s(pow(scale()));
-      return get() - get() / s * s;
-    }
+    int64_t frac() { return get() % pow(scale()); }
 
     int64_t get() {
       const uint64_t r(imp >> (SCALE_BITS + 1));
-      return negative() ? -r : r;
+      return neg() ? -r : r;
     }
 
-    bool negative() { return imp << 63; }
+    bool neg() { return imp << 63; }
   
     int64_t rescale(uint8_t to_s = 0) {
       const uint8_t from_s(scale());

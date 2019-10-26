@@ -434,7 +434,7 @@ Lambda@0x252dab0
 42
 ```
 
-Forms may contain placeholders where external values can be spliced in.
+Forms may contain placeholders which allows splicing external values.
 
 ```
   '{6 % *}
