@@ -51,6 +51,47 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
+  inline Node<Op> &restack_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    auto *in_spec(dynamic_cast<StackForm *>(in.back()));
+
+    if (!in_spec || in_spec->body.empty()) {
+      throw ESys(form.pos, "Invalid stack spec");
+    }
+    
+    in.pop_back();
+    auto *out_spec(dynamic_cast<StackForm *>(in_spec->body.back()));
+    if (!out_spec) { throw ESys(form.pos, "Invalid stack spec"); }
+    in_spec->body.pop_back();
+
+    Scope scope(*cx.scope);
+    auto in_len(in_spec->body.size());
+    Int::Imp i(in_len-1);
+    vector<Peek *> peeks;
+    
+    for (Form *f: in_spec->body) {
+      if (auto *id(dynamic_cast<IdForm *>(f)); id) {
+        Peek &p(cx.peek_pool.get(true, i));
+        scope.bind(f->pos, id->val, p);
+        peeks.push_back(&p);
+      } else if (!dynamic_cast<NilForm *>(f)) {
+        throw ESys(f->pos, "Invalid stack spec");
+      }
+
+      i--;
+    }
+    
+    RestackOp &op(cx.restack_op.get(form, out, in_len));
+    Node<Op> *pc(&op);
+      
+    cx.with_scope<void>(scope, [&]() {
+        for (Form *f: out_spec->body) { pc = &f->compile(cx, in, *pc); }
+      });
+
+    op.end_pc = pc;
+    for (Peek *p: peeks) { cx.peek_pool.put(*p); }
+    return *pc;
+  }
+
   inline Node<Op> &copy_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
     return cx.copy_op.get(form, out);
   }

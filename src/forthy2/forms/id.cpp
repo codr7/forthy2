@@ -12,6 +12,11 @@ namespace forthy2 {
     if (vt == &cx.macro_type) {
       return dynamic_cast<Macro *>(v)->expand(cx, *this, in, out);
     }
+
+    if (vt == &cx.peek_type) {
+      Peek &pv(*dynamic_cast<Peek *>(v));
+      return cx.peek_op.get(*this, out, pv.alt_src, pv.offs);
+    }
     
     Node<Op> *op(&out);
     bool safe(true);

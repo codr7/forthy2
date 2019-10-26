@@ -33,7 +33,6 @@ namespace forthy2 {
 
     Val &clone(Cx &cx) override;
     Cmp cmp(Val &other) override;
-    void drop() { items.pop_back(); }
     void dump(ostream &out) override;
     void dump_items(ostream &out);
 

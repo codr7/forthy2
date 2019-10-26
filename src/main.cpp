@@ -45,7 +45,7 @@ enum struct Mode {Default, Repl, Run};
 
 int main(int argc, char *argv[]) {
   Int::Imp max_int(256);
-  
+
   Cx cx;
   init_abc(cx, Pos::_, cx.root_scope);
   init_math(cx, Pos::_, cx.root_scope);

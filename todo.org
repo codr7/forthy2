@@ -1,10 +1,4 @@
-* add restack macro/op
-** interpret rest as result
-** eval scopes with value pushed & replace with result
-** bench & commit fib_tail
-* convert fib_rec/iter to use restack
-* replace drop/copy/swap with restack
-* --
+* use restack
 * add recall macro
 ** only client methods
 ** optional target
@@ -15,6 +9,8 @@
 * --
 * implement Nil unquote as ref(cx.nil_form)
 * implement Form unquote as ref(*this)
+* move nil (_) from reader to scope like T/F
+** add scope lookup in read_id
 * --
 * add let-id
 ** let-id foo 

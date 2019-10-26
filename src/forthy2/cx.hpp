@@ -36,8 +36,10 @@
 #include "forthy2/ops/drop.hpp"
 #include "forthy2/ops/for.hpp"
 #include "forthy2/ops/pair.hpp"
+#include "forthy2/ops/peek.hpp"
 #include "forthy2/ops/push.hpp"
 #include "forthy2/ops/repeat.hpp"
+#include "forthy2/ops/restack.hpp"
 #include "forthy2/ops/return.hpp"
 #include "forthy2/ops/rotl.hpp"
 #include "forthy2/ops/rotr.hpp"
@@ -45,6 +47,7 @@
 #include "forthy2/ops/swap.hpp"
 #include "forthy2/pair.hpp"
 #include "forthy2/path.hpp"
+#include "forthy2/peek.hpp"
 #include "forthy2/pool.hpp"
 #include "forthy2/pool_type.hpp"
 #include "forthy2/read.hpp"
@@ -87,8 +90,13 @@ namespace forthy2 {
     Pool<BranchOp> branch_op;
     Pool<ForOp> for_op;
     Pool<PairOp> pair_op;
+
+    Pool<PeekOp> peek_op;
+    Pool<Peek> peek_pool;
+    
     Pool<PushOp> push_op;
     Pool<RepeatOp> repeat_op;
+    Pool<RestackOp> restack_op;
     Pool<ReturnOp> return_op;
     Pool<RotlOp> rotl_op;
     Pool<RotrOp> rotr_op;
@@ -116,13 +124,14 @@ namespace forthy2 {
     PoolType<Fix> &fix_type;
     IntType &int_type;
 
+    PeekType &peek_type;
     PoolType<Pair> &pair_type;
     PoolType<Stack> &stack_type;
     Type &sym_type;
     TimeType &time_type;
         
     Scope root_scope, *scope;
-    Stack root_stack, *stack;
+    Stack root_stack, *stack, alt_stack;
     
     Pool<Call> call_pool;
     Call *call;
@@ -134,6 +143,7 @@ namespace forthy2 {
 
     Bool F, T;
     vector<Int> ints;
+    vector<Peek> peeks;
     
     Path load_path;
     istream *stdin;
@@ -159,6 +169,7 @@ namespace forthy2 {
       fix_type(*new PoolType<Fix>(*this, sym("Fix"), {&num_type})),
       int_type(*new IntType(*this, sym("Int"), {&num_type})),
 
+      peek_type(*new PeekType(*this, sym("Peek"), {&a_type})),
       pair_type(*new PoolType<Pair>(*this, sym("Pair"), {&a_type})),
       stack_type(*new PoolType<Stack>(*this, sym("Stack"), {&a_type})),
       sym_type(*new Type(*this, sym("Sym"), {&a_type})),
@@ -181,6 +192,11 @@ namespace forthy2 {
         ints.emplace_back(-i);
         ints.emplace_back(i);
       }
+    }
+
+    void init_peeks(Int::Imp max) {
+      peeks.reserve(max + 1);
+      for (Int::Imp i(peeks.size()); i < max; i++) { peeks.emplace_back(i); }
     }
     
     Node<Op> &compile(Forms &in, Node<Op> &out, int quote = 0) {
@@ -417,7 +433,8 @@ namespace forthy2 {
   inline Node<Op> &DropOp::eval(Cx &cx) {
     auto &s(*cx.stack);
     if (s.empty()) { throw ESys(form.pos, "Nothing to drop"); }
-    s.drop();
+    auto beg(s.end() - offs - 1);
+    s.items.erase(beg, beg + n);
     return *Node<Op>::next;
   }
 
@@ -480,6 +497,14 @@ namespace forthy2 {
     return nullptr;
   }
 
+  inline Node<Op> &PeekOp::eval(Cx &cx) {
+    auto &s(alt_src ? cx.alt_stack : *cx.stack);
+    auto sl(s.len());
+    if (sl < offs + 1) { throw ESys(form.pos, "Nothing to peek (", offs, "): ", s); }
+    cx.push(*s.items[sl - offs - 1]);
+    return *Node<Op>::next;
+  }
+
   template <typename T>
   template <typename...Args>
   T &PoolType<T>::get(Cx &cx, Args &&...args) {
@@ -496,6 +521,16 @@ namespace forthy2 {
   inline Node<Op> &RepeatOp::eval(Cx &cx) {
     Int::Imp end(cx.pop(form.pos, cx.int_type).imp);
     for (Int::Imp i(0); i < end; i++) { cx.eval(*this, *end_pc->next); }
+    return *end_pc->next;
+  }
+
+  inline Node<Op> &RestackOp::eval(Cx &cx) {
+    auto end(cx.stack->end()), beg(end - in_len);
+    move(beg, end, back_inserter(cx.alt_stack.items));
+    cx.stack->items.erase(beg, end);
+    cx.eval(*this, *end_pc->next);
+    auto alt_end(cx.alt_stack.end());
+    cx.alt_stack.items.erase(alt_end - in_len, alt_end);
     return *end_pc->next;
   }
 

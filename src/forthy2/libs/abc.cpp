@@ -32,7 +32,8 @@ namespace forthy2 {
 
     scope.add_method(cx, pos, cx.sym("+1!"), {{cx.int_type}}).imp = inc_imp;
     scope.add_method(cx, pos, cx.sym("-1!"), {{cx.int_type}}).imp = dec_imp;
-    
+    scope.add_macro(cx, pos, cx.sym("$"), {{cx.stack_type}}).imp = restack_imp;
+
     scope.add_macro(cx, pos, cx.sym("and"), {{cx.a_type.or_()}}).imp = and_imp;
     scope.add_method(cx, pos, cx.sym("bool"), {{cx.a_type.or_()}}).imp = bool_imp;
     scope.add_method(cx, pos, cx.sym("call"), {{cx.a_type.or_()}}).imp = call_imp;
