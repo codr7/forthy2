@@ -3,8 +3,8 @@ let N    20
 
 method fib (0)   {}
 method fib (1)   {}
-method fib (Int) {-1! .: fib :: -1! fib +[Int Int]}
+method fib (Int) {-1! copy fib swap -1! fib +[Int Int]}
 
-REPS clock {N fib :.} msecs dump
+REPS clock {N fib[Int] drop} msecs dump
 N fib
 dump-stack

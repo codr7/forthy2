@@ -29,9 +29,11 @@ namespace forthy2 {
     Iter end() { return items.end(); }
 
     void clear() { items.clear(); }
-    
+    void copy() { items.push_back(items.back()); }
+
     Val &clone(Cx &cx) override;
     Cmp cmp(Val &other) override;
+    void drop() { items.pop_back(); }
     void dump(ostream &out) override;
     void dump_items(ostream &out);
 
@@ -56,11 +58,6 @@ namespace forthy2 {
 
     void push(Val &v) { items.push_back(&v); }
 
-    void swap() {
-      size_t ss(items.size());
-      std::swap(items[ss-1], items[ss-2]);
-    }
-    
     void sweep(Cx &cx) override;
 
     Val *try_pop(Cx &cx) { return items.empty() ? nullptr : &pop(); }

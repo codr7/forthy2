@@ -1,9 +1,9 @@
-check {1 .: + .= 2}
-check {1 3 5 :. + .= 4}
-check {1 3 :: - .= 2}
+check {1 copy + .= 2}
+check {1 3 5 drop + .= 4}
+check {1 3 swap - .= 2}
 
-check {1000 .: +1! is}
-check {1000 .: -1! is}
+check {1000 copy +1! is}
+check {1000 copy -1! is}
 
 check {(1 2 3 rotl) .= (3 1 2)}
 check {(1 2 3 rotr) .= (2 3 1)}
@@ -39,7 +39,7 @@ check {F else {42} .= 42}
 check {(3 for _).= (0 1 2)}
 check {(3 for +1!).= (1 2 3)}
 check {(3 repeat 42).= (42 42 42)}
-check {(3 while {-1! .:} :.).= (2 1 0)}
+check {(3 while {-1! copy} drop).= (2 1 0)}
 
 check {41 +1! .= 42}
 check {43 -1! .= 42}
@@ -59,9 +59,9 @@ check {0.5 .+! 0.25 .= 0.7}
 }
 
 {
-  method foo(Bool) {:. 1}
-  method foo(Int)  {:. 3}
-  method foo(42)   {:. 5}
+  method foo(Bool) {drop 1}
+  method foo(Int)  {drop 3}
+  method foo(42)   {drop 5}
   check {T foo.= 1}
   check {41 foo.= 3}
   check {42 foo.= 5}
@@ -81,8 +81,8 @@ check {,1 3 unpair + .= 4}
 check {(1 3 5).is (1 3 5) not}
 check {(1 3 5).= (1 3 5)}
 check {(1 3 5 7) len.= 4}
-check {(1 3; 5 7) .: pop .= (5 7) and .= (1 3)}
-check {(1 3) .: 5 push .= (1 3 5)}
+check {(1 3; 5 7) copy pop .= (5 7) and .= (1 3)}
+check {(1 3) copy 5 push .= (1 3 5)}
 
 dump-stack
 _ mark-sweep usecs dump

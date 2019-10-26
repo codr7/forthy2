@@ -32,6 +32,8 @@
 #include "forthy2/ops/call.hpp"
 #include "forthy2/ops/check.hpp"
 #include "forthy2/ops/clock.hpp"
+#include "forthy2/ops/copy.hpp"
+#include "forthy2/ops/drop.hpp"
 #include "forthy2/ops/for.hpp"
 #include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/push.hpp"
@@ -40,6 +42,7 @@
 #include "forthy2/ops/rotl.hpp"
 #include "forthy2/ops/rotr.hpp"
 #include "forthy2/ops/stack.hpp"
+#include "forthy2/ops/swap.hpp"
 #include "forthy2/pair.hpp"
 #include "forthy2/path.hpp"
 #include "forthy2/pool.hpp"
@@ -79,6 +82,8 @@ namespace forthy2 {
     Pool<CallOp> call_op;
     Pool<CheckOp> check_op;
     Pool<ClockOp> clock_op;
+    Pool<CopyOp> copy_op;
+    Pool<DropOp> drop_op;
     Pool<BranchOp> branch_op;
     Pool<ForOp> for_op;
     Pool<PairOp> pair_op;
@@ -88,6 +93,7 @@ namespace forthy2 {
     Pool<RotlOp> rotl_op;
     Pool<RotrOp> rotr_op;
     Pool<StackOp> stack_op;
+    Pool<SwapOp> swap_op;
 
     uint64_t type_weight;
     Node<Val> marked, unmarked;
@@ -401,6 +407,20 @@ namespace forthy2 {
     return v.call(cx, form.pos, *this, safe);
   }
 
+  inline Node<Op> &CopyOp::eval(Cx &cx) {
+    auto &s(*cx.stack);
+    if (s.empty()) { throw ESys(form.pos, "Nothing to copy"); }
+    s.copy();
+    return *Node<Op>::next;   
+  }
+
+  inline Node<Op> &DropOp::eval(Cx &cx) {
+    auto &s(*cx.stack);
+    if (s.empty()) { throw ESys(form.pos, "Nothing to drop"); }
+    s.drop();
+    return *Node<Op>::next;
+  }
+
   inline Node<Op> &Fn::call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe) {
     cx.push_call(pos, *this, return_pc);
     return *ops.next;
@@ -493,6 +513,15 @@ namespace forthy2 {
     if (s.len() < 3) { throw ESys(form.pos, "Nothing to rotr: ", s); }
     rotate(s.end() - 3, s.end() - 2, s.end());
     return *Node<Op>::next;
+  }
+
+  inline Node<Op> &SwapOp::eval(Cx &cx) {
+    auto &s(*cx.stack);
+    auto &is(s.items);
+    auto i(is.size());
+    if (i-- < 2) { throw ESys(form.pos, "Nothing to swap: ", s); }
+    swap(is[i], is[i - 1]);
+    return *Node<Op>::next;   
   }
 }
 

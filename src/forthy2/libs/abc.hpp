@@ -27,21 +27,6 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
-  inline Node<Op> &dup_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.push(cx.peek());
-    return *return_pc.next;
-  }
-
-  inline Node<Op> &drop_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.pop();
-    return *return_pc.next;
-  }
-
-  inline Node<Op> &swap_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.stack->swap();
-    return *return_pc.next;
-  }
-
   inline Node<Op> &inc_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     Int::Imp &v(cx.peek(cx.int_type).imp);
 
@@ -64,6 +49,14 @@ namespace forthy2 {
     }
     
     return *return_pc.next;
+  }
+
+  inline Node<Op> &copy_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    return cx.copy_op.get(form, out);
+  }
+
+  inline Node<Op> &drop_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    return cx.drop_op.get(form, out);
   }
 
   inline Node<Op> &pair_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
@@ -329,6 +322,10 @@ namespace forthy2 {
     Val &v(cx.pop());
     dynamic_cast<Stack &>(cx.pop()).push(v);
     return *return_pc.next;
+  }
+
+  inline Node<Op> &swap_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    return cx.swap_op.get(form, out);
   }
 
   inline Node<Op> &sweep_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {

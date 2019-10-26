@@ -21,12 +21,6 @@ namespace forthy2 {
     scope.bind(pos, cx.sym("F"), cx.F);
     scope.bind(pos, cx.sym("T"), cx.T);
     
-    scope.add_method(cx, pos, cx.sym(".:"), {{cx.a_type.or_()}}).imp = dup_imp;
-    scope.add_method(cx, pos, cx.sym(":."), {{cx.a_type.or_()}}).imp = drop_imp;
-
-    scope.add_method(cx, pos, cx.sym("::"),
-                     {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = swap_imp;
-    
     scope.add_method(cx, pos, cx.sym("="),
                      {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = eq_imp;
 
@@ -45,6 +39,8 @@ namespace forthy2 {
     scope.add_macro(cx, pos, cx.sym("check"), {{cx.a_type.or_()}}).imp = check_imp;
     scope.add_macro(cx, pos, cx.sym("clock"), {{cx.a_type.or_()}}).imp = clock_imp;
     scope.add_method(cx, pos, cx.sym("compile"), {{cx.form_type}}).imp = compile_imp;
+    scope.add_macro(cx, pos, cx.sym("copy")).imp = copy_imp;
+    scope.add_macro(cx, pos, cx.sym("drop")).imp = drop_imp;
     scope.add_method(cx, pos, cx.sym("dump"), {{cx.a_type.or_()}}).imp = dump_imp;
     scope.add_method(cx, pos, cx.sym("dump-stack")).imp = dump_stack_imp;    
     scope.add_macro(cx, pos, cx.sym("else"), {{cx.a_type}}).imp = else_imp;
@@ -91,6 +87,8 @@ namespace forthy2 {
 
     scope.add_method(cx, pos, cx.sym("splice"),
                      {{cx.form_type}, {cx.a_type}}).imp = splice_imp;
+
+    scope.add_macro(cx, pos, cx.sym("swap")).imp = swap_imp;
 
     scope.add_method(cx, pos, cx.sym("sweep"),
                      {{cx.time_type.or_()}}).imp = sweep_imp;

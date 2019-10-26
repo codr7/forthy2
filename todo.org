@@ -1,12 +1,3 @@
-0 1 rotr repeat {copy rotl +!}
-
-* rename .: to copy
-** grep dup
-* rename :: to swap
-* rename :. to drop
-* convert copy/drop/swap to macros/ops
-** bench
-* --
 * implement Nil unquote as ref(cx.nil_form)
 * implement Form unquote as ref(*this)
 * --

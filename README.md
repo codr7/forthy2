@@ -6,7 +6,7 @@
 ```
 method fib (0)   {}
 method fib (1)   {}
-method fib (Int) {-1! .: fib :: -1! fib +}
+method fib (Int) {-1! copy fib swap -1! fib +}
 ```
 
 ### setup
@@ -34,22 +34,26 @@ Empty input clears stack and Ctrl+D exits.
 Examples from this document, as well as [tests](https://github.com/codr7/forthy2/blob/master/tests/) and [benchmarks](https://github.com/codr7/forthy2/blob/master/bench/); should do the right thing and run clean in Valgrind. Performance is currently hovering around Python3, I expect that to keep improving for a while.
 
 ### stacks
-The holy trinity of stack operations; `dup`, `drop` and `swap`; get their own two-char pictograms.
+`copy` repeats the top stack item,
 
 ```
-  42 .:
+  42 copy
   
 42 42
 ```
 
+while `drop` throws it away.
+
 ```
-  1 2 3 :.
+  1 2 3 drop
   
 1 2
 ```
 
+`swap` swaps the top two stack items.
+
 ```
-  1 2 3 ::
+  1 2 3 swap
   
 1 3 2
 ```
@@ -73,13 +77,13 @@ Stack literals are enclosed in parens.
 Stacks are dynamic and support basic stack operations.
 
 ```
-  (1 3 5) .: .push 7
+  (1 3 5) copy .push 7
 
 (1 3 5 7)
-  .: len
+  copy len
 
 (1 3 5 7) 4
-  :. .: pop
+  drop copy pop
 
 (1 3 5) 7
 ```
@@ -190,7 +194,7 @@ Macros and methods support capturing references using `&`.
 
 Method@0x24f59b0
 
-  6 :: 7 :: call
+  6 swap 7 swap call
 42
 ```
 
@@ -251,7 +255,7 @@ and split using `unpair`.
 `while` evaluates its body until it returns false.
 
 ```
-  3 while {-1! .:} :.
+  3 while {-1! copy} drop
 
 2 1 0
 ```
@@ -390,7 +394,7 @@ Each implementation is bound to its own unique, type-indexed name; and may be ca
 
 Method@0x11216d0
 
-  42 :: call
+  42 swap call
   
 3
 ```
