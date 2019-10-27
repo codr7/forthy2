@@ -23,6 +23,8 @@
 * move nil (_) from reader to root_scope like T/F
 ** add root_scope lookup in read_id
 * ---
+* reimplement read_int manually like read_frac
+** keep hex support
 * add let-id
 ** let-id foo 
 ** bind unique symbol with name as prefix
@@ -61,8 +63,6 @@
 * implement MethodSet.clone
 ** switch to use vector/upper_bound like env
 *** drop method Node
-* reimplement read_int manually like read_frac
-** keep hex support
 * add Byte type
 ** Imp = uint8_t
 ** read hex as byte if < 256

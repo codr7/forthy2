@@ -67,12 +67,12 @@ while `drop` removes it.
 3 6
 ```
 
-Unknown identifiers result in compile time errors.
+Unknown identifiers signal compile time errors.
 
 ```
   1 2 3 $(a b c; d)
 
-Error at row 1, col 12:
+Error at row 1, col 15:
 Unknown id: d
 ```
 
@@ -350,7 +350,7 @@ Values are evaluated before bound.
 42
 ```
 
-Referencing unbound names results in compile time errors,
+Referencing unbound names signals compile time errors,
 
 ```
   {

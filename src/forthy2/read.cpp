@@ -153,8 +153,6 @@ namespace forthy2 {
       pos.col++;
       pc = c;
     }
-
-    
     
     return cx.id_form.get(p, cx.sym(out.str()));
   }
