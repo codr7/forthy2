@@ -58,12 +58,12 @@ while `drop` removes it.
 1 3 2
 ```
 
-`$` may be used to simplify and speed up more elaborate stack transformations. Existing items may be bound to names that are available for specifying the transformed stack.
+`$` may be used to simplify and speed up more elaborate stack transformations, the result of evaluating the final form replaces the specified stack suffix.
 
 ```
   1 3 5 7
-  $(a b c _; b {a c +})
-
+  $(a b c _ {b a .+ c})
+  
 3 6
 ```
 

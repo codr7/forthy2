@@ -59,8 +59,7 @@ namespace forthy2 {
     }
     
     in.pop_back();
-    auto *out_spec(dynamic_cast<StackForm *>(in_spec->body.back()));
-    if (!out_spec) { throw ESys(form.pos, "Invalid stack spec"); }
+    Form &out_spec(*in_spec->body.back());
     in_spec->body.pop_back();
 
     Scope scope(*cx.scope);
@@ -82,11 +81,7 @@ namespace forthy2 {
     
     RestackOp &op(cx.restack_op.get(form, out, in_len));
     Node<Op> *pc(&op);
-      
-    cx.with_scope<void>(scope, [&]() {
-        for (Form *f: out_spec->body) { pc = &f->compile(cx, in, *pc); }
-      });
-
+    cx.with_scope<void>(scope, [&]() { pc = &out_spec.compile(cx, in, *pc); });
     op.end_pc = pc;
     for (Peek *p: peeks) { cx.peek_pool.put(*p); }
     return *pc;

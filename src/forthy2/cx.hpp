@@ -525,6 +525,10 @@ namespace forthy2 {
   }
 
   inline Node<Op> &RestackOp::eval(Cx &cx) {
+    if (cx.stack->len() < in_len) {
+      throw ESys(form.pos, "Nothing to restack: ", *cx.stack);
+    }
+    
     auto end(cx.stack->end()), beg(end - in_len);
     move(beg, end, back_inserter(cx.alt_stack.items));
     cx.stack->items.erase(beg, end);
