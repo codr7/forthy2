@@ -5,6 +5,21 @@
 **** goto beg_pc
 *** perform dispatch if set
 ** bench/fib_tail
+* add int/fix.neg() methods
+** rename fix.neg to is_neg()
+* add int(fix)/fix(int) conv
+* add char/str types
+** cidk
+** \r \n \t \s \e
+** \0x2a \90 \\A \\a \\\
+** add literals
+** add char/str(int) and int(char/str) conversions
+* add say method
+** add val.print
+*** default to dump
+*** print symbols with quote
+*** print stack items in sequence
+*** print pair items separated by space
 * --
 * implement Nil unquote as ref(cx.nil_form)
 * implement Form unquote as ref(*this)
@@ -30,6 +45,9 @@
 ** add Timestamp +/- Time
 ** add today/now
 * --
+* add sum types
+** Fix|Int
+*** parse & sort types if | found
 * convert is/isa/not/type to macros/ops
 * plug valgrind quote memory leak
 * add Form.eq overrides
@@ -43,40 +61,18 @@
 * add loop macro
 ** loop until break
 ** add LoopOp
-** add LoopOp *cx.loop;
 ** add break macro
-*** skip to end
-* add stack splice
-** (1 3 5 (%{+})) -> (1 (8))
+*** add cx.break_pc
 * implement MethodSet.clone
 ** switch to use vector/upper_bound like env
 *** drop method Node
 * reimplement read_int manually like read_frac
 ** keep hex support
-* add switch
-** scratch
-** use branch op
-*** pop_if = true
-** add jump op
 * add Byte type
 ** Imp = uint8_t
 ** read hex as byte if < 256
-** add int/byte conversions
-* add Char type
-** cidk
-** add reader support
-*** \r \n \t \s \e
-*** \0x2a \90 \\A \\a \\\
-** add conversion to/from int/byte
-* add string type
-* add say method
-** add val.print
-*** default to dump
-*** print symbols with quote
-*** print stack items in sequence
-*** print pair items separated by space
-* add -unsafe
-** add unsafe {} macro
+** add int/char conversions
+* add unsafe {} macro
 * add C++ emit
 ** add -build mode
 ** use label/goto
