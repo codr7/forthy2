@@ -7,9 +7,16 @@
 namespace forthy2 {
   struct Nil: Val {
     operator bool() override { return false; }
-    Node<Op> &call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe) override;
+
+    Node<Op> &call(Cx &cx,
+                   Pos pos,
+                   Node<Op> &return_pc,
+                   bool safe,
+                   bool now) override;
+    
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
+    void iter(Cx &cx, Pos pos, IterBody body) override;
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };

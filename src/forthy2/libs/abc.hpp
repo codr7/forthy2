@@ -115,7 +115,7 @@ namespace forthy2 {
   }
 
   inline Node<Op> &call_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    return cx.pop().call(cx, pos, return_pc, true);
+    return cx.pop().call(cx, pos, return_pc, true, false);
   }
 
   inline Node<Op> &check_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
@@ -156,6 +156,12 @@ namespace forthy2 {
     auto &out(*cx.stdout);
     cx.stack->dump(out);
     out << endl;
+    return *return_pc.next;
+  }
+
+  inline Node<Op> &filter_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
+    Val &pred(cx.pop()), &in(cx.pop());
+    cx.push(cx.filter_type.get(cx, in, pred));
     return *return_pc.next;
   }
 
@@ -284,16 +290,7 @@ namespace forthy2 {
 
   inline Node<Op> &map_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     Val &fn(cx.pop()), &in(cx.pop());
-
-    cx.push(cx.iter_type.get(cx, [&](auto body) {         
-          in.iter(cx, [&](Val &in_val) {
-              cx.push(in_val);
-              fn.call(cx, pos, cx.ops, true);
-              body(cx.pop(pos));
-              return true;
-            });
-        }));
-
+    cx.push(cx.map_type.get(cx, in, fn));
     return *return_pc.next;
   }
 

@@ -30,7 +30,11 @@ namespace forthy2 {
 
     virtual Val &clone(Cx &cx) { return *this; }
 
-    virtual Node<Op> &call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe);
+    virtual Node<Op> &call(Cx &cx,
+                           Pos pos,
+                           Node<Op> &return_pc,
+                           bool safe,
+                           bool now);
 
     virtual Cmp cmp(Val &other) { return forthy2::cmp<Val *>(this, &other); }
 
@@ -38,7 +42,7 @@ namespace forthy2 {
 
     virtual bool eq(Val &other) { return this == &other; }
 
-    virtual void iter(Cx &cx, IterBody body);
+    virtual void iter(Cx &cx, Pos pos, IterBody body);
     
     virtual bool mark(Cx &cx);
 

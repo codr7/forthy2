@@ -1,8 +1,12 @@
-* add filter(in, pred) like map
+* reimplement read_int manually like read_frac
+** 0x hex / 0b bin
+** base 16 / 2 / 10
+** rename fix point header to numbers in readme
+** add int(fix)/fix(int) conv
+* --
 * add int/fix.neg() methods
 ** rename fix.neg to is_neg()
 * add int(bool) conv
-* add int(fix)/fix(int) conv
 * add char/str types
 ** cidk
 ** \r \n \t \s \e
@@ -21,8 +25,6 @@
 * move nil (_) from reader to root_scope like T/F
 ** add root_scope lookup in read_id
 * ---
-* reimplement read_int manually like read_frac
-** keep hex support
 * add let-id
 ** let-id foo 
 ** bind unique symbol with name as prefix

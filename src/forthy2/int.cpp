@@ -4,7 +4,7 @@
 namespace forthy2 {
   void Int::dump(ostream &out) { out << imp; }
 
-  void Int::iter(Cx &cx, IterBody body) {
+  void Int::iter(Cx &cx, Pos pos, IterBody body) {
     for (Imp i(0); i < imp; i++) { body(cx.int_type.get(cx, i)); }
   }
 

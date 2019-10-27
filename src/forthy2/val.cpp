@@ -2,12 +2,12 @@
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
-  Node<Op> &Val::call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe) {
+  Node<Op> &Val::call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe, bool now) {
     cx.push(*this);
     return *return_pc.next;
   }
 
-  void Val::iter(Cx &cx, IterBody body) { body(*this); }
+  void Val::iter(Cx &cx, Pos pos, IterBody body) { body(*this); }
 
   bool Val::mark(Cx &cx) {
     if (marked) { return false; }

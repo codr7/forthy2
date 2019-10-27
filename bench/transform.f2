@@ -1,0 +1,9 @@
+let REPS 10000
+
+REPS clock {
+  (100.filter &{.> 48} .map &+1! for _) drop
+} msecs dump
+
+
+(100.filter &{.> 48} .map &+1! for _)
+dump-stack

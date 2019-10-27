@@ -52,7 +52,7 @@ namespace forthy2 {
     return true;
   }
 
-  void Stack::iter(Cx &cx, IterBody body) {
+  void Stack::iter(Cx &cx, Pos pos, IterBody body) {
     for(Val *v: items) { body(*v); }
   }
 

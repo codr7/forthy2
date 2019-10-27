@@ -26,7 +26,13 @@ namespace forthy2 {
     
     Method(MethodSet &set, Sym &id, const vector<Arg> &args, uint64_t weight);
     bool applicable(Cx &cx);
-    Node<Op> &call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe) override;
+
+    Node<Op> &call(Cx &cx,
+                   Pos pos,
+                   Node<Op> &return_pc,
+                   bool safe,
+                   bool now) override;
+    
     void dump(ostream &out) override;
     bool mark(Cx &cx) override;
     void sweep(Cx &cx) override;    

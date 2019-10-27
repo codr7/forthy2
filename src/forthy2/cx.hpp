@@ -8,8 +8,9 @@
 #include "forthy2/bool.hpp"
 #include "forthy2/call.hpp"
 #include "forthy2/defer.hpp"
-#include "forthy2/fn.hpp"
+#include "forthy2/filter.hpp"
 #include "forthy2/fix.hpp"
+#include "forthy2/fn.hpp"
 #include "forthy2/forms/dot.hpp"
 #include "forthy2/forms/id.hpp"
 #include "forthy2/forms/lit.hpp"
@@ -22,9 +23,9 @@
 #include "forthy2/forms/stack.hpp"
 #include "forthy2/forms/unquote.hpp"
 #include "forthy2/int.hpp"
-#include "forthy2/iter.hpp"
 #include "forthy2/lambda.hpp"
 #include "forthy2/macro.hpp"
+#include "forthy2/map.hpp"
 #include "forthy2/method.hpp"
 #include "forthy2/method_set.hpp"
 #include "forthy2/nil.hpp"
@@ -113,7 +114,8 @@ namespace forthy2 {
     Type &a_type;
 
     BoolType &bool_type;
-
+    FilterType &filter_type;
+    
     FnType &fn_type;
     LambdaType &lambda_type;
     PoolType<Method> &method_type;
@@ -126,7 +128,7 @@ namespace forthy2 {
     Type &num_type;
     PoolType<Fix> &fix_type;
     IntType &int_type;
-    IterType &iter_type;
+    MapType &map_type;
 
     PeekType &peek_type;
     PoolType<Pair> &pair_type;
@@ -159,6 +161,7 @@ namespace forthy2 {
       a_type(*new Type(*this, sym("A"))),
 
       bool_type(*new BoolType(*this, sym("Bool"), {&a_type})),
+      filter_type(*new FilterType(*this, sym("Filter"), {&a_type})),
 
       fn_type(*new FnType(*this, sym("Fn"), {&a_type})),
       lambda_type(*new LambdaType(*this, sym("Lambda"), {&fn_type})),
@@ -172,7 +175,7 @@ namespace forthy2 {
       num_type(*new Type(*this, sym("Num"), {&a_type})),
       fix_type(*new PoolType<Fix>(*this, sym("Fix"), {&num_type})),
       int_type(*new IntType(*this, sym("Int"), {&num_type})),
-      iter_type(*new IterType(*this, sym("Iter"), {&a_type})),
+      map_type(*new MapType(*this, sym("Map"), {&a_type})),
 
       peek_type(*new PeekType(*this, sym("Peek"), {&a_type})),
       pair_type(*new PoolType<Pair>(*this, sym("Pair"), {&a_type})),
@@ -327,6 +330,11 @@ namespace forthy2 {
 
     Val &peek(size_t offs = 0) { return stack->peek(offs); }
 
+    Val &peek(Pos pos, size_t offs = 0) {
+      if (stack->len() < offs + 1) { throw ESys(pos, "Stack offset out of bounds"); }
+      return stack->peek(offs);
+    }
+
     void poke(Val &val, size_t offs = 0) { stack->poke(val, offs); }
 
     template <typename T>
@@ -336,8 +344,7 @@ namespace forthy2 {
 
     template <typename T>
     T &peek(Pos pos, ValType<T> &type, size_t offs = 0) {
-      if (stack->len() < offs + 1) { throw ESys(pos, "Stack offset out of bounds"); }
-      Val &v(peek(offs));
+      Val &v(peek(pos, offs));
       Type &vt(v.type(*this));
       if (!vt.isa(type)) { ESys(pos, "Expected ", type.id, ": ", vt.id); }
       return dynamic_cast<T &>(v);
@@ -425,7 +432,7 @@ namespace forthy2 {
 
   inline Node<Op> &CallOp::eval(Cx &cx) {
     Val &v(val ? *val : cx.pop(form.pos));
-    return v.call(cx, form.pos, *this, safe);
+    return v.call(cx, form.pos, *this, safe, false);
   }
 
   inline Node<Op> &CopyOp::eval(Cx &cx) {
@@ -443,15 +450,20 @@ namespace forthy2 {
     return *Node<Op>::next;
   }
 
-  inline Node<Op> &Fn::call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe) {
+  inline Node<Op> &Fn::call(Cx &cx,
+                            Pos pos,
+                            Node<Op> &return_pc,
+                            bool safe,
+                            bool now) {
     cx.push_call(pos, *this, return_pc);
+    if (now) { cx.eval(ops, *return_pc.next); }
     return *ops.next;
   }
 
   inline Node<Op> &ForOp::eval(Cx &cx) {
     Val &in(cx.pop(form.pos));
 
-    in.iter(cx, [&](Val &val) {
+    in.iter(cx, form.pos, [&](Val &val) {
         cx.push(val);
         if (end_pc != this) { cx.eval(*this, *end_pc->next); }
         return true;
@@ -480,18 +492,26 @@ namespace forthy2 {
     return true;
   }
   
-  inline Node<Op> &Method::call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe) {
+  inline Node<Op> &Method::call(Cx &cx,
+                                Pos pos,
+                                Node<Op> &return_pc,
+                                bool safe,
+                                bool now) {
     if (cx.unsafe <= 0 && safe && !applicable(cx)) {
       throw ESys(pos, "Method not applicable: ", id.name, '\n', *cx.stack);
     }
     
-    return imp ? imp(cx, pos, return_pc) : fn.call(cx, pos, return_pc, safe);
+    return imp ? imp(cx, pos, return_pc) : fn.call(cx, pos, return_pc, safe, now);
   }
 
-  inline Node<Op> &MethodSet::call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe) {
+  inline Node<Op> &MethodSet::call(Cx &cx,
+                                   Pos pos,
+                                   Node<Op> &return_pc,
+                                   bool safe,
+                                   bool now) {
     Method *m(dispatch(cx));
     if (!m) { throw ESys(pos, "Method not applicable: ", id.name); }
-    return m->call(cx, pos, return_pc, false);
+    return m->call(cx, pos, return_pc, false, now);
   }
 
   inline Method *MethodSet::dispatch(Cx &cx) {

@@ -8,7 +8,12 @@ namespace forthy2 {
   struct Fn: Val {
     Node<Op> ops;
     
-    Node<Op> &call(Cx &cx, Pos pos, Node<Op> &return_pc, bool safe) override;
+    Node<Op> &call(Cx &cx,
+                   Pos pos,
+                   Node<Op> &return_pc,
+                   bool safe,
+                   bool now) override;
+    
     void dump(ostream &out) override;
     bool mark(Cx &cx) override;
     void sweep(Cx &cx) override;    
