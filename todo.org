@@ -1,12 +1,9 @@
-* add recall macro
-** only allow client methods
-** optional target
-*** current if nil
-**** goto beg_pc
-*** perform dispatch if set
-** bench/fib_tail
+* add map macro
+** add Iter type
+** return Iter to enable chaining
 * add int/fix.neg() methods
 ** rename fix.neg to is_neg()
+* add int(bool) conv
 * add int(fix)/fix(int) conv
 * add char/str types
 ** cidk
@@ -23,14 +20,12 @@
 * --
 * implement Nil unquote as ref(cx.nil_form)
 * implement Form unquote as ref(*this)
-* move nil (_) from reader to scope like T/F
-** add scope lookup in read_id
+* move nil (_) from reader to root_scope like T/F
+** add root_scope lookup in read_id
 * ---
 * add let-id
 ** let-id foo 
 ** bind unique symbol with name as prefix
-** add to readme
-* --
 * add enum
 ** add UserType
 *** override Val methods to dispatch if != set.root.next

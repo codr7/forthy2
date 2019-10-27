@@ -38,6 +38,7 @@
 #include "forthy2/ops/pair.hpp"
 #include "forthy2/ops/peek.hpp"
 #include "forthy2/ops/push.hpp"
+#include "forthy2/ops/recall.hpp"
 #include "forthy2/ops/repeat.hpp"
 #include "forthy2/ops/restack.hpp"
 #include "forthy2/ops/return.hpp"
@@ -95,6 +96,7 @@ namespace forthy2 {
     Pool<Peek> peek_pool;
     
     Pool<PushOp> push_op;
+    Pool<RecallOp> recall_op;
     Pool<RepeatOp> repeat_op;
     Pool<RestackOp> restack_op;
     Pool<ReturnOp> return_op;
@@ -516,6 +518,46 @@ namespace forthy2 {
   inline Node<Op> &PushOp::eval(Cx &cx) {
     cx.push(val);
     return *Node<Op>::next;
+  }
+
+  inline Node<Op> &RecallOp::eval(Cx &cx) {
+    Fn *fn(nullptr);
+
+    if (&val == &cx._) {
+      Call *c(cx.call);
+      if (!c) { throw ESys(form.pos, "Nothing to recall"); }
+      fn = &c->fn;
+    } else {
+      Type *vt(&val.type(cx));
+      
+      if (vt == &cx.lambda_type) {
+        fn = &dynamic_cast<Lambda &>(val);
+      } else if (vt == &cx.method_set_type || vt == &cx.method_type) {
+        Sym *id;
+        Method *m(nullptr);
+        
+        if (vt == &cx.method_type) {
+          id = &m->id;
+          m = &dynamic_cast<Method &>(val);
+          if (!m->applicable(cx)) { m = nullptr; }
+        } else {
+          auto &set(dynamic_cast<MethodSet &>(val));
+          id = &set.id;
+          m = set.dispatch(cx);
+        }
+        
+        if (!m) { 
+          throw ESys(form.pos, "Method not applicable: ", id->name, '\n', *cx.stack);
+        }
+        
+        if (m->imp) { ESys(form.pos, "Recalling host method: ", m->id.name); }
+        fn = &m->fn;
+      } else {
+        throw ESys(form.pos, "Invalid recall: ", val);
+      }
+    }
+
+    return *fn->ops.next;
   }
 
   inline Node<Op> &RepeatOp::eval(Cx &cx) {

@@ -81,6 +81,7 @@ namespace forthy2 {
     scope.add_method(cx, pos, cx.sym("push"),
                      {{cx.stack_type}, {cx.a_type}}).imp = stack_push_imp;    
 
+    scope.add_macro(cx, pos, cx.sym("recall"), {{cx.fn_type.or_()}}).imp = recall_imp;
     scope.add_macro(cx, pos, cx.sym("repeat"), {{cx.a_type}}).imp = repeat_imp;
 
     scope.add_macro(cx, pos, cx.sym("rotl")).imp = rotl_imp;

@@ -318,6 +318,26 @@ namespace forthy2 {
     return *op.end_pc;
   }
 
+  inline Node<Op> &recall_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+    auto *lit(dynamic_cast<LitForm *>(in.back()));
+    Val *fn(nullptr);
+
+    if (lit) {
+      fn = &lit->val;
+    } else {
+      auto *id(dynamic_cast<IdForm *>(in.back()));
+
+      if (!id) {
+        throw ESys(form.pos, "Invalid recall: ", *in.back());
+      }
+
+      fn = &cx.scope->get(form.pos, id->val);
+    }
+
+    in.pop_back();
+    return cx.recall_op.get(form, out, *fn);
+  }
+
   inline Node<Op> &repeat_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
     RepeatOp &op(cx.repeat_op.get(form, out));
     Form &body(*in.back());

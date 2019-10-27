@@ -35,7 +35,7 @@ namespace forthy2 {
   Type &Form::type(Cx &cx) { return cx.form_type; }
 
   ostream &operator <<(ostream &out, const Form &in) {
-    const_cast<Form &>(in).dump(out);
+    const_cast<Form &>(in).write(out);
     return out;
   }
 
@@ -49,7 +49,7 @@ namespace forthy2 {
         sep = true;
       }
       
-      f->dump(out);
+      f->write(out);
     }
 
     return out;

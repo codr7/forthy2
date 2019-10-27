@@ -67,6 +67,15 @@ while `drop` removes it.
 3 6
 ```
 
+Unknown identifiers result in compile time errors.
+
+```
+  1 2 3 $(a b c; d)
+
+Error at row 1, col 12:
+Unknown id: d
+```
+
 Stack literals are enclosed in parens.
 
 ```
@@ -406,6 +415,17 @@ Method@0x11216d0
   42 swap call
   
 3
+```
+
+### recalling
+Lambdas and methods both support forwarding calls without creating additional frames, commonly known as tail call optimization. `recall` takes an optional target as argument and forwards the current call. Specifying `_` as target calls the current lambda/method recursively. Execution picks up after the current call on return, which is why `'done2` is not evaluated in the following example.
+
+```
+  method foo(T) {'done1}
+  method foo(A) {drop T recall foo 'done2}
+  42 foo
+
+'done1
 ```
 
 ### quoting
