@@ -156,7 +156,7 @@ T
 42
 ```
 
-### fix points
+### numbers
 Fix points derive their precision from literals.
 
 ```
@@ -568,7 +568,7 @@ Process terminating with default action of signal 6 (SIGABRT)
   by 0x42A31C: main (main.cpp:75)
 ```
 
-### benchmarking
+### benchmarks
 `clock` may be used to measure the time it takes to run N repetitions of the specified expression.
 
 ```

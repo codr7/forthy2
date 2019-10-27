@@ -1,9 +1,7 @@
 * reimplement read_int manually like read_frac
 ** 0x hex / 0b bin
 ** base 16 / 2 / 10
-** rename fix point header to numbers in readme
-** add int(fix)/fix(int) conv
-* --
+* add int(fix)/fix(int) conv
 * add int/fix.neg() methods
 ** rename fix.neg to is_neg()
 * add int(bool) conv
