@@ -1,4 +1,4 @@
-* add filter(in, pred) to abc
+* add filter(in, pred) like map
 * add int/fix.neg() methods
 ** rename fix.neg to is_neg()
 * add int(bool) conv

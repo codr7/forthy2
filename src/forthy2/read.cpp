@@ -31,16 +31,6 @@ namespace forthy2 {
         f = &cx.splice_form.get(p);
         break;
       case '.':
-        if (in.get(c)) {
-          in.unget();
-
-          if (c == '.' || c == ':') {
-            in.unget();
-            f = &read_id(cx, pos, in);
-            break;
-          }
-        }
-
         pos.col++;
         f = &read_dot(cx, pos, nullptr, in);
         break;
@@ -70,16 +60,8 @@ namespace forthy2 {
 
       if (in.get(c)) {
         if (c == '.') {
-          if (in.get(c)) {
-            in.unget();
-
-            if (c == ':') {
-              in.unget();
-            } else {
-              pos.col++;
-              f = &read_dot(cx, pos, f, in);
-            }
-          }
+          pos.col++;
+          f = &read_dot(cx, pos, f, in);
         } else {
           in.unget();
         }
@@ -123,13 +105,7 @@ namespace forthy2 {
     
     for (;;) {  
       if (!in.get(c) || (!arg_depth && (!isgraph(c) ||
-                                        c == '|' ||
-                                        c == ']' ||
-                                        c == ';' ||
-                                        ((c == '.' || c == ':') &&
-                                         pc && pc != '.' && pc != ':') ||
-                                        (c != '.' && c != ':' &&
-                                         pc && (pc == '.' || pc == ':')) ||
+                                        c == ']' || c == ';' || c == '.' ||
                                         (c == ',' && pc && pc != ',') ||
                                         c == '(' || c == ')' ||
                                         c == '{' || c == '}'))) {
