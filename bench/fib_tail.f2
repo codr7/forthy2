@@ -3,15 +3,16 @@ let N    20
 
 method fib1(0 Int Int)   {rotr drop drop}
 method fib1(1 Int Int)   {rotl drop drop}
-method fib1(Int Int Int) {rotr -1! rotl copy rotl + fib1}
+method fib1(Int Int Int) {rotr -1! rotl copy rotl +[Int Int] fib1}
 
 REPS clock {N 0 1 fib1 drop} msecs dump
 N 0 1 fib1
 
 method fib2(0 Int Int)   {$(_ a _; a)}
 method fib2(1 Int Int)   {$(_ _ b; b)}
-method fib2(Int Int Int) {$(n a b; n -1! b a .+ b) fib2}
+method fib2(Int Int Int) {$(n a b; n -1! b a .+[Int Int] b) fib2}
 
 REPS clock {N 0 1 fib2 drop} msecs dump
 N 0 1 fib2
+
 dump-stack

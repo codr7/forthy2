@@ -72,6 +72,7 @@
 ** Imp = uint8_t
 ** read hex as byte if < 256
 ** add int/char conversions
+* add restarts/break loop
 * add unsafe {} macro
 * add C++ emit
 ** add -build mode
