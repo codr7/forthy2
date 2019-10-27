@@ -621,6 +621,8 @@ and `mark-sweep` allows performing both phases as one.
 [MIT](https://github.com/codr7/forthy2/blob/master/LICENSE.txt)
 
 ### support
-Please consider donating if you would like to support the project, every contribution counts.
+Please consider donating if you would like to support the project, every contribution helps.
+
+Etherium: 0x423Ca3edCb65d560b881960316FC5DB8D30E9802
 
 <a href="https://liberapay.com/codr7/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
