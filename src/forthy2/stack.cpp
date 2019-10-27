@@ -52,6 +52,10 @@ namespace forthy2 {
     return true;
   }
 
+  void Stack::iter(Cx &cx, IterBody body) {
+    for(Val *v: items) { body(*v); }
+  }
+
   bool Stack::mark(Cx &cx) {
     if (!Val::mark(cx)) { return false; }
     mark_items(cx);

@@ -311,6 +311,19 @@ Int
 Nil
 ```
 
+### transformation
+`map` takes an input followed by a function as arguments, and returns an iterator for the sequence of values obtained by applying the function to the input.
+
+```
+  (1 3 5).map &+1!
+
+Iter@0x23ca810
+
+  for _
+
+(2 4 6)
+```
+
 `A` is the root type, from which all types except `Nil` are derived. The type hierarchy may be queried using `isa`; which returns the direct parent type if any, and `_` otherwise.
 
 ```

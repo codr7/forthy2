@@ -1,6 +1,4 @@
-* add map macro
-** add Iter type
-** return Iter to enable chaining
+* add filter(in, pred) to abc
 * add int/fix.neg() methods
 ** rename fix.neg to is_neg()
 * add int(bool) conv

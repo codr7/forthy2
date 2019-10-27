@@ -8,6 +8,7 @@ namespace forthy2 {
     scope.bind_type(cx, pos, cx.fn_type);
     scope.bind_type(cx, pos, cx.form_type);
     scope.bind_type(cx, pos, cx.int_type);
+    scope.bind_type(cx, pos, cx.iter_type);
     scope.bind_type(cx, pos, cx.macro_type);
     scope.bind_type(cx, pos, cx.meta_type);
     scope.bind_type(cx, pos, cx.method_set_type);
@@ -59,6 +60,9 @@ namespace forthy2 {
 
     scope.add_macro(cx, pos, cx.sym("let"),
                     {{cx.sym_type}, {cx.a_type.or_()}}).imp = let_imp;
+
+    scope.add_method(cx, pos, cx.sym("map"),
+                     {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = map_imp;
 
     scope.add_method(cx, pos, cx.sym("mark"),
                      {{cx.time_type.or_()}}).imp = mark_imp;

@@ -282,6 +282,21 @@ namespace forthy2 {
     return *op.pc;
   }
 
+  inline Node<Op> &map_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
+    Val &fn(cx.pop()), &in(cx.pop());
+
+    cx.push(cx.iter_type.get(cx, [&](auto body) {         
+          in.iter(cx, [&](Val &in_val) {
+              cx.push(in_val);
+              fn.call(cx, pos, cx.ops, true);
+              body(cx.pop(pos));
+              return true;
+            });
+        }));
+
+    return *return_pc.next;
+  }
+
   inline Node<Op> &not_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     cx.push(cx.bool_type.get(cx, !cx.pop()));
     return *return_pc.next;

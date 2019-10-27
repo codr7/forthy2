@@ -22,6 +22,7 @@
 #include "forthy2/forms/stack.hpp"
 #include "forthy2/forms/unquote.hpp"
 #include "forthy2/int.hpp"
+#include "forthy2/iter.hpp"
 #include "forthy2/lambda.hpp"
 #include "forthy2/macro.hpp"
 #include "forthy2/method.hpp"
@@ -125,6 +126,7 @@ namespace forthy2 {
     Type &num_type;
     PoolType<Fix> &fix_type;
     IntType &int_type;
+    IterType &iter_type;
 
     PeekType &peek_type;
     PoolType<Pair> &pair_type;
@@ -170,6 +172,7 @@ namespace forthy2 {
       num_type(*new Type(*this, sym("Num"), {&a_type})),
       fix_type(*new PoolType<Fix>(*this, sym("Fix"), {&num_type})),
       int_type(*new IntType(*this, sym("Int"), {&num_type})),
+      iter_type(*new IterType(*this, sym("Iter"), {&a_type})),
 
       peek_type(*new PeekType(*this, sym("Peek"), {&a_type})),
       pair_type(*new PoolType<Pair>(*this, sym("Pair"), {&a_type})),
