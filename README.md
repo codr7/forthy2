@@ -157,7 +157,31 @@ T
 ```
 
 ### numbers
-Fix points derive their precision from literals.
+Integers default to decimal notation.
+
+```
+  42
+
+42
+```
+
+Prefixing with `0b` switches to binary,
+
+```
+  0b101010
+
+42
+```
+
+and `0x` hexadecimal.
+
+```
+  0x2a
+
+42
+```
+
+Fix points derive precision from literals.
 
 ```
   0.30

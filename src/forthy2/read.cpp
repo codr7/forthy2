@@ -1,3 +1,5 @@
+#include <map>
+
 #include "forthy2/cx.hpp"
 #include "forthy2/fix.hpp"
 #include "forthy2/pos.hpp"
@@ -133,37 +135,57 @@ namespace forthy2 {
     return cx.id_form.get(p, cx.sym(out.str()));
   }
   
-  Int::Imp read_int(Cx &cx, Pos &pos, istream &in, bool is_hex) {
-    Pos p(pos);
+  Int::Imp read_int(Cx &cx, Pos &pos, istream &in, int8_t base) {
+    char c(0);    
     Int::Imp v(0);
-    in >> (is_hex ? hex : dec) >> v;
-    if (in.fail()) { throw ESys(p, "Failed reading int"); }
+
+    static map<char, int8_t> char_vals = {
+      {'0', 0}, {'1', 1}, {'2', 2}, {'3', 3}, {'4', 4}, {'5', 5}, {'6', 6}, {'7', 7},
+      {'8', 8}, {'9', 9}, {'a', 10}, {'b', 11}, {'c', 12}, {'d', 13}, {'e', 14},
+      {'f', 15}
+    };
+
+    auto ci(char_vals.end());
+    
+    while (in.get(c) && (ci = char_vals.find(c)) != char_vals.end()) {
+      auto cv(ci->second);
+      if (cv >= base) { throw ESys(pos, "Invalid input: ", c); }
+      v = v * base + cv;
+      pos.col++;
+    }
+    
+    if (!in.eof()) { in.unget();}
     return v;
   }
 
   LitForm &read_num(Cx &cx, Pos &pos, istream &in) {
     Pos p(pos);
-    bool is_hex(false);
+    int8_t base(10);
     char c(0);
       
     if (in.get(c)) {
       if (c == '0') {
         if (in.get(c)) {
-          if (c == 'x') {
-            is_hex = true;
-          } else {
+          switch (c) {
+          case 'b':
+            base = 2;
+            break;
+          case 'x':
+            base = 16;
+            break;
+          default:
             in.unget();
             in.unget();
-          }                 
+          }
         }
       } else {
         in.unget();
       }
     }
     
-    auto i(read_int(cx, pos, in, is_hex));
+    auto i(read_int(cx, pos, in, base));
     
-    if (!is_hex && in.get(c)) {
+    if (base == 10 && in.get(c)) {
       if (c == '.') {
         if (in.get(c)) {
           in.unget();

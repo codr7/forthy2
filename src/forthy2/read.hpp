@@ -20,7 +20,7 @@ namespace forthy2 {
   Form *read_form(Cx &cx, Pos &pos, istream &in, bool skip);
   pair<uint64_t, uint8_t> read_frac(Cx &cx, Pos &pos, istream &in);
   IdForm &read_id(Cx &cx, Pos &pos, istream &in);
-  Int::Imp read_int(Cx &cx, Pos &pos, istream &in, bool is_hex);
+  Int::Imp read_int(Cx &cx, Pos &pos, istream &in, int8_t base);
   LitForm &read_num(Cx &cx, Pos &pos, istream &in);
   PairForm &read_pair(Cx &cx, Pos &pos, istream &in);
   Form &read_quote(Cx &cx, Pos &pos, istream &in);
