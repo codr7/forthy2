@@ -13,9 +13,8 @@ namespace forthy2 {
   }
 
   void Pair::dump(ostream &out) {
-    out << ',';
     imp.first->dump(out);
-    out << ' ';
+    out << ':';
     imp.second->dump(out);
   }
   

@@ -41,10 +41,6 @@ namespace forthy2 {
         pos.col++;
         f = &read_dot(cx, pos, nullptr, in);
         break;
-      case ',':
-        pos.col++;
-        f = &read_pair(cx, pos, in);
-        break;
       case '&':
         pos.col++;        
         if (!(f = read_form(cx, pos, in, false))) { throw ESys(p, "Invalid ref"); }
@@ -66,6 +62,9 @@ namespace forthy2 {
         if (c == '.') {
           pos.col++;
           f = &read_dot(cx, pos, f, in);
+        } else if (c == ':') {
+          pos.col++;
+          f = &read_pair(cx, pos, *f, in);
         } else {
           in.unget();
         }
@@ -109,8 +108,8 @@ namespace forthy2 {
     
     for (;;) {  
       if (!in.get(c) || (!arg_depth && (!isgraph(c) ||
-                                        c == ']' || c == ';' || c == '.' ||
-                                        (c == ',' && pc && pc != ',') ||
+                                        c == ';' || c == '.' || c == ':' ||
+                                        c == ']' ||
                                         c == '(' || c == ')' ||
                                         c == '{' || c == '}'))) {
         in.unget();
@@ -213,14 +212,10 @@ namespace forthy2 {
     return cx.lit_form.get(p, cx.int_type.get(cx, i));
   }
 
-  PairForm &read_pair(Cx &cx, Pos &pos, istream &in) {
-    Pos p(pos);
-    Form *l = read_form(cx, pos, in, false);
-    if (!l) { throw ESys(p, "Missing left form"); }
-    Form *r = read_form(cx, pos, in, true);
-    if (!r) { throw ESys(p, "Missing right form"); }
-    PairForm &d(cx.pair_form.get(p, *l, *r));
-    return d;
+  PairForm &read_pair(Cx &cx, Pos &pos, Form &left, istream &in) {
+    Form *right = read_form(cx, pos, in, true);
+    if (!right) { throw ESys(left.pos, "Missing right form"); }
+    return cx.pair_form.get(left.pos, left, *right);
   }
 
   Form &read_quote(Cx &cx, Pos &pos, istream &in) {

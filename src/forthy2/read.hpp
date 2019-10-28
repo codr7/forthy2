@@ -22,7 +22,7 @@ namespace forthy2 {
   IdForm &read_id(Cx &cx, Pos &pos, istream &in);
   Int::Imp read_int(Cx &cx, Pos &pos, istream &in, int8_t base);
   LitForm &read_num(Cx &cx, Pos &pos, istream &in);
-  PairForm &read_pair(Cx &cx, Pos &pos, istream &in);
+  PairForm &read_pair(Cx &cx, Pos &pos, Form &left, istream &in);
   Form &read_quote(Cx &cx, Pos &pos, istream &in);
   ScopeForm &read_scope(Cx &cx, Pos &pos, istream &in);
   StackForm &read_stack(Cx &cx, Pos &pos, istream &in);

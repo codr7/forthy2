@@ -261,12 +261,12 @@ Lambda@0x24f73c8
 ```
 
 ### pairs
-Pairs may be created at read time by prefixing with `,`,
+Pairs may be created at read time using `:`,
 
 ```
-  ,1 3
+  1:3
 
-,1 3
+1:3
 ```
 
 or at run time using `pair`;
@@ -274,13 +274,13 @@ or at run time using `pair`;
 ```
   1.pair 3
   
-,1 3
+1:3
 ```
 
 and split using `unpair`.
 
 ```
-  ,1 3 unpair
+  1:3 unpair
   
 1 3
 ```

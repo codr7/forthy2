@@ -24,9 +24,8 @@ namespace forthy2 {
   }
 
   void PairForm::write(ostream &out) {
-    out << ',';
     left.write(out);
-    out << ' ';
+    out << ':';
     right.write(out);
   }
 }
