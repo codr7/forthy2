@@ -1,10 +1,10 @@
-* reserve capacity in stack bench
 * reimplement read_int manually like read_frac
 ** 0x hex / 0b bin
 ** base 16 / 2 / 10
-* add int(fix)/fix(int) conv
-* add int/fix.neg() methods
-** rename fix.neg to is_neg()
+** add int(fix)/fix(int) conv
+** add int/fix.neg() methods
+*** rename fix.neg to is_neg()
+** readme
 * add int(bool) conv
 * add char/str types
 ** cidk
