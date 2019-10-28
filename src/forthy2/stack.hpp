@@ -39,7 +39,7 @@ namespace forthy2 {
     bool empty() { return items.empty(); }
 
     bool eq(Val &other) override;
-    void iter(Cx &cx, Pos pos, IterBody body) override;
+    forthy2::Iter &iter(Cx &cx, Pos pos) override;
     
     size_t len() { return items.size(); }
 

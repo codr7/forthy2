@@ -1,17 +1,18 @@
-#ifndef FORTHY2_MAP_HPP
-#define FORTHY2_MAP_HPP
+#ifndef FORTHY2_ITER_MAP_HPP
+#define FORTHY2_ITER_MAP_HPP
 
+#include "forthy2/iter.hpp"
 #include "forthy2/pool_type.hpp"
-#include "forthy2/val.hpp"
 
 namespace forthy2 {
-  struct Map: Val {
-    Val &in, &fn;
+  struct Map: Iter {
+    Iter &in;
+    Val &fn;
     
-    Map(Val &in, Val &fn);
+    Map(Iter &in, Val &fn);
     void dump(ostream &out) override;
-    void iter(Cx &cx, Pos pos, IterBody body) override;
     bool mark(Cx &cx) override;
+    Val *get_next(Cx &cx, Pos pos) override;
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;    
   };

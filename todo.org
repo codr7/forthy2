@@ -1,8 +1,7 @@
 * add zip/unzip iters
-** add Iter struct with Val *next(Cx)
-** change Val.iter(Cx) to return Iter
-** move state into iter types
 ** add iter(val) method
+** add zip(iter, iter) method
+** add unzip(iter) method
 ** change readme heading to iterators
 * --
 * add int/fix.neg() methods
@@ -25,7 +24,6 @@
 *** print symbols with quote
 *** print stack items in sequence
 *** print pair items separated by space
-* --
 * implement Nil unquote as ref(cx.nil_form)
 * implement Form unquote as ref(*this)
 * move nil (_) from reader to root_scope like T/F
@@ -41,13 +39,11 @@
 ** enum Month (JAN ... DEC)
 ** bind members in scope
 ** provide conversion to-from int
-* --
 * add Date type
 ** 1977 JUL 5 date.+{23 59 59 time}
 ** add date/time constructors
 ** add Timestamp +/- Time
 ** add today/now
-* --
 * convert is/isa/not/type to macros/ops
 * plug valgrind quote memory leak
 * add Form.eq overrides

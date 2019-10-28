@@ -8,7 +8,6 @@
 #include "forthy2/bool.hpp"
 #include "forthy2/call.hpp"
 #include "forthy2/defer.hpp"
-#include "forthy2/filter.hpp"
 #include "forthy2/fix.hpp"
 #include "forthy2/fn.hpp"
 #include "forthy2/forms/dot.hpp"
@@ -23,9 +22,15 @@
 #include "forthy2/forms/stack.hpp"
 #include "forthy2/forms/unquote.hpp"
 #include "forthy2/int.hpp"
+#include "forthy2/iter.hpp"
+#include "forthy2/iters/filter.hpp"
+#include "forthy2/iters/map.hpp"
+#include "forthy2/iters/int.hpp"
+#include "forthy2/iters/nil.hpp"
+#include "forthy2/iters/stack.hpp"
+#include "forthy2/iters/val.hpp"
 #include "forthy2/lambda.hpp"
 #include "forthy2/macro.hpp"
-#include "forthy2/map.hpp"
 #include "forthy2/method.hpp"
 #include "forthy2/method_set.hpp"
 #include "forthy2/nil.hpp"
@@ -114,7 +119,6 @@ namespace forthy2 {
     Type &a_type;
 
     BoolType &bool_type;
-    FilterType &filter_type;
     
     FnType &fn_type;
     LambdaType &lambda_type;
@@ -125,10 +129,16 @@ namespace forthy2 {
     PoolType<Macro> &macro_type;
     Type &meta_type;
 
+    IterType &iter_type;
+    FilterType &filter_type;
+    IntIterType &int_iter_type;
+    MapType &map_type;
+    StackIterType &stack_iter_type;
+    ValIterType &val_iter_type;
+
     Type &num_type;
     PoolType<Fix> &fix_type;
     IntType &int_type;
-    MapType &map_type;
 
     PeekType &peek_type;
     PoolType<Pair> &pair_type;
@@ -144,8 +154,9 @@ namespace forthy2 {
 
     Node<Op> ops;
 
-    NilForm nil_form;
     Nil _;
+    NilForm nil_form;
+    NilIter nil_iter;
 
     Bool F, T;
     vector<Int> ints;
@@ -161,7 +172,6 @@ namespace forthy2 {
       a_type(*new Type(*this, sym("A"))),
 
       bool_type(*new BoolType(*this, sym("Bool"), {&a_type})),
-      filter_type(*new FilterType(*this, sym("Filter"), {&a_type})),
 
       fn_type(*new FnType(*this, sym("Fn"), {&a_type})),
       lambda_type(*new LambdaType(*this, sym("Lambda"), {&fn_type})),
@@ -172,10 +182,16 @@ namespace forthy2 {
       macro_type(*new PoolType<Macro>(*this, sym("Macro"), {&a_type})),
       meta_type(*new Type(*this, sym("Meta"), {&a_type})),
 
+      iter_type(*new IterType(*this, sym("Iter"), {&a_type})),
+      filter_type(*new FilterType(*this, sym("Filter"), {&iter_type})),
+      int_iter_type(*new IntIterType(*this, sym("IntIter"), {&iter_type})),
+      map_type(*new MapType(*this, sym("Map"), {&iter_type})),
+      stack_iter_type(*new StackIterType(*this, sym("StackIter"), {&iter_type})),
+      val_iter_type(*new ValIterType(*this, sym("ValIter"), {&iter_type})),
+
       num_type(*new Type(*this, sym("Num"), {&a_type})),
       fix_type(*new PoolType<Fix>(*this, sym("Fix"), {&num_type})),
       int_type(*new IntType(*this, sym("Int"), {&num_type})),
-      map_type(*new MapType(*this, sym("Map"), {&a_type})),
 
       peek_type(*new PeekType(*this, sym("Peek"), {&a_type})),
       pair_type(*new PoolType<Pair>(*this, sym("Pair"), {&a_type})),
@@ -461,13 +477,13 @@ namespace forthy2 {
   }
 
   inline Node<Op> &ForOp::eval(Cx &cx) {
-    Val &in(cx.pop(form.pos));
-
-    in.iter(cx, form.pos, [&](Val &val) {
-        cx.push(val);
-        if (end_pc != this) { cx.eval(*this, *end_pc->next); }
-        return true;
-      });
+    Iter &in(cx.pop(form.pos).iter(cx, form.pos));
+    Val *v(nullptr);
+    
+    while ((v = in.get_next(cx, form.pos))) {
+      cx.push(*v);
+      if (end_pc != this) { cx.eval(*this, *end_pc->next); }
+    }
 
     return *end_pc->next;
   }

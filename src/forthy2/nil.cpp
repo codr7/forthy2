@@ -12,7 +12,7 @@ namespace forthy2 {
 
   void Nil::dump(ostream &out) { out << '_'; }
 
-  void Nil::iter(Cx &cx, Pos pos, IterBody body) {}
+  Iter &Nil::iter(Cx &cx, Pos pos) { return cx.nil_iter; }
 
   void Nil::sweep(Cx &cx) { assert(false); }
 

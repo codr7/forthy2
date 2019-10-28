@@ -26,7 +26,7 @@ namespace forthy2 {
 
     bool eq(Val &other) override { return dynamic_cast<Int &>(other).imp == imp; }
 
-    void iter(Cx &cx, Pos pos, IterBody body) override;
+    Iter &iter(Cx &cx, Pos pos) override;
     
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;

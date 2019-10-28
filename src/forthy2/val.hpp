@@ -13,6 +13,7 @@ namespace forthy2 {
 
   struct Cx;
   struct Form;
+  struct Iter;
   struct Op;
   struct Pos;
   struct Type;
@@ -42,7 +43,7 @@ namespace forthy2 {
 
     virtual bool eq(Val &other) { return this == &other; }
 
-    virtual void iter(Cx &cx, Pos pos, IterBody body);
+    virtual Iter &iter(Cx &cx, Pos pos);
     
     virtual bool mark(Cx &cx);
 

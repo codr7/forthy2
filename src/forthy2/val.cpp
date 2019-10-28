@@ -7,7 +7,7 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
-  void Val::iter(Cx &cx, Pos pos, IterBody body) { body(*this); }
+  Iter &Val::iter(Cx &cx, Pos pos) { return cx.val_iter_type.get(cx, *this); }
 
   bool Val::mark(Cx &cx) {
     if (marked) { return false; }

@@ -9,6 +9,8 @@ namespace forthy2 {
     scope.bind_type(cx, pos, cx.fn_type);
     scope.bind_type(cx, pos, cx.form_type);
     scope.bind_type(cx, pos, cx.int_type);
+    scope.bind_type(cx, pos, cx.int_iter_type);
+    scope.bind_type(cx, pos, cx.iter_type);
     scope.bind_type(cx, pos, cx.macro_type);
     scope.bind_type(cx, pos, cx.map_type);
     scope.bind_type(cx, pos, cx.meta_type);
@@ -18,7 +20,9 @@ namespace forthy2 {
     scope.bind_type(cx, pos, cx.num_type);
     scope.bind_type(cx, pos, cx.pair_type);
     scope.bind_type(cx, pos, cx.stack_type);
+    scope.bind_type(cx, pos, cx.stack_iter_type);
     scope.bind_type(cx, pos, cx.sym_type);
+    scope.bind_type(cx, pos, cx.val_iter_type);
 
     scope.bind(pos, cx.sym("F"), cx.F);
     scope.bind(pos, cx.sym("T"), cx.T);

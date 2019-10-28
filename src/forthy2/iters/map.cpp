@@ -1,25 +1,24 @@
 #include "forthy2/cx.hpp"
-#include "forthy2/map.hpp"
+#include "forthy2/iters/map.hpp"
 
 namespace forthy2 {
-  Map::Map(Val &in, Val &fn): in(in), fn(fn) {}
+  Map::Map(Iter &in, Val &fn): in(in), fn(fn) {}
 
   void Map::dump(ostream &out) { out << "Map@" << this; }
-
-  void Map::iter(Cx &cx, Pos pos, IterBody body) {
-    in.iter(cx, pos, [&](Val &in_val) {
-        cx.push(in_val);
-        fn.call(cx, pos, cx.ops, true, true);
-        body(cx.pop(pos));
-        return true;
-      });
-  }
 
   bool Map::mark(Cx &cx) {
     if (!Val::mark(cx)) { return false; }
     in.mark(cx);
     fn.mark(cx);
     return true;
+  }
+
+  Val *Map::get_next(Cx &cx, Pos pos) {
+    Val *in_val(in.get_next(cx, pos));
+    if (!in_val) { return nullptr; }
+    cx.push(*in_val);
+    fn.call(cx, pos, cx.ops, true, true);
+    return &cx.pop(pos);
   }
 
   void Map::sweep(Cx &cx) {
