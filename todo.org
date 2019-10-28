@@ -1,7 +1,17 @@
+* add zip/unzip iters
+** add Iter struct with Val *next(Cx)
+** change Val.iter(Cx) to return Iter
+** move state into iter types
+** add iter(val) method
+** change readme heading to iterators
+* --
 * add int/fix.neg() methods
 ** rename fix.neg to is_neg()
 * add int(fix) conv
 ** use trunc
+* add sum types
+** Fix|Int
+*** parse & sort types if | found
 * --
 * add char/str types
 ** cidk
@@ -38,9 +48,6 @@
 ** add Timestamp +/- Time
 ** add today/now
 * --
-* add sum types
-** Fix|Int
-*** parse & sort types if | found
 * convert is/isa/not/type to macros/ops
 * plug valgrind quote memory leak
 * add Form.eq overrides
