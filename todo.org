@@ -1,3 +1,4 @@
+* reserve capacity in stack bench
 * reimplement read_int manually like read_frac
 ** 0x hex / 0b bin
 ** base 16 / 2 / 10

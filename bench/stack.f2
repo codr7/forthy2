@@ -1,0 +1,11 @@
+let REPS 10
+let N    100000
+
+REPS clock {
+  ()
+  N for push
+  N repeat {pop drop}
+  drop
+} msecs dump
+
+dump-stack

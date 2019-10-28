@@ -378,7 +378,7 @@ namespace forthy2 {
   }
 
   inline Node<Op> &stack_pop_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    if (Val *v(dynamic_cast<Stack &>(cx.pop()).try_pop(cx)); v) {
+    if (Val *v(dynamic_cast<Stack &>(cx.peek()).try_pop(cx)); v) {
       cx.push(*v);
     } else {
       cx.push(cx._);
@@ -389,7 +389,7 @@ namespace forthy2 {
 
   inline Node<Op> &stack_push_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     Val &v(cx.pop());
-    dynamic_cast<Stack &>(cx.pop()).push(v);
+    dynamic_cast<Stack &>(cx.peek()).push(v);
     return *return_pc.next;
   }
 

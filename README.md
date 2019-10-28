@@ -95,13 +95,13 @@ Stack literals are enclosed in parens.
 Stacks are dynamic and support basic stack operations.
 
 ```
-  (1 3 5) copy .push 7
+  (1 3 5) .push 7
 
 (1 3 5 7)
   copy len
 
 (1 3 5 7) 4
-  drop copy pop
+  drop pop
 
 (1 3 5) 7
 ```
@@ -111,7 +111,7 @@ Popping empty stacks returns `_`.
 ```
   () pop
 
-_
+() _
 ```
 
 ### scopes
