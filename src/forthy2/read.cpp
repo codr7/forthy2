@@ -150,10 +150,14 @@ namespace forthy2 {
 
     auto ci(char_vals.end());
     
-    while (in.get(c) && (ci = char_vals.find(c)) != char_vals.end()) {
-      auto cv(ci->second);
-      if (cv >= base) { throw ESys(pos, "Invalid input: ", c); }
-      v = v * base + cv;
+    while (in.get(c)) {
+      if (c != '_') {
+        if ((ci = char_vals.find(c)) == char_vals.end()) { break; }
+        auto cv(ci->second);
+        if (cv >= base) { throw ESys(pos, "Invalid input: ", c); }
+        v = v * base + cv;
+      }
+      
       pos.col++;
     }
     

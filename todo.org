@@ -1,3 +1,8 @@
+* switch pairs from prefix , to infix :
+** handle in reader
+** Pair/PairForm dump
+** readme
+* --
 * add int(fix)/fix(int) conv
 * add int/fix.neg() methods
 * rename fix.neg to is_neg()
@@ -49,7 +54,6 @@
 ** search call chain for method call
 *** return next from method.set
 **** _ if missing
-* add stash/splat
 * add loop macro
 ** loop until break
 ** add LoopOp

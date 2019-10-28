@@ -181,6 +181,14 @@ and `0x` hexadecimal.
 42
 ```
 
+`_` may be used as separator to increase readability.
+
+```
+  1_000_000
+
+1000000
+```
+
 Fix points derive precision from literals.
 
 ```
