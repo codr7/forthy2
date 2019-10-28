@@ -13,6 +13,11 @@ namespace forthy2 {
     
     if (char c(0); in.get(c)) {
       switch (c) {
+      case ';':
+      case ')':
+      case '}':
+        in.unget();
+        return nullptr;
       case '_':
         pos.col++;
         return &cx.nil_form.ref();
@@ -36,9 +41,6 @@ namespace forthy2 {
         pos.col++;
         f = &read_dot(cx, pos, nullptr, in);
         break;
-      case ';':
-        in.unget();
-        return nullptr;
       case ',':
         pos.col++;
         f = &read_pair(cx, pos, in);
@@ -131,7 +133,8 @@ namespace forthy2 {
       pos.col++;
       pc = c;
     }
-    
+
+    if (!out.tellp()) { throw ESys(p, "Empty id"); }
     return cx.id_form.get(p, cx.sym(out.str()));
   }
   
