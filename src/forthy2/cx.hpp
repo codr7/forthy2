@@ -590,7 +590,7 @@ namespace forthy2 {
   }
 
   inline Node<Op> &RestackOp::eval(Cx &cx) {
-    if (cx.stack->len() < in_len) {
+    if (in_len < 0 || cx.stack->len() < static_cast<size_t>(in_len)) {
       throw ESys(form.pos, "Nothing to restack: ", *cx.stack);
     }
     

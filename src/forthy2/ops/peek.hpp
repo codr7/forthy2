@@ -8,7 +8,7 @@ namespace forthy2 {
   
   struct PeekOp: Op {
     bool alt_src;
-    int offs;
+    size_t offs;
     
     PeekOp(Form &form, Node<Op> &prev, bool alt_src, int offs = 0);
     void dealloc(Cx &cx) override;
