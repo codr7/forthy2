@@ -156,6 +156,14 @@ T
 42
 ```
 
+Booleans support explicit conversion to integers.
+
+```
+  T int F int
+
+1 0
+```
+
 ### numbers
 Integers default to decimal notation.
 
@@ -189,13 +197,22 @@ and `0x` hexadecimal.
 1000000
 ```
 
-Fix points derive precision from literals.
+Fix points literals infer precision,
 
 ```
   0.30
 
 0.30
 ```
+
+while programmatic construction requires explicit precision.
+
+```
+  42 3 fix
+
+42.000
+```
+
 Operations preserve left hand precision.
 
 ```

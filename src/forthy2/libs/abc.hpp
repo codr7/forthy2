@@ -114,6 +114,11 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
+  inline Node<Op> &bool_int_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
+    cx.push(cx.int_type.get(cx, cx.pop(cx.bool_type).imp ? 1 : 0));
+    return *return_pc.next;
+  }
+
   inline Node<Op> &call_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     return cx.pop().call(cx, pos, return_pc, true, false);
   }

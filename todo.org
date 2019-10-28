@@ -1,7 +1,8 @@
-* add int(fix)/fix(int) conv
 * add int/fix.neg() methods
-* rename fix.neg to is_neg()
-* add int(bool) conv
+** rename fix.neg to is_neg()
+* add int(fix) conv
+** use trunc
+* --
 * add char/str types
 ** cidk
 ** \r \n \t \s \e

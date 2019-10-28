@@ -29,6 +29,9 @@ check {'{6 % *} 7 splice compile call .= 42}
 check {42.type .= Int}
 check {Int.isa A .= Num}
 
+check {T int.= 1}
+check {F int.= 0}
+
 check {F or 42 .= 42}
 check {42 or T .= 42}
 
@@ -54,6 +57,7 @@ check {43 -1! .= 42}
 check {6.* 7 .= 42}
 
 check {42.= 42.0 not}
+check {42 3 fix.= 42.000}
 
 check {1.< 3}
 check {3.> 1}

@@ -58,6 +58,12 @@ namespace forthy2 {
     return *return_pc.next;
   }
   
+  inline Node<Op> &fix_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
+    Int::Imp scale(cx.pop(cx.int_type).imp);
+    cx.push(cx.fix_type.get(cx, cx.pop(cx.int_type).imp * Fix::pow(scale), scale));
+    return *return_pc.next;
+  }
+
   inline Node<Op> &fix_add_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     Fix &y(cx.pop(cx.fix_type)), &x(cx.fix_type.get(cx, cx.pop(cx.fix_type)));
     x.add(y);

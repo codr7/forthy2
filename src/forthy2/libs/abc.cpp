@@ -37,7 +37,10 @@ namespace forthy2 {
     scope.add_macro(cx, pos, cx.sym("$"), {{cx.stack_type}}).imp = restack_imp;
 
     scope.add_macro(cx, pos, cx.sym("and"), {{cx.a_type.or_()}}).imp = and_imp;
+
     scope.add_method(cx, pos, cx.sym("bool"), {{cx.a_type.or_()}}).imp = bool_imp;
+    scope.add_method(cx, pos, cx.sym("int"), {{cx.bool_type}}).imp = bool_int_imp;
+
     scope.add_method(cx, pos, cx.sym("call"), {{cx.a_type.or_()}}).imp = call_imp;
     scope.add_macro(cx, pos, cx.sym("check"), {{cx.a_type.or_()}}).imp = check_imp;
     scope.add_macro(cx, pos, cx.sym("clock"), {{cx.a_type.or_()}}).imp = clock_imp;
@@ -60,9 +63,6 @@ namespace forthy2 {
     scope.add_method(cx, pos, cx.sym("isa"),
                      {{cx.meta_type}, {cx.meta_type}}).imp = isa_imp;
 
-    scope.add_method(cx, pos, cx.sym("len"),
-                     {{cx.stack_type}}).imp = stack_len_imp;
-
     scope.add_macro(cx, pos, cx.sym("let"),
                     {{cx.sym_type}, {cx.a_type.or_()}}).imp = let_imp;
 
@@ -83,7 +83,12 @@ namespace forthy2 {
 
     scope.add_method(cx, pos, cx.sym("pair"),
                      {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = pair_imp;
-        
+
+    scope.add_method(cx, pos, cx.sym("unpair"), {{cx.pair_type}}).imp = unpair_imp;
+
+    scope.add_method(cx, pos, cx.sym("len"),
+                     {{cx.stack_type}}).imp = stack_len_imp;
+
     scope.add_method(cx, pos, cx.sym("pop"),
                      {{cx.stack_type}}).imp = stack_pop_imp;    
 
@@ -105,8 +110,6 @@ namespace forthy2 {
                      {{cx.time_type.or_()}}).imp = sweep_imp;
 
     scope.add_method(cx, pos, cx.sym("type"), {{cx.a_type.or_()}}).imp = type_imp;
-
-    scope.add_method(cx, pos, cx.sym("unpair"), {{cx.pair_type}}).imp = unpair_imp;
 
     scope.add_macro(cx, pos, cx.sym("while"), {{cx.a_type}}).imp = while_imp;
   }
