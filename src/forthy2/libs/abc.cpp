@@ -50,8 +50,6 @@ namespace forthy2 {
     scope.add_method(cx, pos, cx.sym("compile"), {{cx.form_type}}).imp = compile_imp;
     scope.add_macro(cx, pos, cx.sym("copy")).imp = copy_imp;
     scope.add_macro(cx, pos, cx.sym("drop")).imp = drop_imp;
-    scope.add_method(cx, pos, cx.sym("dump"), {{cx.a_type.or_()}}).imp = dump_imp;
-    scope.add_method(cx, pos, cx.sym("dump-stack")).imp = dump_stack_imp;    
     scope.add_macro(cx, pos, cx.sym("else"), {{cx.a_type}}).imp = else_imp;
 
     scope.add_macro(cx, pos, cx.sym("for"), {{cx.a_type}}).imp = for_imp;

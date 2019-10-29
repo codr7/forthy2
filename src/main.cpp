@@ -2,6 +2,7 @@
 #include "forthy2/forthy2.hpp"
 #include "forthy2/libs/abc.hpp"
 #include "forthy2/libs/iter.hpp"
+#include "forthy2/libs/io.hpp"
 #include "forthy2/libs/math.hpp"
 #include "forthy2/libs/time.hpp"
 
@@ -50,6 +51,7 @@ int main(int argc, char *argv[]) {
   Cx cx;
   init_abc(cx, Pos::_, cx.root_scope);
   init_iter(cx, Pos::_, cx.root_scope);
+  init_io(cx, Pos::_, cx.root_scope);
   init_math(cx, Pos::_, cx.root_scope);
   init_time(cx, Pos::_, cx.root_scope);
   

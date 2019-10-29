@@ -66,6 +66,9 @@ namespace forthy2 {
     for (Val *v: items) { v->mark(cx); }
   }
 
+  void Stack::print(Cx &cx, Pos pos, ostream &out) {
+    for (Val *v: items) { v->print(cx, pos, out); }
+  }
 
   void Stack::sweep(Cx &cx) {
     Val::sweep(cx);

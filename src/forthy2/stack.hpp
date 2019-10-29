@@ -56,6 +56,8 @@ namespace forthy2 {
       return *v;
     }
 
+    void print(Cx &cx, Pos pos, ostream &out) override;
+
     void push(Val &v) { items.push_back(&v); }
 
     void sweep(Cx &cx) override;

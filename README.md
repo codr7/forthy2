@@ -593,7 +593,7 @@ Lambda@0x252dab0
 Forms may contain placeholders which allows splicing external values.
 
 ```
-  '{6 % *}
+  '{6.* %}
 
 Form@0x252dcd0
 
@@ -604,6 +604,23 @@ Form@0x252dcd0
   compile call
 
 42
+```
+
+### io
+`say` may be used to pretty-print any value to `STDOUT`.
+
+```
+  '{6.* 7} say
+
+{6.* 7}
+```
+
+`dump` is similar, but prints raw values without formatting.
+
+```
+  '{6.* 7} dump
+
+Form@0x21abd00
 ```
 
 ### time

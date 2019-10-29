@@ -7,6 +7,7 @@
 
 #include "forthy2/cmp.hpp"
 #include "forthy2/node.hpp"
+#include "forthy2/pos.hpp"
 
 namespace forthy2 {
   using namespace std;
@@ -49,6 +50,8 @@ namespace forthy2 {
     virtual Len len() { return 1; }
     
     virtual bool mark(Cx &cx);
+
+    virtual void print(Cx &cx, Pos pos, ostream &out) { dump(out); }
 
     virtual void sweep(Cx &cx) { Node<Val>::unlink(); }
 

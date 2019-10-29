@@ -18,6 +18,7 @@ namespace forthy2 {
     void dump(ostream &out) override;
     Iter &iter(Cx &cx, Pos pos) override;
     Len len() override { return 0; }
+    void print(Cx &cx, Pos pos, ostream &out) override {}
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };

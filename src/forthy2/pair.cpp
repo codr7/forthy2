@@ -36,6 +36,12 @@ namespace forthy2 {
     return true;
   }
 
+  void Pair::print(Cx &cx, Pos pos, ostream &out) {
+    imp.first->print(cx, pos, out);
+    out << ' ';
+    imp.second->print(cx, pos, out);
+  }
+
   void Pair::sweep(Cx &cx) {
     Val::sweep(cx);
     cx.pair_type.pool.put(*this);

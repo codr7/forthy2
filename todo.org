@@ -1,10 +1,6 @@
-* add say method
-** add io lib & move dump/dump-stack
-** add val.print
-*** default to dump
-*** print symbols without quote
-*** print stack items in sequence
-*** print pair items separated by space
+* simplify method body
+** compile form as is
+** update test/bench/readme
 * --
 * add int/fix.neg() methods
 ** rename fix.neg to is_neg()

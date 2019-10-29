@@ -44,6 +44,9 @@ namespace forthy2 {
     }
     
     virtual void mark_vals(Cx &cx);
+
+    void print(Cx &cx, Pos pos, ostream &out) override { write(out); }
+    
     Form &ref();
     virtual int splice(Cx &cx, int n) { return n; }
     void sweep(Cx &cx) override { deref(cx); }

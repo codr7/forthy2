@@ -16,6 +16,7 @@ namespace forthy2 {
     Iter &iter(Cx &cx, Pos pos) override;
     Len len() override { return 2; }
     bool mark(Cx &cx) override;
+    void print(Cx &cx, Pos pos, ostream &out) override;
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };

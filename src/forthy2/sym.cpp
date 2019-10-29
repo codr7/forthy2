@@ -8,6 +8,8 @@ namespace forthy2 {
 
   void Sym::dump(ostream &out) { out << '\'' << name; }
 
+  void Sym::print(Cx &cx, Pos pos, ostream &out) { out << name; }
+
   void Sym::sweep(Cx &cx) { assert(false); }
 
   Type &Sym::type(Cx &cx) { return cx.sym_type; }

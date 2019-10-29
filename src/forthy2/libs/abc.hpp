@@ -148,20 +148,6 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
-  inline Node<Op> &dump_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    auto &out(*cx.stdout);
-    cx.pop().dump(out);
-    out << endl;
-    return *return_pc.next;
-  }
-
-  inline Node<Op> &dump_stack_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    auto &out(*cx.stdout);
-    cx.stack->dump(out);
-    out << endl;
-    return *return_pc.next;
-  }
-
   inline Node<Op> &is_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     Val &y(cx.pop()), &x(cx.pop());
     cx.push(cx.bool_type.get(cx, &x == &y));
