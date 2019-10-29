@@ -13,8 +13,8 @@ namespace forthy2 {
     return true;
   }
 
-  Val *Map::get_next(Cx &cx, Pos pos) {
-    Val *in_val(in.get_next(cx, pos));
+  Val *Map::pop(Cx &cx, Pos pos) {
+    Val *in_val(in.pop(cx, pos));
     if (!in_val) { return nullptr; }
     cx.push(*in_val);
     fn.call(cx, pos, cx.ops, true, true);

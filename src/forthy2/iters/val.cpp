@@ -12,7 +12,7 @@ namespace forthy2 {
     return true;
   }
 
-  Val *ValIter::get_next(Cx &cx, Pos pos) {
+  Val *ValIter::pop(Cx &cx, Pos pos) {
     if (!val) { return nullptr; }
     Val *tmp(val);
     val = nullptr;

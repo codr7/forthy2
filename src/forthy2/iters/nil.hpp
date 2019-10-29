@@ -6,7 +6,7 @@
 
 namespace forthy2 {
   struct NilIter: Iter {
-    Val *get_next(Cx &cx, Pos pos) override { return nullptr; }
+    Val *pop(Cx &cx, Pos pos) override { return nullptr; }
   };
 }
 

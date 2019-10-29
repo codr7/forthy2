@@ -13,9 +13,9 @@ namespace forthy2 {
     return true;
   }
 
-  Val *Filter::get_next(Cx &cx, Pos pos) {
+  Val *Filter::pop(Cx &cx, Pos pos) {
     for (;;) {
-      Val *in_val(in.get_next(cx, pos));
+      Val *in_val(in.pop(cx, pos));
       if (!in_val) { return nullptr; }
       cx.push(*in_val);
       pred.call(cx, pos, cx.ops, true, true);

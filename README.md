@@ -355,6 +355,25 @@ IntIter@0x1003e70
 0 1 2
 ```
 
+Iterators may be manually consumed using `pop`.
+
+```
+  ('foo 42) iter pop
+
+StackIter@0x1636e70 'foo
+  drop pop
+
+StackIter@0x1636e70 42
+```
+
+Popping empty iterators returns `_`.
+
+```
+  0 iter pop
+  
+IntIter@0x16347c0 _
+```
+
 `map` takes an input followed by a function as arguments, and returns an iterator for values obtained by applying the function to the input.
 
 ```

@@ -12,9 +12,7 @@ namespace forthy2 {
     return true;
   }
 
-  Val *StackIter::get_next(Cx &cx, Pos pos) {
-    return (i == in.end()) ? nullptr : *i++;
-  }
+  Val *StackIter::pop(Cx &cx, Pos pos) { return (i == in.end()) ? nullptr : *i++; }
 
   void StackIter::sweep(Cx &cx) {
     Val::sweep(cx);

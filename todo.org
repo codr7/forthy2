@@ -1,9 +1,8 @@
-* rename Iter.get_next to pop
 * move len-method into Val
 ** default 1, pair 2 & stack n
 ** update abc
-* implement clone for iter types
 * add say method
+** add io lib & move dump/dump-stack
 ** add val.print
 *** default to dump
 *** print symbols without quote
@@ -18,6 +17,7 @@
 ** Fix|Int
 *** parse & sort types if | found
 * add id(Type/Method/MethodSet) methods to abc
+** add MethodSet.iter/MethodSetIter
 * --
 * add char/str types
 ** cidk
@@ -60,10 +60,12 @@
 ** add LoopOp
 ** add break macro
 *** add cx.break_pc
+* implement clone for iter types
 * implement MethodSet.clone
 ** switch to use vector/upper_bound like env
 *** drop method Node
-* add Byte type
+* add echo iter
+** 3 iter echo zip for _* add Byte type
 ** Imp = uint8_t
 ** read hex as byte if < 256
 ** add int/char conversions

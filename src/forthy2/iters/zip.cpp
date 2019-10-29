@@ -13,10 +13,10 @@ namespace forthy2 {
     return true;
   }
 
-  Val *Zip::get_next(Cx &cx, Pos pos) {
-    Val *l(left.get_next(cx, pos));
+  Val *Zip::pop(Cx &cx, Pos pos) {
+    Val *l(left.pop(cx, pos));
     if (!l) { return nullptr; }
-    Val *r(right.get_next(cx, pos));
+    Val *r(right.pop(cx, pos));
     if (!r) { return nullptr; }
     return &cx.pair_type.get(cx, *l, *r);
   }

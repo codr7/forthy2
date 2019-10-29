@@ -6,7 +6,7 @@ namespace forthy2 {
 
   void IntIter::dump(ostream &out) { out << "IntIter@" << this; }
 
-  Val *IntIter::get_next(Cx &cx, Pos pos) {
+  Val *IntIter::pop(Cx &cx, Pos pos) {
     return (i == max) ? nullptr : &cx.int_type.get(cx, i++);
   }
 

@@ -13,7 +13,7 @@ namespace forthy2 {
     return true;
   }
 
-  Val *PairIter::get_next(Cx &cx, Pos pos) {
+  Val *PairIter::pop(Cx &cx, Pos pos) {
     if (left) {
       Val *tmp(left);
       left = nullptr;

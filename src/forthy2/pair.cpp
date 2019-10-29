@@ -19,7 +19,7 @@ namespace forthy2 {
   }
   
   bool Pair::eq(Val &other) {
-    Pair *v(dynamic_cast<Pair *>(other));
+    Pair *v(dynamic_cast<Pair *>(&other));
     if (!v) { return false; }
     Imp &other_imp(dynamic_cast<Pair &>(other).imp);
     return other_imp.first->eq(*imp.first) && other_imp.second->eq(*imp.second);

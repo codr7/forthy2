@@ -486,7 +486,7 @@ namespace forthy2 {
     Iter &in(cx.pop(form.pos).iter(cx, form.pos));
     Val *v(nullptr);
     
-    while ((v = in.get_next(cx, form.pos))) {
+    while ((v = in.pop(cx, form.pos))) {
       cx.push(*v);
       if (end_pc != this) { cx.eval(*this, *end_pc->next); }
     }

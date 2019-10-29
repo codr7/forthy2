@@ -10,7 +10,7 @@ namespace forthy2 {
     
     IntIter(Int::Imp i, Int::Imp max);
     void dump(ostream &out) override;
-    Val *get_next(Cx &cx, Pos pos) override;
+    Val *pop(Cx &cx, Pos pos) override;
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;    
   };
