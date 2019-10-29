@@ -363,8 +363,8 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
-  inline Node<Op> &stack_len_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.push(cx.int_type.get(cx, dynamic_cast<Stack &>(cx.pop()).len()));
+  inline Node<Op> &len_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
+    cx.push(cx.int_type.get(cx, cx.pop().len()));
     return *return_pc.next;
   }
 

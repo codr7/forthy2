@@ -29,6 +29,8 @@ check {'{6 % *} 7 splice compile call .= 42}
 check {42.type .= Int}
 check {Int.isa A .= Num}
 
+check {T len.= 1}
+
 check {T int.= 1}
 check {F int.= 0}
 
@@ -46,6 +48,7 @@ check {(3 for +1!).= (1 2 3)}
 check {(3 repeat 42).= (42 42 42)}
 check {(3 while {-1! copy} drop).= (2 1 0)}
 
+check {42 len.= 42}
 check {(3 iter for _).= (0 1 2)}
 check {(3 iter pop swap pop swap pop swap drop).=(0 1 2)}
 check {((1 3 5).map &+1! for _).= (2 4 6)}
@@ -94,6 +97,7 @@ check {1:3 type.isa Pair}
 check {1 3 pair type.isa Pair}
 check {1:3 unpair + .= 4}
 check {('foo:42 for _).= ('foo 42)}
+check {'foo:42 len.= 2}
 
 check {(1 3 5).is (1 3 5) not}
 check {(1 3 5).= (1 3 5)}

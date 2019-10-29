@@ -16,7 +16,7 @@ namespace forthy2 {
     Node<Method> root;
     Sym &id;
     int nargs;
-    int len;
+    int _len;
 
     MethodSet(Sym &id, int nargs);
 
@@ -28,6 +28,7 @@ namespace forthy2 {
     
     Method *dispatch(Cx &cx);
     void dump(ostream &out) override;
+    Len len() override { return _len; }
     bool mark(Cx &cx) override;
     void push(Method &m);
     void sweep(Cx &cx) override;

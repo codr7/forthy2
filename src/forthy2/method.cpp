@@ -18,7 +18,7 @@ namespace forthy2 {
   void Method::sweep(Cx &cx) {
     Val::sweep(cx);
     Node<Method>::unlink();
-    set.len--;
+    set._len--;
     fn.sweep(cx);
     cx.method_type.pool.put(*this);
   } 

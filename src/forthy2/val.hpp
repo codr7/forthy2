@@ -20,6 +20,7 @@ namespace forthy2 {
   
   struct Val: Node<Val> {
     using IterBody = function<bool (Val &)>;
+    using Len = int64_t;
     
     bool marked;
 
@@ -44,6 +45,8 @@ namespace forthy2 {
     virtual bool eq(Val &other) { return this == &other; }
 
     virtual Iter &iter(Cx &cx, Pos pos);
+
+    virtual Len len() { return 1; }
     
     virtual bool mark(Cx &cx);
 

@@ -41,7 +41,7 @@ namespace forthy2 {
     bool eq(Val &other) override;
     forthy2::Iter &iter(Cx &cx, Pos pos) override;
     
-    size_t len() { return items.size(); }
+    Len len() override { return items.size(); }
 
     bool mark(Cx &cx) override;
     void mark_items(Cx &cx);

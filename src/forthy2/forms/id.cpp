@@ -28,7 +28,7 @@ namespace forthy2 {
         if (!ms.nargs) {
           v = &ms.root.prev->get();
           safe = false;
-        } else if (ms.len == 1) {
+        } else if (ms._len == 1) {
           v = &ms.root.next->get();
         }
       }

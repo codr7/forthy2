@@ -31,6 +31,8 @@ namespace forthy2 {
 
     Iter &iter(Cx &cx, Pos pos) override;
     
+    Len len() override { return (imp < 0) ? 0 : imp; }
+
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };

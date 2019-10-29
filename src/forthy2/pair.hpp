@@ -14,6 +14,7 @@ namespace forthy2 {
     void dump(ostream &out) override;
     bool eq(Val &other) override;
     Iter &iter(Cx &cx, Pos pos) override;
+    Len len() override { return 2; }
     bool mark(Cx &cx) override;
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;

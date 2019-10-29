@@ -78,13 +78,13 @@ namespace forthy2 {
     scope.add_method(cx, pos, cx.sym("not"), {{cx.a_type}}).imp = not_imp;
     scope.add_macro(cx, pos, cx.sym("or"), {{cx.a_type.or_()}}).imp = or_imp;
 
+    scope.add_method(cx, pos, cx.sym("len"),
+                     {{cx.a_type.or_()}}).imp = len_imp;
+
     scope.add_method(cx, pos, cx.sym("pair"),
                      {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = pair_imp;
 
     scope.add_method(cx, pos, cx.sym("unpair"), {{cx.pair_type}}).imp = unpair_imp;
-
-    scope.add_method(cx, pos, cx.sym("len"),
-                     {{cx.stack_type}}).imp = stack_len_imp;
 
     scope.add_method(cx, pos, cx.sym("pop"),
                      {{cx.stack_type}}).imp = stack_pop_imp;    

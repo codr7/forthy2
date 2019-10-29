@@ -17,6 +17,7 @@ namespace forthy2 {
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
     Iter &iter(Cx &cx, Pos pos) override;
+    Len len() override { return 0; }
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };

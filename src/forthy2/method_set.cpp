@@ -21,7 +21,7 @@ namespace forthy2 {
     return s;
   }
 
-  MethodSet::MethodSet(Sym &id, int nargs): id(id), nargs(nargs), len(0) {}
+  MethodSet::MethodSet(Sym &id, int nargs): id(id), nargs(nargs), _len(0) {}
   
   void MethodSet::dump(ostream &out) { out << "MethodSet@" << this; }
 
@@ -35,7 +35,7 @@ namespace forthy2 {
     Node<Method> *i(root.next);
     for (; i != &root && i->get().weight <= m.weight; i = i->next);
     i->push(m);
-    len++;
+    _len++;
   }
 
   void MethodSet::sweep(Cx &cx) {
