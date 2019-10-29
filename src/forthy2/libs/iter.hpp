@@ -12,6 +12,11 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
+  inline Node<Op> &iter_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
+    cx.push(cx.pop().iter(cx, pos));
+    return *return_pc.next;
+  }
+  
   inline Node<Op> &map_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     Val &fn(cx.pop()), &in(cx.pop());
     cx.push(cx.map_type.get(cx, in.iter(cx, pos), fn));

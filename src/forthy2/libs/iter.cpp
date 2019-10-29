@@ -9,6 +9,8 @@ namespace forthy2 {
     scope.add_method(cx, pos, cx.sym("filter"),
                      {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = filter_imp;
 
+    scope.add_method(cx, pos, cx.sym("iter"), {{cx.a_type.or_()}}).imp = iter_imp;
+
     scope.add_method(cx, pos, cx.sym("map"),
                      {{cx.a_type.or_()}, {cx.a_type.or_()}}).imp = map_imp;
 

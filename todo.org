@@ -1,9 +1,16 @@
-* add iter(val) method
 * add PairIter
 ** move len-method into Val
 *** default 1, pair 2 & stack n
 *** update abc
+* --
 * rename Iter.get_next to pop
+* implement clone for iter types
+* add say method
+** add val.print
+*** default to dump
+*** print symbols without quote
+*** print stack items in sequence
+*** print pair items separated by space
 * --
 * add int/fix.neg() methods
 ** rename fix.neg to is_neg()
@@ -20,12 +27,6 @@
 ** \0x2a \90 \\A \\a \\\
 ** add literals
 ** add char/str(int) and int(char/str) conversions
-* add say method
-** add val.print
-*** default to dump
-*** print symbols with quote
-*** print stack items in sequence
-*** print pair items separated by space
 * implement Nil unquote as ref(cx.nil_form)
 * implement Form unquote as ref(*this)
 * move nil (_) from reader to root_scope like T/F

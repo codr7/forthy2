@@ -344,6 +344,17 @@ and split using `unpair`.
 ```
 
 ### iterators
+All values are iterable, but most only contain one item. `iter` may be used to obtain an iterator for any value.
+
+```
+  3 iter
+
+IntIter@0x1003e70
+  for _
+
+0 1 2
+```
+
 `map` takes an input followed by a function as arguments, and returns an iterator for values obtained by applying the function to the input.
 
 ```
