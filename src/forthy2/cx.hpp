@@ -27,6 +27,7 @@
 #include "forthy2/iters/map.hpp"
 #include "forthy2/iters/int.hpp"
 #include "forthy2/iters/nil.hpp"
+#include "forthy2/iters/pair.hpp"
 #include "forthy2/iters/stack.hpp"
 #include "forthy2/iters/val.hpp"
 #include "forthy2/iters/zip.hpp"
@@ -134,6 +135,7 @@ namespace forthy2 {
     FilterType &filter_type;
     IntIterType &int_iter_type;
     MapType &map_type;
+    PairIterType &pair_iter_type;
     StackIterType &stack_iter_type;
     ValIterType &val_iter_type;
     ZipType &zip_type;
@@ -188,6 +190,7 @@ namespace forthy2 {
       filter_type(*new FilterType(*this, sym("Filter"), {&iter_type})),
       int_iter_type(*new IntIterType(*this, sym("IntIter"), {&iter_type})),
       map_type(*new MapType(*this, sym("Map"), {&iter_type})),
+      pair_iter_type(*new PairIterType(*this, sym("PairIter"), {&iter_type})),
       stack_iter_type(*new StackIterType(*this, sym("StackIter"), {&iter_type})),
       val_iter_type(*new ValIterType(*this, sym("ValIter"), {&iter_type})),
       zip_type(*new ZipType(*this, sym("Zip"), {&iter_type})),

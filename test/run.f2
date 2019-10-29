@@ -92,6 +92,7 @@ check {6 7 &*[Int Int] call.= 42}
 check {1:3 type.isa Pair}
 check {1 3 pair type.isa Pair}
 check {1:3 unpair + .= 4}
+check {('foo:42 for _).= ('foo 42)}
 
 check {(1 3 5).is (1 3 5) not}
 check {(1 3 5).= (1 3 5)}

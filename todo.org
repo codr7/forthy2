@@ -1,9 +1,7 @@
-* add PairIter
-** move len-method into Val
-*** default 1, pair 2 & stack n
-*** update abc
-* --
 * rename Iter.get_next to pop
+* move len-method into Val
+** default 1, pair 2 & stack n
+** update abc
 * implement clone for iter types
 * add say method
 ** add val.print
@@ -27,6 +25,7 @@
 ** \0x2a \90 \\A \\a \\\
 ** add literals
 ** add char/str(int) and int(char/str) conversions
+*** use read_int for int(str)
 * implement Nil unquote as ref(cx.nil_form)
 * implement Form unquote as ref(*this)
 * move nil (_) from reader to root_scope like T/F

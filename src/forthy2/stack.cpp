@@ -40,7 +40,9 @@ namespace forthy2 {
   }
 
   bool Stack::eq(Val &other) {
-    Items &other_items(dynamic_cast<Stack &>(other).items);
+    Stack *v(dynamic_cast<Stack *>(other));
+    if (!v) { return false; }
+    Items &other_items(v->items);
     if (items.size() != other_items.size()) { return false; }
 
     for (auto i(items.begin()), j(other_items.begin());

@@ -17,6 +17,7 @@ namespace forthy2 {
     scope.bind_type(cx, pos, cx.nil_type);
     scope.bind_type(cx, pos, cx.num_type);
     scope.bind_type(cx, pos, cx.pair_type);
+    scope.bind_type(cx, pos, cx.pair_iter_type);
     scope.bind_type(cx, pos, cx.stack_type);
     scope.bind_type(cx, pos, cx.stack_iter_type);
     scope.bind_type(cx, pos, cx.sym_type);
