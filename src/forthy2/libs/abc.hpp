@@ -8,15 +8,13 @@ namespace forthy2 {
 
   inline Node<Op> &eq_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     Val &y(cx.pop()), &x(cx.pop());
-    bool ok(x.type(cx) == y.type(cx) && x.eq(y));
-    cx.push(cx.bool_type.get(cx, ok));
+    cx.push(cx.bool_type.get(cx, x.eq(y)));
     return *return_pc.next;
   }
 
   inline Node<Op> &lt_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     Val &y(cx.pop()), &x(cx.pop());
-    bool ok(x.type(cx) == y.type(cx) && x.cmp(y) == Cmp::Lt);
-    cx.push(cx.bool_type.get(cx, ok));
+    cx.push(cx.bool_type.get(cx, x.cmp(y) == Cmp::Lt));
     return *return_pc.next;
   }
 
