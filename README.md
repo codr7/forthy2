@@ -317,7 +317,7 @@ and split using `unpair`.
 'ok
 ```
 
-### iteration
+### loops
 
 `while` evaluates its body until it returns false.
 
@@ -343,8 +343,8 @@ and split using `unpair`.
 42 42 42
 ```
 
-### transformations
-`map` takes an input followed by a function as arguments, and returns an iterator for the sequence of values obtained by applying the function to the input.
+### iterators
+`map` takes an input followed by a function as arguments, and returns an iterator for values obtained by applying the function to the input.
 
 ```
   (1 3 5).map &+1!
@@ -356,7 +356,7 @@ Iter@0x23ca810
 2 4 6
 ```
 
-`filter` takes an input follows by a predicate as arguments, and returns an iterator for the sequence of input values for which the predicate returns true.
+`filter` takes an input follows by a predicate as arguments, and returns an iterator for input values for which the predicate returns true.
 
 ```
   (1 3 5).filter &{.> 2}
@@ -366,6 +366,25 @@ Filter@0x248bca0
   for _
 
 3 5
+```
+
+`zip` takes two inputs and returns an iterator for resulting pairs,
+
+```
+  ('foo 'bar).zip (1 3 5)
+  
+Zip@0x124d580
+  for _
+  
+'foo:1 'bar:3
+```
+
+while `unzip` takes an input of pairs and returns two stacks containing left and right values.
+
+```
+  ('foo:1 'bar:3) unzip
+  
+('foo 'bar) (1 3)
 ```
 
 ### types

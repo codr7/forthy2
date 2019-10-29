@@ -1,8 +1,9 @@
-* add zip/unzip iters
-** add iter(val) method
-** add zip(iter, iter) method
-** add unzip(iter) method
-** change readme heading to iterators
+* add iter(val) method
+* add PairIter
+** move len-method into Val
+*** default 1, pair 2 & stack n
+*** update abc
+* rename Iter.get_next to pop
 * --
 * add int/fix.neg() methods
 ** rename fix.neg to is_neg()
@@ -11,6 +12,7 @@
 * add sum types
 ** Fix|Int
 *** parse & sort types if | found
+* add id(Type/Method/MethodSet) methods to abc
 * --
 * add char/str types
 ** cidk
