@@ -4,7 +4,7 @@
 #include "forthy2/sym.hpp"
 
 namespace forthy2 {
-  Sym::Sym(const string &name): name(name) {}
+  Sym::Sym(string_view name): name(name) {}
 
   void Sym::dump(ostream &out) { out << '\'' << name; }
 

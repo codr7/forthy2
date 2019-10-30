@@ -280,8 +280,8 @@ namespace forthy2 {
       }
     }
 
-    void eval(const string &in) {
-      stringstream in_buf(in);
+    void eval(string in) {
+      stringstream in_buf(move(in));
       eval(in_buf);
     }
 

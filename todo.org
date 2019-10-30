@@ -1,11 +1,9 @@
-* use string_view
-** cx.sym
-** grep "string &"
 * improve splice
 ** add optional splice id
 *** %foo
 *** store in SpliceForm
-** '{%x .* %y} splice(x:6 y:7)
+** use pairs
+*** '{%x .* %y} splice(x:6 y:7)
 ** nil val pops stack 
 *** 6 7 '{%x .* %y} splice(x:_ y:_) 
 ** expressions

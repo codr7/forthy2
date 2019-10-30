@@ -14,7 +14,7 @@ namespace forthy2 {
     bool operator ==(const Sym &) = delete;
     bool operator !=(const Sym &) = delete;
     
-    Sym(const string &name);
+    Sym(string_view name);
     void print(Cx &cx, Pos pos, ostream &out) override;
     void dump(ostream &out) override;
     void sweep(Cx &cx) override;
