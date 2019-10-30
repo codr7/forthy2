@@ -34,25 +34,9 @@ Empty input clears stack and Ctrl+D exits.
 Examples from this document, as well as [tests](https://github.com/codr7/forthy2/blob/master/tests/) and [benchmarks](https://github.com/codr7/forthy2/blob/master/bench/); should do the right thing and run clean in Valgrind. Performance is currently hovering around Python3, I expect that to keep improving for a while.
 
 ### stacks
-Besides the primary stack, which is always there; new stacks may be created by enclosing items in parens.
+Operations may be prefixed with `$` to target the primary stack.
 
-```
-  (1 2 3)
-
-(1 2 3)
-```
-
-`;` may be used to push remaining values on a separate stack.
-
-```
-  (1; 2 3)
-
-(1 (2 3))
-```
-
-Stack operations may be prefixed with `$` to target the primary stack.
-
-`copy` repeats the top stack item,
+`copy` repeats the top item,
 
 ```
   42 $copy
@@ -68,7 +52,7 @@ while `drop` removes it.
 1 2
 ```
 
-`swap` swaps the top two stack items.
+`swap` swaps the top two items.
 
 ```
   1 2 3 $swap
@@ -76,7 +60,7 @@ while `drop` removes it.
 1 3 2
 ```
 
-`truffle` may be used to simplify and speed up more elaborate stack transforms, the result from evaluating the second part replaces the specified stack suffix.
+`truffle` may be used to simplify and speed up more elaborate transformations, the result from evaluating the second part replaces the specified suffix.
 
 ```
   1 3 5 7
@@ -94,7 +78,31 @@ Error at row 1, col 15:
 Unknown id: d
 ```
 
-`push` and `pop` only makes sense on secondary stacks, as values are automatically pushed on primary, including results from method calls like `pop`.
+Additional stacks may be created by enclosing items in parens.
+
+```
+  (1 3 5)
+
+(1 3 5)
+```
+
+`;` may be used to collect remaining values as a nested stack.
+
+```
+  (1; 3 5)
+
+(1 (3 5))
+```
+
+`len` returns the number of items,
+
+```
+  (1 3 5 7) len
+
+4
+```
+
+while `push` adds a new item on top and `pop` removes and returns it.
 
 ```
   (1 3 5) .push 7
@@ -111,14 +119,6 @@ Popping empty stacks returns `_`.
   () pop
 
 () _
-```
-
-`len` returns the number of items.
-
-```
-  (1 3 5 7) len
-
-4
 ```
 
 ### scopes
