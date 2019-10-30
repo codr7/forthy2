@@ -95,7 +95,7 @@ namespace forthy2 {
                             Forms &in,
                             Node<Op> &out,
                             bool stash) {
-    return cx.copy_op.get(form, out);
+    return cx.copy_op.get(form, out, stash);
   }
 
   inline Node<Op> &drop_imp(Cx &cx,
@@ -103,7 +103,7 @@ namespace forthy2 {
                             Forms &in,
                             Node<Op> &out,
                             bool stash) {
-    return cx.drop_op.get(form, out);
+    return cx.drop_op.get(form, out, stash);
   }
 
   inline Node<Op> &pair_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
@@ -383,7 +383,7 @@ namespace forthy2 {
                             Forms &in,
                             Node<Op> &out,
                             bool stash) {
-    return cx.rotl_op.get(form, out);
+    return cx.rotl_op.get(form, out, stash);
   }
 
   inline Node<Op> &rotr_imp(Cx &cx,
@@ -391,7 +391,7 @@ namespace forthy2 {
                             Forms &in,
                             Node<Op> &out,
                             bool stash) {
-    return cx.rotr_op.get(form, out);
+    return cx.rotr_op.get(form, out, stash);
   }
 
   inline Node<Op> &splice_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
@@ -426,7 +426,7 @@ namespace forthy2 {
                             Forms &in,
                             Node<Op> &out,
                             bool stash) {
-    return cx.swap_op.get(form, out);
+    return cx.swap_op.get(form, out, stash);
   }
 
   inline Node<Op> &sweep_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {

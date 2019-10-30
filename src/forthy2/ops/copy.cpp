@@ -3,7 +3,8 @@
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
-  CopyOp::CopyOp(Form &form, Node<Op> &prev): Op(form, prev) {}
+  CopyOp::CopyOp(Form &form, Node<Op> &prev, bool stash):
+    Op(form, prev), stash(stash) {}
 
   void CopyOp::dealloc(Cx &cx) {
     Op::dealloc(cx);

@@ -382,7 +382,7 @@ namespace forthy2 {
     T &peek(Pos pos, ValType<T> &type, size_t offs = 0) {
       Val &v(peek(pos, offs));
       Type &vt(v.type(*this));
-      if (!vt.isa(type)) { ESys(pos, "Expected ", type.id, ": ", vt.id); }
+      if (!vt.isa(type)) { throw ESys(pos, "Expected ", type.id.name, ": ", v); }
       return dynamic_cast<T &>(v);
     }
 
@@ -472,14 +472,14 @@ namespace forthy2 {
   }
 
   inline Node<Op> &CopyOp::eval(Cx &cx) {
-    auto &s(*cx.stack);
+    auto &s(stash ? *cx.stack : cx.peek(form.pos, cx.stack_type));
     if (s.empty()) { throw ESys(form.pos, "Nothing to copy"); }
     s.copy();
     return *Node<Op>::next;   
   }
 
   inline Node<Op> &DropOp::eval(Cx &cx) {
-    auto &s(*cx.stack);
+    auto &s(stash ? *cx.stack : cx.peek(form.pos, cx.stack_type));
     if (s.empty()) { throw ESys(form.pos, "Nothing to drop"); }
     auto beg(s.end() - offs - 1);
     s.items.erase(beg, beg + n);
@@ -633,14 +633,14 @@ namespace forthy2 {
   inline Node<Op> &ReturnOp::eval(Cx &cx) { return *cx.pop_call().next; }
 
   inline Node<Op> &RotlOp::eval(Cx &cx) {
-    auto &s(*cx.stack);
+    auto &s(stash ? *cx.stack : cx.peek(form.pos, cx.stack_type));
     if (s.len() < 3) { throw ESys(form.pos, "Nothing to rotl: ", s); }
     rotate(s.end() - 3, s.end() - 1, s.end());
     return *Node<Op>::next;
   }
 
   inline Node<Op> &RotrOp::eval(Cx &cx) {
-    auto &s(*cx.stack);
+    auto &s(stash ? *cx.stack : cx.peek(form.pos, cx.stack_type));
     if (s.len() < 3) { throw ESys(form.pos, "Nothing to rotr: ", s); }
     rotate(s.end() - 3, s.end() - 2, s.end());
     return *Node<Op>::next;
@@ -659,7 +659,7 @@ namespace forthy2 {
   }
 
   inline Node<Op> &SwapOp::eval(Cx &cx) {
-    auto &s(*cx.stack);
+    auto &s(stash ? *cx.stack : cx.peek(form.pos, cx.stack_type));
     auto &is(s.items);
     auto i(is.size());
     if (i-- < 2) { throw ESys(form.pos, "Nothing to swap: ", s); }

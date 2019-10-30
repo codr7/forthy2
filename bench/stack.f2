@@ -4,8 +4,8 @@ let N    100000
 REPS clock {
   ()
   N for push
-  N repeat {pop drop}
-  drop
+  N repeat {pop $drop}
+  $drop
 } msecs dump
 
 dump-stack

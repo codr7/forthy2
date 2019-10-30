@@ -1,15 +1,15 @@
-check {1 copy + .= 2}
-check {1 3 5 drop + .= 4}
-check {1 3 swap - .= 2}
+check {1 $copy + .= 2}
+check {1 3 5 $drop + .= 4}
+check {1 3 $swap - .= 2}
 
 check {(1 3 5) truffle(x _ y; x y) .= (1 5)}
 check {(1 3 5 7 $truffle(a b c _; b a .+ c)) .= (3 6)}
 
-check {1000 copy +1! is}
-check {1000 copy -1! is}
+check {1000 $copy +1! is}
+check {1000 $copy -1! is}
 
-check {(1 2 3 rotl) .= (3 1 2)}
-check {(1 2 3 rotr) .= (2 3 1)}
+check {(1 2 3 $rotl) .= (3 1 2)}
+check {(1 2 3 $rotr) .= (2 3 1)}
 
 check {_.type .= Nil}
 check {Nil.isa A .= _}
@@ -47,11 +47,11 @@ check {F else {42} .= 42}
 check {(3 for _).= (0 1 2)}
 check {(3 for +1!).= (1 2 3)}
 check {(3 repeat 42).= (42 42 42)}
-check {(3 while {-1! copy} drop).= (2 1 0)}
+check {(3 while {-1! $copy} $drop).= (2 1 0)}
 
 check {42 len.= 42}
 check {(3 iter for _).= (0 1 2)}
-check {(3 iter pop swap pop swap pop swap drop).=(0 1 2)}
+check {(3 iter pop $swap pop $swap pop $swap $drop).=(0 1 2)}
 check {((1 3 5).map &+1! for _).= (2 4 6)}
 check {((1 3 5).filter &{.> 2} for _).= (3 5)}
 check {(('foo 'bar).zip (1 3 5) for _) .= ('foo:1 'bar:3)}
@@ -84,9 +84,9 @@ check {0.5 .+! 0.25 .= 0.7}
 }
 
 {
-  method foo(Bool) {drop 1}
-  method foo(Int)  {drop 3}
-  method foo(42)   {drop 5}
+  method foo(Bool) {$drop 1}
+  method foo(Int)  {$drop 3}
+  method foo(42)   {$drop 5}
   check {T foo.= 1}
   check {41 foo.= 3}
   check {42 foo.= 5}
@@ -113,22 +113,22 @@ check {(1 3) 5 push.= (1 3 5)}
 check {() pop.is _ and.= ()}
 
 {
-  method foo(T) {drop 'done1}
-  method foo(A) {drop T recall foo 'done2}
+  method foo(T) {$drop 'done1}
+  method foo(A) {$drop T recall foo 'done2}
   check {42 foo .is 'done1}
 }
 
 {
   method fib(0)   _
   method fib(1)   _
-  method fib(Int) {-1! copy fib swap -1! fib +[Int Int]}
+  method fib(Int) {-1! $copy fib $swap -1! fib +[Int Int]}
   check {20 fib .= 6765}
 }
 
 {
-  method fib(0 Int Int)   {rotr drop drop}
-  method fib(1 Int Int)   {rotl drop drop}
-  method fib(Int Int Int) {rotr -1! rotl copy rotl + fib}
+  method fib(0 Int Int)   {$rotr $drop $drop}
+  method fib(1 Int Int)   {$rotl $drop $drop}
+  method fib(Int Int Int) {$rotr -1! $rotl $copy $rotl + fib}
   check {20 0 1 fib .= 6765}
 }
 
@@ -140,7 +140,7 @@ check {() pop.is _ and.= ()}
 }
 
 {
-  method fib(Int) {0 1 rotr repeat {copy rotl +} drop}
+  method fib(Int) {0 1 $rotr repeat {$copy $rotl +} $drop}
   check {20 fib .= 6765}
 }
 

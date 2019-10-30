@@ -7,9 +7,10 @@ namespace forthy2 {
   struct Val;
   
   struct DropOp: Op {
+    bool stash;
     int offs, n;
     
-    DropOp(Form &form, Node<Op> &prev, int offs = 0, int n = 1);
+    DropOp(Form &form, Node<Op> &prev, bool stash, int offs = 0, int n = 1);
     void dealloc(Cx &cx) override;
     void dump(ostream &out) override;
     Node<Op> &eval(Cx &cx) override;

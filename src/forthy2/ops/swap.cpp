@@ -3,7 +3,8 @@
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
-  SwapOp::SwapOp(Form &form, Node<Op> &prev): Op(form, prev) {}
+  SwapOp::SwapOp(Form &form, Node<Op> &prev, bool stash):
+    Op(form, prev), stash(stash) {}
 
   void SwapOp::dealloc(Cx &cx) {
     Op::dealloc(cx);

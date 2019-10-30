@@ -3,7 +3,8 @@
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
-  RotrOp::RotrOp(Form &form, Node<Op> &prev): Op(form, prev) {}
+  RotrOp::RotrOp(Form &form, Node<Op> &prev, bool stash):
+    Op(form, prev), stash(stash) {}
 
   void RotrOp::dealloc(Cx &cx) {
     Op::dealloc(cx);

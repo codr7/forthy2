@@ -1,8 +1,3 @@
-* $
-** add stash to drop/swap/copy/rotl/rotr like truffle
-** bench
-** update test/bench/readme
-* --
 * use string_view
 ** cx.sym
 ** grep "string &"

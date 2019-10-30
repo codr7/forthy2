@@ -6,7 +6,7 @@
 ```
 method fib(0)   _
 method fib(1)   _
-method fib(Int) {-1! copy fib swap -1! fib +}
+method fib(Int) {-1! $copy fib $swap -1! fib +}
 ```
 
 ### setup
@@ -34,10 +34,28 @@ Empty input clears stack and Ctrl+D exits.
 Examples from this document, as well as [tests](https://github.com/codr7/forthy2/blob/master/tests/) and [benchmarks](https://github.com/codr7/forthy2/blob/master/bench/); should do the right thing and run clean in Valgrind. Performance is currently hovering around Python3, I expect that to keep improving for a while.
 
 ### stacks
+Besides the primary stack, which is always there; new stacks may be created by enclosing items in parens.
+
+```
+  (1 2 3)
+
+(1 2 3)
+```
+
+`;` may be used to push remaining values on a separate stack.
+
+```
+  (1; 2 3)
+
+(1 (2 3))
+```
+
+Stack operations may be prefixed with `$` to target the primary stack.
+
 `copy` repeats the top stack item,
 
 ```
-  42 copy
+  42 $copy
   
 42 42
 ```
@@ -45,7 +63,7 @@ Examples from this document, as well as [tests](https://github.com/codr7/forthy2
 while `drop` removes it.
 
 ```
-  1 2 3 drop
+  1 2 3 $drop
   
 1 2
 ```
@@ -53,7 +71,7 @@ while `drop` removes it.
 `swap` swaps the top two stack items.
 
 ```
-  1 2 3 swap
+  1 2 3 $swap
   
 1 3 2
 ```
@@ -70,35 +88,19 @@ while `drop` removes it.
 Unknown identifiers signal compile time errors.
 
 ```
-  1 2 3 $truffle(a b c; d)
+  1 3 5 $truffle(a b c; d)
 
 Error at row 1, col 15:
 Unknown id: d
 ```
 
-Besides the primary stack, which is always there; new stacks may be created by enclosing items in parens.
-
-```
-  (1 2 3)
-
-(1 2 3)
-```
-
-`;` may be used to push remaining values on a separate stack.
-
-```
-  (1 2 3; 4 5)
-
-(1 2 3 (4 5))
-```
-
-`push` and `pop` only makes sense on non-primary stacks, as values are automatically pushed on the primary, including results from method calls like `pop`.
+`push` and `pop` only makes sense on secondary stacks, as values are automatically pushed on primary, including results from method calls like `pop`.
 
 ```
   (1 3 5) .push 7
 
 (1 3 5 7) 4
-  drop pop
+  $drop pop
 
 (1 3 5) 7
 ```
@@ -109,6 +111,14 @@ Popping empty stacks returns `_`.
   () pop
 
 () _
+```
+
+`len` returns the number of items.
+
+```
+  (1 3 5 7) len
+
+4
 ```
 
 ### scopes
@@ -258,7 +268,7 @@ Macros and methods support capturing references using `&`.
 
 Method@0x24f59b0
 
-  6 swap 7 swap call
+  6 $swap 7 $swap call
 42
 ```
 
@@ -318,7 +328,7 @@ and split using `unpair`.
 `while` evaluates its body until it returns false.
 
 ```
-  3 while {-1! copy} drop
+  3 while {-1! $copy} $drop
 
 2 1 0
 ```
@@ -357,10 +367,10 @@ Iterators may be manually consumed using `pop`.
   ('foo 42) iter pop
 
 StackIter@0x1636e70 'foo
-  drop pop
+  $drop pop
 
 StackIter@0x1636e70 42
-  drop pop
+  $drop pop
 
 StackIter@0x1636e70 _
 ```
@@ -500,8 +510,8 @@ while shadowing within child scopes is permitted.
 Any number of methods may use the same name as long as they take the same number of arguments but different types.
 
 ```
-  method foo(Bool) {drop 'bool}
-  method foo(Int)  {drop 'int}
+  method foo(Bool) {$drop 'bool}
+  method foo(Int)  {$drop 'int}
   foo T
 
 'bool
@@ -526,7 +536,7 @@ Method implementations are first class.
 
 Method@0x11216d0
 
-  42 swap call
+  42 $swap call
   
 'int
 ```
@@ -536,7 +546,7 @@ Lambdas and methods both support forwarding calls without creating additional fr
 
 ```
   method foo(T) 'done1
-  method foo(A) {drop T recall foo 'done2}
+  method foo(A) {$drop T recall foo 'done2}
   42 foo
 
 'done1
