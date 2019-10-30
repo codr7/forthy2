@@ -4,8 +4,8 @@
 [forthy2](https://github.com/codr7/forthy2) is a higher level Forth-remix in C++.
 
 ```
-method fib(0)   {}
-method fib(1)   {}
+method fib(0)   _
+method fib(1)   _
 method fib(Int) {-1! copy fib swap -1! fib +}
 ```
 
@@ -509,23 +509,23 @@ while shadowing within child scopes is permitted.
 Any number of methods may use the same name as long as they take the same number of arguments but different types.
 
 ```
-  method foo(Bool) {1}
-  method foo(Int)  {3}
+  method foo(Bool) {drop 'bool}
+  method foo(Int)  {drop 'int}
   foo T
 
-1
+'bool
   foo 42
 
-3
+'int
 ```
 
 Literal arguments allow dispatching on specific values rather than types.
 
 ```
-  method foo(42) {5}
+  method foo(42) _ 
   foo 42
 
-5
+42
 ```
 
 Each implementation is bound to its own unique, type-indexed name; and may be called directly.
@@ -537,14 +537,14 @@ Method@0x11216d0
 
   42 swap call
   
-3
+'int
 ```
 
 ### recalling
 Lambdas and methods both support forwarding calls without creating additional frames, commonly known as tail call optimization. `recall` takes an optional target as argument and forwards the current call. Specifying `_` as target calls the current lambda/method recursively. Execution picks up after the current call on return, which is why `'done2` is not evaluated in the following example.
 
 ```
-  method foo(T) {'done1}
+  method foo(T) 'done1
   method foo(A) {drop T recall foo 'done2}
   42 foo
 

@@ -78,6 +78,11 @@ check {0.5 .+! 0.25 .= 0.7}
 }
 
 {
+  method foo() 42
+  check {foo.= 42}
+}
+
+{
   method foo(Bool) {drop 1}
   method foo(Int)  {drop 3}
   method foo(42)   {drop 5}
@@ -113,8 +118,8 @@ check {() pop.is _ and.= ()}
 }
 
 {
-  method fib(0)   {}
-  method fib(1)   {}
+  method fib(0)   _
+  method fib(1)   _
   method fib(Int) {-1! copy fib swap -1! fib +[Int Int]}
   check {20 fib .= 6765}
 }

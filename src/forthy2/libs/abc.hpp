@@ -231,17 +231,12 @@ namespace forthy2 {
               });
 
     Method &m(cx.scope->add_method(cx, form.pos, id, args));
-    Forms &body(dynamic_cast<ScopeForm *>(in.back())->body);
+    Form &body(*in.back());
     in.pop_back();
 
-    Node<Op> &ops(m.fn.ops);
-    Scope scope(cx, *cx.scope);
-    
-    cx.with_scope<void>(scope, [&]() {
-        Node<Op> &pc(cx.compile(body, *ops.prev));
-        cx.return_op.get(form, pc);
-      });
-
+    Node<Op> *pc(m.fn.ops.prev);
+    if (&body != &cx.nil_form) { pc = &cx.compile(body, *pc); }
+    cx.return_op.get(form, *pc);
     return out;
   }
 
@@ -300,11 +295,11 @@ namespace forthy2 {
   }
 
   inline Node<Op> &for_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
-    ForOp &op(cx.for_op.get(form, out));
+    ForOp &pc(cx.for_op.get(form, out));
     Form &body(*in.back());
     in.pop_back();
-    op.end_pc = (&body == &cx.nil_form) ? &op : &body.compile(cx, in, op);
-    return *op.end_pc;
+    pc.end_pc = (&body == &cx.nil_form) ? &pc : &body.compile(cx, in, pc);
+    return *pc.end_pc;
   }
 
   inline Node<Op> &recall_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {

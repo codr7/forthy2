@@ -1,16 +1,40 @@
-* simplify method body
-** compile form as is
-** update test/bench/readme
+* $
+** add PushStackOp
+** emit as first arg in id compile if prefixed is $
+** change drop/swap/copy to take stack arg
+*** update test/bench/readme to use $drop/swap/copy
+** rename $-macro to truffle
+*** $truffle
+*** take stack as first arg
+**** make primary during eval unless == cx.stack
+** bench
 * --
+* use string_view
+** cx.sym
+** grep "string &"
+* improve splice
+** add optional splice id
+*** %foo
+*** store in SpliceForm
+** '{%x .* %y} splice(x:6 y:7)
+** nil val pops stack 
+*** 6 7 '{%x .* %y} splice(x:_ y:_) 
+** expressions
+*** '{%x .* %y} splice(x:{3 .* 2} y:{4 .+ 3})
+** anonymous
+*** '{% .* %} splice(6 7) 
+** skipping
+*** '{% .* %} splice(_ 7) -> '{% .* 7}
+** splice items if val is stack
+*** '{%} splice ((1 2 3)) -> {1 2 3}
 * add int/fix.neg() methods
 ** rename fix.neg to is_neg()
-* add int(fix) conv
-** use trunc
 * add sum types
 ** Fix|Int
 *** parse & sort types if | found
+* add int(fix) conv
+** use trunc
 * add id(Type/Method/MethodSet) methods to abc
-** add MethodSet.iter/MethodSetIter
 * --
 * add char/str types
 ** cidk
@@ -24,9 +48,6 @@
 * move nil (_) from reader to root_scope like T/F
 ** add root_scope lookup in read_id
 * ---
-* add let-id
-** let-id foo 
-** bind unique symbol with name as prefix
 * add enum
 ** add UserType
 *** override Val methods to dispatch if != set.root.next
@@ -44,6 +65,7 @@
 * add Form.eq overrides
 * add macro arg typecheck
 ** fix types in abc/math
+** add MethodSet.iter/MethodSetIter
 * add next-method
 ** search call chain for method call
 *** return next from method.set

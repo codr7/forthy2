@@ -1,8 +1,8 @@
 let REPS 10
 let N    20
 
-method fib(0)   {}
-method fib(1)   {}
+method fib(0)   _
+method fib(1)   _
 method fib(Int) {-1! copy fib swap -1! fib +[Int Int]}
 
 REPS clock {N fib drop} msecs dump

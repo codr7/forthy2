@@ -243,6 +243,20 @@ namespace forthy2 {
       return *op;
     }
 
+    Node<Op> &compile(Form &in, Node<Op> &out, int quote = 0) {
+      Forms tmp;
+      tmp.push_back(&in);
+      Node<Op> *pc(&out);
+
+      while (!tmp.empty()) {
+        Form &f(*tmp.back());
+        tmp.pop_back();
+        pc = &f.compile(*this, tmp, *pc, quote);
+      }
+      
+      return *pc;
+    }
+
     void dealloc(Node<Op> &root) {
       for (Node<Op> *op(root.next); op != &root;) {
         Node<Op> *next(op->next);
@@ -478,7 +492,12 @@ namespace forthy2 {
                             bool safe,
                             bool now) {
     cx.push_call(pos, *this, return_pc);
-    if (now) { cx.eval(ops, *return_pc.next); }
+
+    if (now) {
+      cx.eval(ops, *ops.prev);
+      return *return_pc.next;
+    }
+    
     return *ops.next;
   }
 

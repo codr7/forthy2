@@ -18,13 +18,8 @@ namespace forthy2 {
 
   Node<Op> &ScopeForm::compile_ref(Cx &cx, Forms &in, Node<Op> &out) {
     Lambda &l(cx.lambda_type.get(cx));
-    Scope scope(cx, *cx.scope);
-    
-    cx.with_scope<void>(scope, [&]() {
-        Node<Op> &pc(compile(cx, in, *l.ops.prev, 0));
-        cx.return_op.get(*this, pc);
-      });
-    
+    Node<Op> &pc(cx.compile(*this, *l.ops.prev));
+    cx.return_op.get(*this, pc);
     return cx.push_op.get(*this, out, l);
   }
 
