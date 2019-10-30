@@ -92,13 +92,10 @@ Besides the primary stack, which is always there; new stacks may be created by e
 (1 2 3 (4 5))
 ```
 
-`push` and `pop` only really makes sense on non-primary stacks, as values are automatically pushed on the primary, including results from method calls like `pop`.
+`push` and `pop` only makes sense on non-primary stacks, as values are automatically pushed on the primary, including results from method calls like `pop`.
 
 ```
   (1 3 5) .push 7
-
-(1 3 5 7)
-  copy len
 
 (1 3 5 7) 4
   drop pop
