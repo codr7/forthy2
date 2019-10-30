@@ -5,20 +5,24 @@ namespace forthy2 {
   IdForm::IdForm(Pos pos, Sym &val): Form(pos), val(val) {}
 
   Node<Op> &IdForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {
-    if (quote > 0) { return cx.push_op.get(*this, out, val); }
-    Val *v(&cx.scope->get(pos, val));
+    bool stash(val.name.front() == '$');
+    Sym &id(stash ? cx.sym(val.name.substr(1)) : val);
+    if (quote > 0) { return cx.push_op.get(*this, out, id); }
+    Val *v(&cx.scope->get(pos, id));
     Type *vt(&v->type(cx));
-
+    Node<Op> *pc(&out);
+        
     if (vt == &cx.macro_type) {
-      return dynamic_cast<Macro *>(v)->expand(cx, *this, in, out);
+      return dynamic_cast<Macro *>(v)->expand(cx, *this, in, *pc, stash);
     }
+
+    if (stash) { throw ESys(pos, "Invalid stash: ", val.name); }
 
     if (vt == &cx.peek_type) {
       Peek &pv(*dynamic_cast<Peek *>(v));
-      return cx.peek_op.get(*this, out, pv.alt_src, pv.offs);
+      return cx.peek_op.get(*this, *pc, pv.alt_src, pv.offs);
     }
     
-    Node<Op> *op(&out);
     bool safe(true);
 
     if (vt == &cx.method_type || vt == &cx.method_set_type) {
@@ -33,10 +37,10 @@ namespace forthy2 {
         }
       }
       
-      return cx.call_op.get(*this, *op, v, safe);
+      return cx.call_op.get(*this, *pc, v, safe);
     }
 
-    return cx.push_op.get(*this, *op, *v);
+    return cx.push_op.get(*this, *pc, *v);
   }
 
   Node<Op> &IdForm::compile_ref(Cx &cx, Forms &in, Node<Op> &out) {

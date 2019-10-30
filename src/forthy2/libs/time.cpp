@@ -2,79 +2,9 @@
 #include "forthy2/libs/time.hpp"
 
 namespace forthy2 {
-  static Node<Op> &int_hours_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.push(cx.time_type.get(cx, Time::hours(dynamic_cast<Int &>(cx.pop()).imp)));
-    return *return_pc.next;
-  }
-
-  static Node<Op> &int_mins_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.push(cx.time_type.get(cx, Time::mins(dynamic_cast<Int &>(cx.pop()).imp)));
-    return *return_pc.next;
-  }
-
-  static Node<Op> &int_secs_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.push(cx.time_type.get(cx, Time::secs(dynamic_cast<Int &>(cx.pop()).imp)));
-    return *return_pc.next;
-  }
-
-  static Node<Op> &int_msecs_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.push(cx.time_type.get(cx, Time::msecs(dynamic_cast<Int &>(cx.pop()).imp)));
-    return *return_pc.next;
-  }
-
-  static Node<Op> &int_usecs_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.push(cx.time_type.get(cx, Time::usecs(dynamic_cast<Int &>(cx.pop()).imp)));
-    return *return_pc.next;
-  }
-
-  static Node<Op> &int_nsecs_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.push(cx.time_type.get(cx, Time::nsecs(dynamic_cast<Int &>(cx.pop()).imp)));
-    return *return_pc.next;
-  }
-
-  static Node<Op> &hours_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.push(cx.int_type.get(cx, dynamic_cast<Time &>(cx.pop()).hours()));
-    return *return_pc.next;
-  }
-
-  static Node<Op> &mins_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.push(cx.int_type.get(cx, dynamic_cast<Time &>(cx.pop()).mins()));
-    return *return_pc.next;
-  }
-
-  static Node<Op> &secs_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.push(cx.int_type.get(cx, dynamic_cast<Time &>(cx.pop()).secs()));
-    return *return_pc.next;
-  }
-
-  static Node<Op> &msecs_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.push(cx.int_type.get(cx, dynamic_cast<Time &>(cx.pop()).msecs()));
-    return *return_pc.next;
-  }
-
-  static Node<Op> &usecs_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.push(cx.int_type.get(cx, dynamic_cast<Time &>(cx.pop()).usecs()));
-    return *return_pc.next;
-  }
-
-  static Node<Op> &nsecs_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    cx.push(cx.int_type.get(cx, dynamic_cast<Time &>(cx.pop()).nsecs()));
-    return *return_pc.next;
-  }
-
-  static Node<Op> &add_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    Time::Imp &y(dynamic_cast<Time &>(cx.pop()).imp);
-    cx.push(cx.time_type.get(cx, dynamic_cast<Time &>(cx.pop()).imp + y));
-    return *return_pc.next;
-  }
-
-  static Node<Op> &sub_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    Time::Imp &y(dynamic_cast<Time &>(cx.pop()).imp);
-    cx.push(cx.time_type.get(cx, dynamic_cast<Time &>(cx.pop()).imp - y));
-    return *return_pc.next;
-  }
-
   void init_time(Cx &cx, Pos pos, Scope &scope) {
+    using namespace time;
+    
     scope.bind_type(cx, pos, cx.time_type);
 
     scope.add_method(cx, pos, cx.sym("hours"), {{cx.int_type}}).imp = int_hours_imp;

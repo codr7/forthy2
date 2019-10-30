@@ -1,13 +1,7 @@
 * $
-** add PushStackOp
-** emit as first arg in id compile if prefixed is $
-** change drop/swap/copy to take stack arg
-*** update test/bench/readme to use $drop/swap/copy
-** rename $-macro to truffle
-*** $truffle
-*** take stack as first arg
-**** make primary during eval unless == cx.stack
+** add stash to drop/swap/copy/rotl/rotr like truffle
 ** bench
+** update test/bench/readme
 * --
 * use string_view
 ** cx.sym

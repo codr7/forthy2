@@ -15,7 +15,8 @@ namespace forthy2 {
     using Imp = function<Node<Op> &(Cx &cx,
                                     Form &form,
                                     Forms &in,
-                                    Node<Op> &out)>;
+                                    Node<Op> &out,
+                                    bool stash)>;
 
     Sym &id;
     Args args;
@@ -24,7 +25,7 @@ namespace forthy2 {
     Macro(Sym &id, const vector<Arg> &args);
     Cmp cmp(Val &other) override;
     void dump(ostream &out) override;
-    Node<Op> &expand(Cx &cx, Form &form, Forms &in, Node<Op> &out);
+    Node<Op> &expand(Cx &cx, Form &form, Forms &in, Node<Op> &out, bool stash);
     bool mark(Cx &cx) override;
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;

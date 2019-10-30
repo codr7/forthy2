@@ -76,7 +76,7 @@ Error at row 1, col 15:
 Unknown id: d
 ```
 
-Stack literals are enclosed in parens.
+Besides the primary stack, which is always there; new stacks may be created by enclosing items in parens.
 
 ```
   (1 2 3)
@@ -92,7 +92,7 @@ Stack literals are enclosed in parens.
 (1 2 3 (4 5))
 ```
 
-Stacks are dynamic and support basic stack operations.
+`push` and `pop` only really makes sense on non-primary stacks, as values are automatically pushed on the primary, including results from method calls like `pop`.
 
 ```
   (1 3 5) .push 7

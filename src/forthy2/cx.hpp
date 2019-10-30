@@ -49,12 +49,12 @@
 #include "forthy2/ops/push.hpp"
 #include "forthy2/ops/recall.hpp"
 #include "forthy2/ops/repeat.hpp"
-#include "forthy2/ops/restack.hpp"
 #include "forthy2/ops/return.hpp"
 #include "forthy2/ops/rotl.hpp"
 #include "forthy2/ops/rotr.hpp"
 #include "forthy2/ops/stack.hpp"
 #include "forthy2/ops/swap.hpp"
+#include "forthy2/ops/truffle.hpp"
 #include "forthy2/pair.hpp"
 #include "forthy2/path.hpp"
 #include "forthy2/peek.hpp"
@@ -107,12 +107,12 @@ namespace forthy2 {
     Pool<PushOp> push_op;
     Pool<RecallOp> recall_op;
     Pool<RepeatOp> repeat_op;
-    Pool<RestackOp> restack_op;
     Pool<ReturnOp> return_op;
     Pool<RotlOp> rotl_op;
     Pool<RotrOp> rotr_op;
     Pool<StackOp> stack_op;
     Pool<SwapOp> swap_op;
+    Pool<TruffleOp> truffle_op;
 
     uint64_t type_weight;
     Node<Val> marked, unmarked;
@@ -630,20 +630,6 @@ namespace forthy2 {
     return *end_pc->next;
   }
 
-  inline Node<Op> &RestackOp::eval(Cx &cx) {
-    if (in_len < 0 || cx.stack->len() < static_cast<size_t>(in_len)) {
-      throw ESys(form.pos, "Nothing to restack: ", *cx.stack);
-    }
-    
-    auto end(cx.stack->end()), beg(end - in_len);
-    move(beg, end, back_inserter(cx.alt_stack.items));
-    cx.stack->items.erase(beg, end);
-    cx.eval(*this, *end_pc->next);
-    auto alt_end(cx.alt_stack.end());
-    cx.alt_stack.items.erase(alt_end - in_len, alt_end);
-    return *end_pc->next;
-  }
-
   inline Node<Op> &ReturnOp::eval(Cx &cx) { return *cx.pop_call().next; }
 
   inline Node<Op> &RotlOp::eval(Cx &cx) {
@@ -660,6 +646,18 @@ namespace forthy2 {
     return *Node<Op>::next;
   }
 
+  inline Node<Op> &StackOp::eval(Cx &cx) {
+    Stack &s(cx.stack_type.get(cx));
+    
+    cx.with_stack<void>(s, [&]() {
+        Scope scope(cx, *cx.scope);
+        cx.with_scope<void>(scope, [&]() { cx.eval(*this, *end_pc->next); });
+      });
+    
+    cx.push(s);
+    return *end_pc->next;
+  }
+
   inline Node<Op> &SwapOp::eval(Cx &cx) {
     auto &s(*cx.stack);
     auto &is(s.items);
@@ -667,6 +665,29 @@ namespace forthy2 {
     if (i-- < 2) { throw ESys(form.pos, "Nothing to swap: ", s); }
     swap(is[i], is[i - 1]);
     return *Node<Op>::next;   
+  }
+
+  inline Node<Op> &TruffleOp::eval(Cx &cx) {
+    if (stash) {
+      eval_imp(cx);
+    } else {
+      cx.with_stack<void>(cx.peek(form.pos, cx.stack_type), [&](){ eval_imp(cx); });
+    }
+    
+    return *end_pc->next;
+  }
+
+  inline void TruffleOp::eval_imp(Cx &cx) {
+    if (in_len < 0 || cx.stack->len() < static_cast<size_t>(in_len)) {
+      throw ESys(form.pos, "Nothing to truffle: ", *cx.stack);
+    }
+    
+    auto end(cx.stack->end()), beg(end - in_len);
+    move(beg, end, back_inserter(cx.alt_stack.items));
+    cx.stack->items.erase(beg, end);
+    cx.eval(*this, *end_pc->next);
+    auto alt_end(cx.alt_stack.end());
+    cx.alt_stack.items.erase(alt_end - in_len, alt_end);
   }
 }
 

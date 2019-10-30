@@ -10,12 +10,12 @@ namespace forthy2 {
   
   void Macro::dump(ostream &out) { out << "Macro@" << this; }
 
-  Node<Op> &Macro::expand(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  Node<Op> &Macro::expand(Cx &cx, Form &form, Forms &in, Node<Op> &out, bool stash) {
     if (in.size() < args.len()) {
       throw ESys(form.pos, "Missing macro args: ", id.name);
     }
     
-    return imp(cx, form, in, out);
+    return imp(cx, form, in, out, stash);
   }
 
   bool Macro::mark(Cx &cx) {

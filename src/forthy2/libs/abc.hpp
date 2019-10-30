@@ -49,7 +49,11 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
-  inline Node<Op> &restack_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &truffle_imp(Cx &cx,
+                               Form &form,
+                               Forms &in,
+                               Node<Op> &out,
+                               bool stash) {
     auto *in_spec(dynamic_cast<StackForm *>(in.back()));
 
     if (!in_spec || in_spec->body.empty()) {
@@ -78,7 +82,7 @@ namespace forthy2 {
       i--;
     }
     
-    RestackOp &op(cx.restack_op.get(form, out, in_len));
+    TruffleOp &op(cx.truffle_op.get(form, out, in_len, stash));
     Node<Op> *pc(&op);
     cx.with_scope<void>(scope, [&]() { pc = &cx.compile(out_spec->body, *pc); });
     op.end_pc = pc;
@@ -86,11 +90,19 @@ namespace forthy2 {
     return *pc;
   }
 
-  inline Node<Op> &copy_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &copy_imp(Cx &cx,
+                            Form &form,
+                            Forms &in,
+                            Node<Op> &out,
+                            bool stash) {
     return cx.copy_op.get(form, out);
   }
 
-  inline Node<Op> &drop_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &drop_imp(Cx &cx,
+                            Form &form,
+                            Forms &in,
+                            Node<Op> &out,
+                            bool stash) {
     return cx.drop_op.get(form, out);
   }
 
@@ -121,7 +133,11 @@ namespace forthy2 {
     return cx.pop().call(cx, pos, return_pc, true, false);
   }
 
-  inline Node<Op> &check_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &check_imp(Cx &cx,
+                             Form &form,
+                             Forms &in,
+                             Node<Op> &out,
+                             bool stash) {
     Form &body(*in.back());
     in.pop_back();
     Node<Op> *op(&out);
@@ -129,7 +145,11 @@ namespace forthy2 {
     return cx.check_op.get(form, *op, body.ref());
   }
 
-  inline Node<Op> &clock_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &clock_imp(Cx &cx,
+                             Form &form,
+                             Forms &in,
+                             Node<Op> &out,
+                             bool stash) {
     Form &body(*in.back());
     in.pop_back();
     ClockOp &clock_op(cx.clock_op.get(form, out, body.ref()));
@@ -166,7 +186,11 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
-  inline Node<Op> &let_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &let_imp(Cx &cx,
+                           Form &form,
+                           Forms &in,
+                           Node<Op> &out,
+                           bool stash) {
     Form &id_form(*in.back());
     in.pop_back();
     Sym &id(dynamic_cast<IdForm &>(id_form).val);
@@ -209,7 +233,11 @@ namespace forthy2 {
     return *return_pc.next;
   }
   
-  inline Node<Op> &method_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &method_imp(Cx &cx,
+                              Form &form,
+                              Forms &in,
+                              Node<Op> &out,
+                              bool stash) {
     Sym &id(dynamic_cast<IdForm *>(in.back())->val);
     in.pop_back();
 
@@ -245,7 +273,11 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
-  inline Node<Op> &and_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &and_imp(Cx &cx,
+                           Form &form,
+                           Forms &in,
+                           Node<Op> &out,
+                           bool stash) {
     Form &y(*in.back());
     in.pop_back();
     
@@ -255,7 +287,11 @@ namespace forthy2 {
     return *op.pc;
   }
 
-  inline Node<Op> &or_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &or_imp(Cx &cx,
+                          Form &form,
+                          Forms &in,
+                          Node<Op> &out,
+                          bool stash) {
     Form &y(*in.back());
     in.pop_back();
     
@@ -271,7 +307,7 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
-  inline Node<Op> &if_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &if_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out, bool stash) {
     Form &body(*in.back());
     in.pop_back();
    
@@ -282,7 +318,11 @@ namespace forthy2 {
     return *op.pc;
   }
 
-  inline Node<Op> &else_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &else_imp(Cx &cx,
+                            Form &form,
+                            Forms &in,
+                            Node<Op> &out,
+                            bool stash) {
     Form &body(*in.back());
     in.pop_back();
    
@@ -294,7 +334,7 @@ namespace forthy2 {
     return *op.pc;
   }
 
-  inline Node<Op> &for_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &for_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out, bool stash) {
     ForOp &pc(cx.for_op.get(form, out));
     Form &body(*in.back());
     in.pop_back();
@@ -302,7 +342,11 @@ namespace forthy2 {
     return *pc.end_pc;
   }
 
-  inline Node<Op> &recall_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &recall_imp(Cx &cx,
+                              Form &form,
+                              Forms &in,
+                              Node<Op> &out,
+                              bool stash) {
     auto *lit(dynamic_cast<LitForm *>(in.back()));
     Val *fn(nullptr);
 
@@ -322,7 +366,11 @@ namespace forthy2 {
     return cx.recall_op.get(form, out, *fn);
   }
 
-  inline Node<Op> &repeat_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &repeat_imp(Cx &cx,
+                              Form &form,
+                              Forms &in,
+                              Node<Op> &out,
+                              bool stash) {
     RepeatOp &op(cx.repeat_op.get(form, out));
     Form &body(*in.back());
     in.pop_back();
@@ -330,11 +378,19 @@ namespace forthy2 {
     return *op.end_pc;
   }
 
-  inline Node<Op> &rotl_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &rotl_imp(Cx &cx,
+                            Form &form,
+                            Forms &in,
+                            Node<Op> &out,
+                            bool stash) {
     return cx.rotl_op.get(form, out);
   }
 
-  inline Node<Op> &rotr_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &rotr_imp(Cx &cx,
+                            Form &form,
+                            Forms &in,
+                            Node<Op> &out,
+                            bool stash) {
     return cx.rotr_op.get(form, out);
   }
 
@@ -365,7 +421,11 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
-  inline Node<Op> &swap_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &swap_imp(Cx &cx,
+                            Form &form,
+                            Forms &in,
+                            Node<Op> &out,
+                            bool stash) {
     return cx.swap_op.get(form, out);
   }
 
@@ -385,7 +445,11 @@ namespace forthy2 {
     return *return_pc.next;
   }
 
-  inline Node<Op> &while_imp(Cx &cx, Form &form, Forms &in, Node<Op> &out) {
+  inline Node<Op> &while_imp(Cx &cx,
+                             Form &form,
+                             Forms &in,
+                             Node<Op> &out,
+                             bool stash) {
     Form &body(*in.back());
     in.pop_back();
 
