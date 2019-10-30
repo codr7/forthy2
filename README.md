@@ -205,7 +205,7 @@ Fix points literals infer precision,
 0.30
 ```
 
-while programmatic construction requires explicit precision.
+while manual construction requires explicit precision.
 
 ```
   42 3 fix
@@ -213,7 +213,7 @@ while programmatic construction requires explicit precision.
 42.000
 ```
 
-Operations preserve left hand precision.
+Fix point operations preserve left hand precision.
 
 ```
   0.23 .+ 0.1
@@ -265,7 +265,6 @@ Method@0x24f59b0
 42
 ```
 
-### lambdas
 Scope-references evaluate to anonymous functions.
 
 ```
@@ -344,7 +343,7 @@ and split using `unpair`.
 ```
 
 ### iterators
-All values are iterable, but most only contain one item. `iter` may be used to obtain an iterator for any value.
+All values are iterable, but most only contain one item. `iter` may be used to obtain an iterator.
 
 ```
   3 iter
@@ -364,14 +363,9 @@ StackIter@0x1636e70 'foo
   drop pop
 
 StackIter@0x1636e70 42
-```
+  drop pop
 
-Popping empty iterators returns `_`.
-
-```
-  0 iter pop
-  
-IntIter@0x16347c0 _
+StackIter@0x1636e70 _
 ```
 
 `map` takes an input followed by a function as arguments, and returns an iterator for values obtained by applying the function to the input.
@@ -528,7 +522,7 @@ Literal arguments allow dispatching on specific values rather than types.
 42
 ```
 
-Each implementation is bound to its own unique, type-indexed name; and may be called directly.
+Method implementations are first class.
 
 ```
   &foo[Int]
@@ -540,7 +534,7 @@ Method@0x11216d0
 'int
 ```
 
-### recalling
+### recalls
 Lambdas and methods both support forwarding calls without creating additional frames, commonly known as tail call optimization. `recall` takes an optional target as argument and forwards the current call. Specifying `_` as target calls the current lambda/method recursively. Execution picks up after the current call on return, which is why `'done2` is not evaluated in the following example.
 
 ```
@@ -607,7 +601,7 @@ Form@0x252dcd0
 ```
 
 ### io
-`say` may be used to pretty-print any value to `STDOUT`.
+`say` may be used to pretty-print any value to `STDOUT` followed by newline.
 
 ```
   '{6.* 7} say
@@ -640,7 +634,7 @@ Time@5400000000000
 ```
 
 ### debugging
-`dump-stack` dumps the current stack to standard output without modifying it.
+`dump-stack` dumps the current stack to `STDOUT` without modifying it.
 
 ```
   1 2 3 dump-stack
@@ -684,7 +678,7 @@ Process terminating with default action of signal 6 (SIGABRT)
 ```
 
 ### benchmarks
-`clock` may be used to measure the time it takes to run N repetitions of the specified expression.
+`clock` may be used to measure the time it takes to evaluate a form N times.
 
 ```
   1000000 clock {}
