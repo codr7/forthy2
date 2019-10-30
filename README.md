@@ -58,7 +58,7 @@ while `drop` removes it.
 1 3 2
 ```
 
-`truffle` may be used to transform/shuffle stacks in one step, the result from evaluating the second part replaces the specified stack suffix.
+`truffle` may be used to simplify and speed up more elaborate stack transforms, the result from evaluating the second part replaces the specified stack suffix.
 
 ```
   1 3 5 7
