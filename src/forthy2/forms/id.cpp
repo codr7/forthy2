@@ -5,7 +5,7 @@ namespace forthy2 {
   IdForm::IdForm(Pos pos, Sym &val): Form(pos), val(val) {}
 
   Node<Op> &IdForm::compile(Cx &cx, Forms &in, Node<Op> &out) {
-    bool stash(val.name.front() == '$');
+    bool stash(val.name.size() > 1 && val.name.front() == '$');
     Sym &id(stash ? cx.sym(val.name.substr(1)) : val);
     Val *v(&cx.scope->get(pos, id));
     Type *vt(&v->type(cx));

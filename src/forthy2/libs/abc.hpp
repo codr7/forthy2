@@ -407,7 +407,7 @@ namespace forthy2 {
     for (Form *f: spec->body) {
       if (dynamic_cast<LitForm *>(f)) {
         pc = &cx.compile(f->quote(cx, form.pos), *pc);
-      } else if (dynamic_cast<NilForm *>(f)) {        
+      } else if (auto *id(dynamic_cast<IdForm *>(f)); id && &id->val == &cx.$) {
         pc = &cx.swap_op.get(form, *pc, true);
       } else {
         pc = &cx.compile(*f, *pc);

@@ -22,7 +22,7 @@ check {'foo.is 'bar not}
 check {'{6 7 *} compile call .= 42}
 
 check {'{% % *} splice(6 7) compile call .= 42}
-check {6 7 '{%.* %} splice(_ _) compile call .= 42}
+check {42 '{%./ %} splice($ 7) compile call .= 6}
 check {'{&%} splice('+) compile call .= &+}
 check {'{'%:%} splice('foo 42) compile call .= 'foo:42}
 check {'{(% 3 %)} splice(1 5) compile call .= (1 3 5)}

@@ -164,6 +164,8 @@ namespace forthy2 {
     NilForm nil_form;
     NilIter nil_iter;
 
+    Sym &$;
+    
     Bool F, T;
     vector<Int> ints;
     vector<Peek> peeks;
@@ -211,6 +213,7 @@ namespace forthy2 {
       scope(&root_scope),
       stack(&root_stack),
       call(nullptr),
+      $(sym("$")),
       F(false),
       T(true),
       stdin(&cin),
