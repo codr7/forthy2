@@ -7,12 +7,14 @@ namespace forthy2 {
   struct Val;
   
   struct DotForm: Form {
-    Form *x, *y, &z;
+    Form *x, *y, *z;
     
     DotForm(Pos pos, Form *x, Form *y, Form &z);
-    Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out, int quote) override;
+    Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
     void mark_vals(Cx &cx) override;
+    Form &quote(Cx &cx, Pos pos) override;
+    bool splice(Cx &cx) override;
     void write(ostream &out) override;
   };
 }

@@ -4,10 +4,9 @@
 namespace forthy2 {
   IdForm::IdForm(Pos pos, Sym &val): Form(pos), val(val) {}
 
-  Node<Op> &IdForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {
+  Node<Op> &IdForm::compile(Cx &cx, Forms &in, Node<Op> &out) {
     bool stash(val.name.front() == '$');
     Sym &id(stash ? cx.sym(val.name.substr(1)) : val);
-    if (quote > 0) { return cx.push_op.get(*this, out, id); }
     Val *v(&cx.scope->get(pos, id));
     Type *vt(&v->type(cx));
     Node<Op> *pc(&out);
@@ -16,7 +15,7 @@ namespace forthy2 {
       return dynamic_cast<Macro *>(v)->expand(cx, *this, in, *pc, stash);
     }
 
-    if (stash) { throw ESys(pos, "Invalid stash: ", val.name); }
+    if (stash) { throw ESys(pos, "Invalid stash: ", val); }
 
     if (vt == &cx.peek_type) {
       Peek &pv(*dynamic_cast<Peek *>(v));
@@ -49,6 +48,10 @@ namespace forthy2 {
   }
 
   void IdForm::dealloc(Cx &cx) { cx.id_form.put(*this); }
+
+  Form &IdForm::quote(Cx &cx, Pos pos) {
+    return cx.lit_form.get(pos, val);
+  }
 
   void IdForm::write(ostream &out) { out << val.name; }
 }

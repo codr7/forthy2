@@ -6,7 +6,7 @@
 namespace forthy2 {
   struct NilForm: Form {
     NilForm();
-    Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out, int quote) override;
+    Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
     void write(ostream &out) override;
   };

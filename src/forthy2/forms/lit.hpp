@@ -10,9 +10,10 @@ namespace forthy2 {
     Val &val;
     
     LitForm(Pos pos, Val &val);
-    Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out, int quote) override;
+    Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
     void mark_vals(Cx &cx) override;
+    Form &quote(Cx &cx, Pos pos) override;
     void write(ostream &out) override;
   };
 }

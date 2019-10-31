@@ -20,7 +20,6 @@
 #include "forthy2/forms/scope.hpp"
 #include "forthy2/forms/splice.hpp"
 #include "forthy2/forms/stack.hpp"
-#include "forthy2/forms/unquote.hpp"
 #include "forthy2/int.hpp"
 #include "forthy2/iter.hpp"
 #include "forthy2/iters/filter.hpp"
@@ -52,6 +51,7 @@
 #include "forthy2/ops/return.hpp"
 #include "forthy2/ops/rotl.hpp"
 #include "forthy2/ops/rotr.hpp"
+#include "forthy2/ops/splice.hpp"
 #include "forthy2/ops/stack.hpp"
 #include "forthy2/ops/swap.hpp"
 #include "forthy2/ops/truffle.hpp"
@@ -90,7 +90,6 @@ namespace forthy2 {
     Pool<ScopeForm> scope_form;
     Pool<SpliceForm> splice_form;
     Pool<StackForm> stack_form;
-    Pool<UnquoteForm> unquote_form;
 
     Pool<CallOp> call_op;
     Pool<CheckOp> check_op;
@@ -110,6 +109,7 @@ namespace forthy2 {
     Pool<ReturnOp> return_op;
     Pool<RotlOp> rotl_op;
     Pool<RotrOp> rotr_op;
+    Pool<SpliceOp> splice_op;
     Pool<StackOp> stack_op;
     Pool<SwapOp> swap_op;
     Pool<TruffleOp> truffle_op;
@@ -128,6 +128,8 @@ namespace forthy2 {
     PoolType<MethodSet> &method_set_type;
 
     FormType &form_type;
+    ScopeType &scope_type;
+
     PoolType<Macro> &macro_type;
     Type &meta_type;
 
@@ -183,6 +185,8 @@ namespace forthy2 {
       method_set_type(*new PoolType<MethodSet>(*this, sym("MethodSet"), {&fn_type})),
 
       form_type(*new FormType(*this, sym("Form"), {&a_type})),
+      scope_type(*new ScopeType(*this, sym("Scope"), {&form_type})),
+
       macro_type(*new PoolType<Macro>(*this, sym("Macro"), {&a_type})),
       meta_type(*new Type(*this, sym("Meta"), {&a_type})),
 
@@ -229,7 +233,7 @@ namespace forthy2 {
       for (Int::Imp i(peeks.size()); i < max; i++) { peeks.emplace_back(i); }
     }
     
-    Node<Op> &compile(Forms &in, Node<Op> &out, int quote = 0) {
+    Node<Op> &compile(Forms &in, Node<Op> &out) {
       Forms tmp(in);
       reverse(tmp.begin(), tmp.end());
       Node<Op> *op(&out);
@@ -237,13 +241,13 @@ namespace forthy2 {
       while (!tmp.empty()) {
         Form &f(*tmp.back());
         tmp.pop_back();
-        op = &f.compile(*this, tmp, *op, quote);
+        op = &f.compile(*this, tmp, *op);
       }
       
       return *op;
     }
 
-    Node<Op> &compile(Form &in, Node<Op> &out, int quote = 0) {
+    Node<Op> &compile(Form &in, Node<Op> &out) {
       Forms tmp;
       tmp.push_back(&in);
       Node<Op> *pc(&out);
@@ -251,7 +255,7 @@ namespace forthy2 {
       while (!tmp.empty()) {
         Form &f(*tmp.back());
         tmp.pop_back();
-        pc = &f.compile(*this, tmp, *pc, quote);
+        pc = &f.compile(*this, tmp, *pc);
       }
       
       return *pc;
@@ -291,9 +295,9 @@ namespace forthy2 {
       eval(forms);
     }
 
-    void eval(Forms &in, int quote = 0) {
+    void eval(Forms &in) {
       Node<Op> &pc(*ops.prev);
-      compile(in, pc, quote);
+      compile(in, pc);
       deref(in);
       eval(pc, ops);      
     }
@@ -643,6 +647,12 @@ namespace forthy2 {
     auto &s(stash ? *cx.stack : cx.peek(form.pos, cx.stack_type));
     if (s.len() < 3) { throw ESys(form.pos, "Nothing to rotr: ", s); }
     rotate(s.end() - 3, s.end() - 2, s.end());
+    return *Node<Op>::next;
+  }
+
+  inline Node<Op> &SpliceOp::eval(Cx &cx) {
+    Form &in(cx.peek(form.pos, cx.form_type, 1));
+    if (!in.splice(cx)) { throw ESys(form.pos, "Missing splice"); }
     return *Node<Op>::next;
   }
 

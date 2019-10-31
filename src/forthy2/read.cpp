@@ -217,12 +217,12 @@ namespace forthy2 {
     if (!right) { throw ESys(left.pos, "Missing right form"); }
     return cx.pair_form.get(left.pos, left, *right);
   }
-
+  
   Form &read_quote(Cx &cx, Pos &pos, istream &in) {
     Pos p(pos);
     Form *f(read_form(cx, pos, in, false));
     if (!f) { throw ESys(p, "Invalid quote"); }
-    return cx.quote_form.get(p, *f);
+    return f->quote(cx, p);
   }
 
   ScopeForm &read_scope(Cx &cx, Pos &pos, istream &in) {

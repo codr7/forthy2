@@ -20,22 +20,19 @@ namespace forthy2 {
   using FormIter = Forms::iterator;
 
   struct Form: Val {
+    static bool splice_arg(Cx &cx, Pos pos, Form *&f);
+
     Pos pos;
     int nrefs;
     
     Form(Pos pos);
     virtual ~Form();
-    virtual Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out, int quote) = 0;
-
-    virtual Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) {
-      return compile(cx, in, out, 0);
-    }
-    
+    virtual Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) = 0;
     virtual Node<Op> &compile_ref(Cx &cx, Forms &in, Node<Op> &out);
     virtual void dealloc(Cx &cx) = 0;
     void deref(Cx &cx);
     void dump(ostream &out) override;
-    void eval(Cx &cx, int quote = 0);
+    void eval(Cx &cx);
 
     bool mark(Cx &cx) override {
       if (!Val::mark(cx)) { return false; }
@@ -47,8 +44,11 @@ namespace forthy2 {
 
     void print(Cx &cx, Pos pos, ostream &out) override { write(out); }
     
+    virtual Form &quote(Cx &cx, Pos pos);    
     Form &ref();
-    virtual int splice(Cx &cx, int n) { return n; }
+    
+    virtual bool splice(Cx &cx) { return false; }
+
     void sweep(Cx &cx) override { deref(cx); }
 
     Type &type(Cx &cx) override;

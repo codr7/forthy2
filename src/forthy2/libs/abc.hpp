@@ -394,12 +394,31 @@ namespace forthy2 {
     return cx.rotr_op.get(form, out, stash);
   }
 
-  inline Node<Op> &splice_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    Form &dst(cx.peek(cx.form_type, 1));
-    if (dst.splice(cx, 1)) { throw ESys(pos, "Missing splice"); }
-    return *return_pc.next;
-  }
+  inline Node<Op> &splice_imp(Cx &cx,
+                              Form &form,
+                              Forms &in,
+                              Node<Op> &out,
+                              bool stash) {
+    auto *spec(dynamic_cast<StackForm *>(in.back()));
+    if (!spec) { throw ESys(form.pos, "Invalid splice spec"); }
+    in.pop_back();
+    Node<Op> *pc(&out);
+    
+    for (Form *f: spec->body) {
+      if (dynamic_cast<LitForm *>(f)) {
+        pc = &cx.compile(f->quote(cx, form.pos), *pc);
+      } else if (dynamic_cast<NilForm *>(f)) {        
+        pc = &cx.swap_op.get(form, *pc, true);
+      } else {
+        pc = &cx.compile(*f, *pc);
+      }
 
+      pc = &cx.splice_op.get(form, *pc);
+    }
+    
+    return *pc;
+  }
+  
   inline Node<Op> &len_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     cx.push(cx.int_type.get(cx, cx.pop().len()));
     return *return_pc.next;

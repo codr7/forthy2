@@ -1,27 +1,26 @@
-* improve splice
-** add optional splice id
-*** %foo
-*** store in SpliceForm
-** use pairs
-*** '{%x .* %y} splice(x:6 y:7)
-** nil val pops stack 
-*** 6 7 '{%x .* %y} splice(x:_ y:_) 
-** expressions
-*** '{%x .* %y} splice(x:{3 .* 2} y:{4 .+ 3})
-** anonymous
-*** '{% .* %} splice(6 7) 
-** skipping
-*** '{% .* %} splice(_ 7) -> '{% .* 7}
-** splice items if val is stack
-*** '{%} splice ((1 2 3)) -> {1 2 3}
-* add int/fix.neg() methods
-** rename fix.neg to is_neg()
 * add sum types
 ** Fix|Int
 *** parse & sort types if | found
 * add int(fix) conv
 ** use trunc
+* add int/fix.neg() methods
+** rename fix.neg to is_neg()
 * add id(Type/Method/MethodSet) methods to abc
+* --
+* add macro macro
+* add splice features
+** add optional splice id
+*** %foo
+*** store in SpliceForm
+** convert to macro like truffle
+** use pairs
+*** '{%x .* %y} splice(x:6 y:7)
+*** nil val pops stack 
+**** 6 7 '{%x .* %y} splice(x:_ y:_) 
+** expressions
+*** '{%x .* %y} splice(x:{3 .* 2} y:{4 .+ 3})
+** splice items if val is stack
+*** '{%} splice ((1 2 3)) -> {1 2 3}
 * --
 * add char/str types
 ** cidk

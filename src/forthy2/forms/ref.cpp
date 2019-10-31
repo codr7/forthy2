@@ -2,21 +2,23 @@
 #include "forthy2/forms/ref.hpp"
 
 namespace forthy2 {
-  RefForm::RefForm(const Pos &pos, Form &val): Form(pos), val(val) {}
+  RefForm::RefForm(const Pos &pos, Form &val): Form(pos), val(&val) {}
 
-  Node<Op> &RefForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {
-    return val.compile_ref(cx, in, out);
+  Node<Op> &RefForm::compile(Cx &cx, Forms &in, Node<Op> &out) {
+    return val->compile_ref(cx, in, out);
   }
 
   void RefForm::dealloc(Cx &cx) {
-    val.deref(cx);
+    val->deref(cx);
     cx.ref_form.put(*this);
   }
   
-  void RefForm::mark_vals(Cx &cx) { val.mark_vals(cx); }
+  void RefForm::mark_vals(Cx &cx) { val->mark_vals(cx); }
+
+  bool RefForm::splice(Cx &cx) { return splice_arg(cx, pos, val); }
 
   void RefForm::write(ostream &out) {
     out << '&';
-    val.write(out);
+    val->write(out);
   }
 }

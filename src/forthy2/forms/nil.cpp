@@ -4,7 +4,7 @@
 namespace forthy2 {
   NilForm::NilForm(): Form(Pos::_) {}
 
-  Node<Op> &NilForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {
+  Node<Op> &NilForm::compile(Cx &cx, Forms &in, Node<Op> &out) {
     return cx.push_op.get(*this, out, cx._);
   }
 

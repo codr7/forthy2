@@ -20,12 +20,12 @@ check {'42.= 42}
 check {'foo.is 'foo}
 check {'foo.is 'bar not}
 check {'{6 7 *} compile call .= 42}
-check {'{6 % *} 7 splice compile call .= 42}
 
-{
-  let foo 7
-  '{6 % *} foo splice
-} check {compile call .= 42}
+check {'{% % *} splice(6 7) compile call .= 42}
+check {6 7 '{%.* %} splice(_ _) compile call .= 42}
+check {'{&%} splice('+) compile call .= &+}
+check {'{'%:%} splice('foo 42) compile call .= 'foo:42}
+check {'{(% 3 %)} splice(1 5) compile call .= (1 3 5)}
 
 check {42.type .= Int}
 check {Int.isa A .= Num}
@@ -51,7 +51,7 @@ check {(3 while {-1! $copy} $drop).= (2 1 0)}
 
 check {42 len.= 42}
 check {(3 iter for _).= (0 1 2)}
-check {(3 iter pop $swap pop $swap pop $swap $drop).=(0 1 2)}
+check {(3 iter pop $swap pop $swap pop $swap $drop).= (0 1 2)}
 check {((1 3 5).map &+1! for _).= (2 4 6)}
 check {((1 3 5).filter &{.> 2} for _).= (3 5)}
 check {(('foo 'bar).zip (1 3 5) for _) .= ('foo:1 'bar:3)}

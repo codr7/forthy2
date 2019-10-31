@@ -96,8 +96,7 @@ namespace forthy2 {
     scope.add_macro(cx, pos, cx.sym("rotl")).imp = rotl_imp;
     scope.add_macro(cx, pos, cx.sym("rotr")).imp = rotr_imp;
 
-    scope.add_method(cx, pos, cx.sym("splice"),
-                     {{cx.form_type}, {cx.a_type}}).imp = splice_imp;
+    scope.add_macro(cx, pos, cx.sym("splice"), {{cx.stack_type}}).imp = splice_imp;
 
     scope.add_macro(cx, pos, cx.sym("swap")).imp = swap_imp;
 

@@ -591,14 +591,14 @@ Lambda@0x252dab0
 42
 ```
 
-Forms may contain placeholders which allows splicing external values.
+Forms may contain placeholders to allow splicing external values. Values may be specified inline, or popped from stack using `_`.
 
 ```
-  '{6.* %}
+  6 '{%.* %}
 
 Form@0x252dcd0
 
-  7 splice
+  splice(_ 7)
 
 Form@0x252dcd0
 

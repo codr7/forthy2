@@ -4,12 +4,7 @@
 namespace forthy2 {
   ScopeForm::ScopeForm(Pos pos): Form(pos) {}
 
-  Node<Op> &ScopeForm::compile(Cx &cx, Forms &in, Node<Op> &out, int quote) {    
-    if (quote > 0) {
-      cx.marked.push(*this);
-      return cx.push_op.get(*this, out, *this);
-    }
-    
+  Node<Op> &ScopeForm::compile(Cx &cx, Forms &in, Node<Op> &out) {    
     Node<Op> *pc(&out);
     Scope scope(cx, *cx.scope);
     cx.with_scope<void>(scope, [&]() { pc = &cx.compile(body, *pc); });
@@ -32,19 +27,21 @@ namespace forthy2 {
     for (Form *f: body) { f->mark_vals(cx); }
   }
 
-  int ScopeForm::splice(Cx &cx, int n) {
-    for (auto i(body.begin()); n && i != body.end(); i++) {
+  bool ScopeForm::splice(Cx &cx) {
+    for (auto i(body.begin()); i != body.end(); i++) {
       if (auto *sf(dynamic_cast<SpliceForm *>(*i)); sf) {
         (*i)->deref(cx);
         *i = &cx.pop(pos).unquote(cx, pos);
-        n--;
+        return true;
       } else {
-        n = (*i)->splice(cx, n);
+        if ((*i)->splice(cx)) { return true; }
       }
     }
 
-    return n;
+    return false;
   }
+
+  Type &ScopeForm::type(Cx &cx) { return cx.scope_type; }
 
   void ScopeForm::write(ostream &out) { out << '{' << body << '}'; }
 }

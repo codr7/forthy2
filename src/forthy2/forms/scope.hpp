@@ -8,13 +8,16 @@ namespace forthy2 {
     Forms body;
     
     ScopeForm(Pos pos);
-    Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out, int quote) override;
+    Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) override;
     Node<Op> &compile_ref(Cx &cx, Forms &in, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
     void mark_vals(Cx &cx) override;
-    int splice(Cx &cx, int n) override;
+    bool splice(Cx &cx) override;
+    Type &type(Cx &cx) override;
     void write(ostream &out) override;
   };
+
+  using ScopeType = ValType<ScopeForm>;
 }
 
 #endif

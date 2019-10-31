@@ -8,8 +8,9 @@ namespace forthy2 {
   
   struct SpliceForm: Form {
     SpliceForm(const Pos &pos);
-    Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out, int quote) override;
+    Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
+    Form &quote(Cx &cx, Pos pos) override;
     void write(ostream &out) override;
   };
 }
