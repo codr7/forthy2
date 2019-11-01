@@ -7,20 +7,21 @@
 ** rename fix.neg to is_neg()
 * add id(Type/Method/MethodSet) methods to abc
 * --
-* add macro macro
+* add support for Stack quote/splice like Scope
+** '(% 3 %) splice (1 5)
 * add splice features
 ** add optional splice id
 *** %foo
 *** store in SpliceForm
-** convert to macro like truffle
-** use pairs
+** pairs
 *** '{%x .* %y} splice(x:6 y:7)
-*** nil val pops stack 
-**** 6 7 '{%x .* %y} splice(x:_ y:_) 
+*** $ pops stack 
+**** 6 7 '{%x .* %y} splice(x:$ y:$) 
 ** expressions
 *** '{%x .* %y} splice(x:{3 .* 2} y:{4 .+ 3})
 ** splice items if val is stack
 *** '{%} splice ((1 2 3)) -> {1 2 3}
+* add macro macro
 * --
 * add char/str types
 ** cidk
