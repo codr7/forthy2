@@ -157,17 +157,7 @@ namespace forthy2 {
     clock_op.end_pc = &end_pc;
     return end_pc;
   }
-
-  inline Node<Op> &compile_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
-    auto &f(dynamic_cast<Form &>(cx.pop()));
-    Lambda &l(cx.lambda_type.get(cx));
-    Forms in;
-    Node<Op> &f_pc(f.compile(cx, in, *l.ops.prev));
-    cx.return_op.get(f, f_pc);
-    cx.push(l);
-    return *return_pc.next;
-  }
-
+  
   inline Node<Op> &is_imp(Cx &cx, Pos pos, Node<Op> &return_pc) {
     Val &y(cx.pop()), &x(cx.pop());
     cx.push(cx.bool_type.get(cx, &x == &y));

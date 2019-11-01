@@ -40,14 +40,14 @@ namespace forthy2 {
     scope.add_macro(cx, pos, cx.sym("truffle"), {{cx.stack_type}}).imp = truffle_imp;
 
     scope.add_macro(cx, pos, cx.sym("and"), {{cx.a_type.or_()}}).imp = and_imp;
-
+    
     scope.add_method(cx, pos, cx.sym("bool"), {{cx.a_type.or_()}}).imp = bool_imp;
     scope.add_method(cx, pos, cx.sym("int"), {{cx.bool_type}}).imp = bool_int_imp;
 
     scope.add_method(cx, pos, cx.sym("call"), {{cx.a_type.or_()}}).imp = call_imp;
     scope.add_macro(cx, pos, cx.sym("check"), {{cx.a_type.or_()}}).imp = check_imp;
     scope.add_macro(cx, pos, cx.sym("clock"), {{cx.a_type.or_()}}).imp = clock_imp;
-    scope.add_method(cx, pos, cx.sym("compile"), {{cx.form_type}}).imp = compile_imp;
+
     scope.add_macro(cx, pos, cx.sym("copy")).imp = copy_imp;
     scope.add_macro(cx, pos, cx.sym("drop")).imp = drop_imp;
     scope.add_macro(cx, pos, cx.sym("else"), {{cx.a_type}}).imp = else_imp;

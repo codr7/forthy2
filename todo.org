@@ -1,3 +1,11 @@
+* add macro macro
+** test.f2
+* switch ScopeForm.body to Stack
+** push ref on request
+* change Val operator bool -> to_bool
+* rename unquote -> to_form
+** return *this in Form
+* --
 * add sum types
 ** Fix|Int
 *** parse & sort types if | found
@@ -7,8 +15,6 @@
 ** rename fix.neg to is_neg()
 * add id(Type/Method/MethodSet) methods to abc
 * --
-* add support for Stack quote/splice like Scope
-** '(% 3 %) splice (1 5)
 * add splice features
 ** add optional splice id
 *** %foo

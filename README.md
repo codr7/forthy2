@@ -555,7 +555,7 @@ Lambdas and methods both support forwarding calls without creating additional fr
 ### quoting
 Any form may be quoted by prefixing with `'`.
 
-Literals return themselves as is,
+Quoted literals are evaluated as usual,
 
 ```
   '42
@@ -563,7 +563,7 @@ Literals return themselves as is,
 42
 ```
 
-while identifiers return symbols,
+while identifiers turn into symbols,
 
 ```
   'let
@@ -571,18 +571,18 @@ while identifiers return symbols,
 'let
 ```
 
-and scopes return forms.
+and scopes become forms.
 
 ```
-  '{6 7 *}
+  '{6.* 7}
 
-Form@0x2527cc0
+Scope@0x2527cc0
 ```
 
-Forms may be turned into lambdas using `compile`.
+Scopes may be turned into lambdas using `compile`.
 
 ```
-  '{6 7 *} compile
+  '{6.* 7} compile
 
 Lambda@0x252dab0
 
@@ -591,16 +591,16 @@ Lambda@0x252dab0
 42
 ```
 
-Forms may contain placeholders to allow splicing external values. Values may be specified inline, or popped from stack using `$`.
+Scopes may contain placeholders to allow splicing external values. Values may be specified inline, or popped from stack using `$`.
 
 ```
   42 '{%./ %}
 
-42 Form@0x252dcd0
+42 Scope@0x252dcd0
 
   splice($ 7)
 
-Form@0x252dcd0
+Scope@0x252dcd0
 
   compile call
 

@@ -4,6 +4,7 @@
 #include "forthy2/libs/iter.hpp"
 #include "forthy2/libs/io.hpp"
 #include "forthy2/libs/math.hpp"
+#include "forthy2/libs/meta.hpp"
 #include "forthy2/libs/time.hpp"
 
 using namespace std;
@@ -53,6 +54,7 @@ int main(int argc, char *argv[]) {
   init_iter(cx, Pos::_, cx.root_scope);
   init_io(cx, Pos::_, cx.root_scope);
   init_math(cx, Pos::_, cx.root_scope);
+  init_meta(cx, Pos::_, cx.root_scope);
   init_time(cx, Pos::_, cx.root_scope);
   
   Mode mode(Mode::Default);

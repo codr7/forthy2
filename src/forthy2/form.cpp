@@ -39,7 +39,10 @@ namespace forthy2 {
 
   void Form::mark_vals(Cx &cx) {}
 
-  Form &Form::quote(Cx &cx, Pos pos) { return cx.lit_form.get(pos, *this); }
+  Form &Form::quote(Cx &cx, Pos pos) {
+    cx.marked.push(this->ref());
+    return cx.lit_form.get(pos, *this);
+  }
 
   Form &Form::ref() {
     nrefs++;
