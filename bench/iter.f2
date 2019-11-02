@@ -5,5 +5,5 @@ REPS clock {
 } msecs dump
 
 
-(100.filter &{.> 48} .map &+1! for _)
+100.filter &{.> 48} .map &+1! for _
 dump-stack
