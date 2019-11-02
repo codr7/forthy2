@@ -529,15 +529,17 @@ Literal arguments allow dispatching on specific values rather than types.
 42
 ```
 
-Method implementations are first class.
+Method implementations are block-scoped just like any other definition.
 
 ```
-  &foo[Int]
+  {
+    method foo(7) 
+    foo 7
+  }
 
-Method@0x11216d0
+7
+  foo 7
 
-  42 $swap call
-  
 'int
 ```
 
