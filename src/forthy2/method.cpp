@@ -17,7 +17,6 @@ namespace forthy2 {
 
   void Method::sweep(Cx &cx) {
     Val::sweep(cx);
-    set.items.erase(iter);
     fn.sweep(cx);
     cx.method_type.pool.put(*this);
   } 

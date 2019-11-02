@@ -620,6 +620,16 @@ Scopes may contain placeholders for splicing external values. Values may be spec
 6
 ```
 
+### macros
+Macros are methods that expand their result at compile time as opposed to push on stack at run time.
+
+```
+  macro foo(Int) {'{42./ %} splice($)}
+  foo 7
+
+6
+```
+
 ### io
 `say` may be used to pretty-print any value to `STDOUT` followed by newline.
 
