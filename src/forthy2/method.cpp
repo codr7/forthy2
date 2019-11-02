@@ -3,7 +3,7 @@
 
 namespace forthy2 {
   Method::Method(MethodSet &set, Sym &id, const vector<Arg> &args, uint64_t weight):
-    set(set), id(id), args(args), weight(weight) {}
+    set(set), id(id), args(args), weight(weight), iter(set.push(*this)) {}
 
   void Method::dump(ostream &out) { out << "Method@" << this; }
 
@@ -17,8 +17,7 @@ namespace forthy2 {
 
   void Method::sweep(Cx &cx) {
     Val::sweep(cx);
-    Node<Method>::unlink();
-    set._len--;
+    set.items.erase(iter);
     fn.sweep(cx);
     cx.method_type.pool.put(*this);
   } 

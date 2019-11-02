@@ -28,11 +28,9 @@ namespace forthy2 {
       if (vt == &cx.method_set_type) {
         auto &ms(*dynamic_cast<MethodSet *>(v));
 
-        if (!ms.nargs) {
-          v = &ms.root.prev->get();
-          safe = false;
-        } else if (ms._len == 1) {
-          v = &ms.root.next->get();
+        if (ms.len() == 1) {
+          v = *ms.items.begin();
+          if (!ms.nargs) { safe = false; }
         }
       }
       
@@ -52,6 +50,8 @@ namespace forthy2 {
   Form &IdForm::quote(Cx &cx, Pos pos) {
     return cx.lit_form.get(pos, val);
   }
+
+  Val &IdForm::unquote(Cx &cx) { return val; }
 
   void IdForm::write(ostream &out) { out << val.name; }
 }

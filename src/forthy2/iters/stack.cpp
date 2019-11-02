@@ -2,7 +2,7 @@
 #include "forthy2/iters/stack.hpp"
 
 namespace forthy2 {
-  StackIter::StackIter(Stack &in): in(in), i(in.beg()) {}
+  StackIter::StackIter(Stack &in): in(in), i(in.begin()) {}
 
   void StackIter::dump(ostream &out) { out << "StackIter@" << this; }
 

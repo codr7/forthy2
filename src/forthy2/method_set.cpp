@@ -3,6 +3,10 @@
 #include "forthy2/method_set.hpp"
 
 namespace forthy2 {
+  bool MethodSet::Order::operator() (Method *x, Method *y) const {
+    return x->weight >= y->weight;
+  }
+
   MethodSet &MethodSet::get(Cx &cx, Pos pos, Scope &scope, Sym &id, int nargs) {
     auto i(scope.find(id));
     
@@ -21,22 +25,25 @@ namespace forthy2 {
     return s;
   }
 
-  MethodSet::MethodSet(Sym &id, int nargs): id(id), nargs(nargs), _len(0) {}
+  MethodSet::MethodSet(Sym &id, int nargs): id(id), nargs(nargs) {}
   
+  Val &MethodSet::clone(Cx &cx) {
+    auto &out(cx.method_set_type.get(cx, id, nargs));
+    copy(items.begin(), items.end(), inserter(out.items, out.items.end()));
+    return out;
+  }
+
   void MethodSet::dump(ostream &out) { out << "MethodSet@" << this; }
+
+  Val::Len MethodSet::len() { return items.size(); }
 
   bool MethodSet::mark(Cx &cx) {
     if (!Val::mark(cx)) { return false; }
-    for (Node<Method> *i(root.next); i != &root; i = i->next) { i->get().mark(cx); }
+    for (Method *m: items) { m->mark(cx); }
     return true;
   }
-  
-  void MethodSet::push(Method &m) {
-    Node<Method> *i(root.next);
-    for (; i != &root && i->get().weight <= m.weight; i = i->next);
-    i->push(m);
-    _len++;
-  }
+
+  MethodSet::Iter MethodSet::push(Method &m) { return items.insert(&m).first; }
 
   void MethodSet::sweep(Cx &cx) {
     Val::sweep(cx);

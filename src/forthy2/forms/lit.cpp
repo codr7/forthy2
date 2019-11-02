@@ -14,5 +14,7 @@ namespace forthy2 {
 
   Form &LitForm::quote(Cx &cx, Pos pos) { return *this; }
 
+  Val &LitForm::unquote(Cx &cx) { return val; }
+
   void LitForm::write(ostream &out) { val.dump(out); }
 }

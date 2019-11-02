@@ -6,6 +6,7 @@
 
 #include "forthy2/arg.hpp"
 #include "forthy2/fn.hpp"
+#include "forthy2/method_set.hpp"
 
 namespace forthy2 {
   using namespace std;
@@ -14,18 +15,21 @@ namespace forthy2 {
   struct MethodSet;
   struct Sym;
   
-  struct Method: Node<Method>, Val {
+  struct Method: Val {
     using Imp = function<Node<Op> &(Cx &, Pos pos, Node<Op> &)>;
 
     MethodSet &set;
     Sym &id;
     Args args;
     uint64_t weight;
+    MethodSet::Iter iter;
     Fn fn;
     Imp imp;
     
-    Method(MethodSet &set, Sym &id, const vector<Arg> &args, uint64_t weight);
-    bool applicable(Cx &cx);
+    Method(MethodSet &set,
+           Sym &id,
+           const vector<Arg> &args,
+           uint64_t weight);
 
     Node<Op> &call(Cx &cx,
                    Pos pos,

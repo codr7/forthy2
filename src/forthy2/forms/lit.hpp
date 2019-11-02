@@ -14,6 +14,7 @@ namespace forthy2 {
     void dealloc(Cx &cx) override;
     void mark_vals(Cx &cx) override;
     Form &quote(Cx &cx, Pos pos) override;
+    Val &unquote(Cx &cx) override;
     void write(ostream &out) override;
   };
 }

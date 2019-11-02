@@ -25,7 +25,7 @@ namespace forthy2 {
 
     operator bool() override { return !items.empty(); }
 
-    Iter beg() { return items.begin(); }
+    Iter begin() { return items.begin(); }
     Iter end() { return items.end(); }
 
     void clear() { items.clear(); }
@@ -59,6 +59,8 @@ namespace forthy2 {
     void print(Cx &cx, Pos pos, ostream &out) override;
 
     void push(Val &v) { items.push_back(&v); }
+
+    void push(Val *v) { items.push_back(v); }
 
     void sweep(Cx &cx) override;
 

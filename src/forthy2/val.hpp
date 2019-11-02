@@ -31,8 +31,6 @@ namespace forthy2 {
 
     virtual operator bool() { return true; }
 
-    virtual Val &clone(Cx &cx) { return *this; }
-
     virtual Node<Op> &call(Cx &cx,
                            Pos pos,
                            Node<Op> &return_pc,
@@ -40,6 +38,8 @@ namespace forthy2 {
                            bool now);
 
     virtual Cmp cmp(Val &other) { return forthy2::cmp<Val *>(this, &other); }
+
+    virtual Val &clone(Cx &cx) { return *this; }
 
     virtual void dump(ostream &out) = 0;
 
@@ -55,11 +55,10 @@ namespace forthy2 {
 
     virtual void sweep(Cx &cx) { Node<Val>::unlink(); }
 
+    virtual Form &to_form(Cx &cx, Pos pos);
     virtual Type &type(Cx &cx) = 0;
 
     virtual void unmark() { marked = false; }
-
-    virtual Form &unquote(Cx &cx, Pos pos);
   };
 
   ostream &operator <<(ostream &out, const Val &val);

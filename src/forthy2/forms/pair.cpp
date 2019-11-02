@@ -32,6 +32,12 @@ namespace forthy2 {
     return splice_arg(cx, pos, left) || splice_arg(cx, pos, right);
   }
 
+  Val &PairForm::unquote(Cx &cx) {
+    cx.marked.push(left->ref());
+    cx.marked.push(right->ref());
+    return cx.pair_type.get(cx, *left, *right);
+  }
+
   void PairForm::write(ostream &out) {
     left->write(out);
     out << ':';

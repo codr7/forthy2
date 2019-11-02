@@ -238,7 +238,7 @@ namespace forthy2 {
     Stack &args_val(cx.pop(form.pos, cx.stack_type));
     vector<Arg> args;
 
-    transform(args_val.beg(),
+    transform(args_val.begin(),
               args_val.end(),
               back_inserter(args), [&](auto &v) {
                 if (&v->type(cx) == &cx.meta_type) {

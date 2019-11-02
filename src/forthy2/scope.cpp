@@ -31,7 +31,6 @@ namespace forthy2 {
                                  Args::get_weight(cx, args)));
     
     bind(pos, m.id, m);
-    s.push(m);
     return m;
   }
 

@@ -1,11 +1,24 @@
-* add macro macro
-** test.f2
-* switch ScopeForm.body to Stack
-** push ref on request
-* change Val operator bool -> to_bool
-* rename unquote -> to_form
-** return *this in Form
+* add block-scoped method imps to readme
+** copy test
+** use syms instead of ints
+** push
 * --
+* switch imp-macros to take args on stack
+** remove macro imp form/in-args
+*** push form last on stack
+** update macro defs
+*** pop form & reverse arg order
+*** drop type checks
+* add method stash support
+** replace Val.call bools with CallFlags enum
+*** forward via call op
+* unify macros and methods
+** replace macro ref return logic/test with recall
+* quote items in quoted stacks
+* move type/isa to meta lib
+* macro readme
+* --
+* change Val operator bool -> to_bool
 * add sum types
 ** Fix|Int
 *** parse & sort types if | found
@@ -13,7 +26,19 @@
 ** use trunc
 * add int/fix.neg() methods
 ** rename fix.neg to is_neg()
-* add id(Type/Method/MethodSet) methods to abc
+* add id(Type/Method/MethodSet) methods to meta lib
+* --
+* add char/str types
+** cidk
+** \r \n \t \s \e
+** \0x2a \90 \\A \\a \\\
+** add literals
+** add char/str(int) and int(char/str) conversions
+*** use read_int for int(str)
+* implement Nil unquote as ref(cx.nil_form)
+* implement Form unquote as ref(*this)
+* move nil (_) from reader to root_scope like T/F
+** add root_scope lookup in read_id
 * --
 * add splice features
 ** add optional splice id
@@ -27,19 +52,6 @@
 *** '{%x .* %y} splice(x:{3 .* 2} y:{4 .+ 3})
 ** splice items if val is stack
 *** '{%} splice ((1 2 3)) -> {1 2 3}
-* add macro macro
-* --
-* add char/str types
-** cidk
-** \r \n \t \s \e
-** \0x2a \90 \\A \\a \\\
-** add literals
-** add char/str(int) and int(char/str) conversions
-*** use read_int for int(str)
-* implement Nil unquote as ref(cx.nil_form)
-* implement Form unquote as ref(*this)
-* move nil (_) from reader to root_scope like T/F
-** add root_scope lookup in read_id
 * ---
 * add enum
 ** add UserType
@@ -56,9 +68,6 @@
 * convert is/isa/not/type to macros/ops
 * plug valgrind quote memory leak
 * add Form.eq overrides
-* add macro arg typecheck
-** fix types in abc/math
-** add MethodSet.iter/MethodSetIter
 * add next-method
 ** search call chain for method call
 *** return next from method.set
@@ -69,9 +78,6 @@
 ** add break macro
 *** add cx.break_pc
 * implement clone for iter types
-* implement MethodSet.clone
-** switch to use vector/upper_bound like env
-*** drop method Node
 * add echo iter
 ** 3 iter echo zip for _* add Byte type
 ** Imp = uint8_t

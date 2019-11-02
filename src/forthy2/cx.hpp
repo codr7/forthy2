@@ -461,6 +461,22 @@ namespace forthy2 {
     }
   };
 
+  inline bool Args::applicable(Cx &cx) {
+    Stack::Items &stack(cx.stack->items);
+    auto len(items.size());
+    auto stack_len(stack.size());
+    if (stack_len < len) { return false; }
+    Val **s(&stack[stack_len - len]);
+
+    for (Arg &a: items) {
+      Type &at(a.val ? a.val->type(cx) : *a.type), &st((*s)->type(cx));
+      if ((a.val && (&at != &st || !a.val->eq(**s))) || !st.isa(at)) { return false; }
+      s++;
+    }
+
+    return true;
+  }
+  
   inline Bool &BoolType::get(Cx &cx, bool imp) { return imp ? cx.T : cx.F; }
 
   inline Node<Op> &BranchOp::eval(Cx &cx) {
@@ -524,28 +540,13 @@ namespace forthy2 {
     size_t i((imp < 0) ? -imp * 2 - 1: imp * 2);
     return (i < cx.ints.size()) ? cx.ints[i] : PoolType<Int>::get(cx, imp);
   }
-
-  inline bool Method::applicable(Cx &cx) {
-    Stack::Items &stack(cx.stack->items);
-    auto ss(stack.size());
-    if (ss < args.len()) { return false; }
-    Val **s(&stack[ss - args.len()]);
-
-    for (Arg &a: args.items) {
-      Type &at(a.val ? a.val->type(cx) : *a.type), &st((*s)->type(cx));
-      if ((a.val && (&at != &st || !a.val->eq(**s))) || !st.isa(at)) { return false; }
-      s++;
-    }
-
-    return true;
-  }
   
   inline Node<Op> &Method::call(Cx &cx,
                                 Pos pos,
                                 Node<Op> &return_pc,
                                 bool safe,
                                 bool now) {
-    if (cx.unsafe <= 0 && safe && !applicable(cx)) {
+    if (cx.unsafe <= 0 && safe && !args.applicable(cx)) {
       throw ESys(pos, "Method not applicable: ", id.name, '\n', *cx.stack);
     }
     
@@ -563,8 +564,8 @@ namespace forthy2 {
   }
 
   inline Method *MethodSet::dispatch(Cx &cx) {
-    for (Node<Method> *i(root.prev); i != &root; i = i->prev) {
-      if (Method &m(i->get()); m.applicable(cx)) { return &m; }
+    for (Method *m: items) {
+      if (m->args.applicable(cx)) { return m; }
     }
 
     return nullptr;
@@ -610,7 +611,7 @@ namespace forthy2 {
         if (vt == &cx.method_type) {
           id = &m->id;
           m = &dynamic_cast<Method &>(val);
-          if (!m->applicable(cx)) { m = nullptr; }
+          if (!m->args.applicable(cx)) { m = nullptr; }
         } else {
           auto &set(dynamic_cast<MethodSet &>(val));
           id = &set.id;

@@ -20,6 +20,7 @@ namespace forthy2 {
 
     Sym &id;
     Args args;
+    Node<Op> ops;
     Imp imp;
 
     Macro(Sym &id, const vector<Arg> &args);

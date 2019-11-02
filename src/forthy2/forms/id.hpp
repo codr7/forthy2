@@ -12,6 +12,7 @@ namespace forthy2 {
     Node<Op> &compile_ref(Cx &cx, Forms &in, Node<Op> &out) override;
     void dealloc(Cx &cx) override;
     Form &quote(Cx &cx, Pos pos) override;
+    Val &unquote(Cx &cx) override;
     void write(ostream &out) override;
   };
 }

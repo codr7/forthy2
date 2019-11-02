@@ -7,7 +7,7 @@ namespace forthy2 {
     
     if (auto *sf(dynamic_cast<SpliceForm *>(f)); sf) {
       f->deref(cx);
-      f = &cx.pop(pos).unquote(cx, pos);
+      f = &cx.pop(pos).to_form(cx, pos);
       return true;
     }
 
@@ -26,7 +26,10 @@ namespace forthy2 {
     if (!--nrefs) { dealloc(cx); }
   }
 
-  void Form::dump(ostream &out) { out << "Form@" << this; }
+  void Form::dump(ostream &out) {
+    out << '\'';
+    write(out);
+  }
 
   void Form::eval(Cx &cx) {
     Node<Op> ops;
@@ -39,10 +42,7 @@ namespace forthy2 {
 
   void Form::mark_vals(Cx &cx) {}
 
-  Form &Form::quote(Cx &cx, Pos pos) {
-    cx.marked.push(this->ref());
-    return cx.lit_form.get(pos, *this);
-  }
+  Form &Form::quote(Cx &cx, Pos pos) { return cx.lit_form.get(pos, *this); }
 
   Form &Form::ref() {
     nrefs++;
@@ -50,6 +50,8 @@ namespace forthy2 {
   }
 
   Type &Form::type(Cx &cx) { return cx.form_type; }
+
+  Val &Form::unquote(Cx &cx) { return *this; }
 
   ostream &operator <<(ostream &out, const Form &in) {
     const_cast<Form &>(in).write(out);

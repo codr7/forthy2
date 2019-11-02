@@ -20,10 +20,11 @@ check {'42.= 42}
 check {'foo.is 'foo}
 check {'foo.is 'bar not}
 check {'{6 7 *} compile call .= 42}
+check {('{1 3 5} body drop $drop compile call) .= (1 3)}
 
 check {'{% % *} splice(6 7) compile call .= 42}
 check {42 '{%./ %} splice($ 7) compile call .= 6}
-check {'{&%} splice('+) compile call .= &+}
+check {6 7 '{&%} splice('*) compile call call .= 42}
 check {'{'%:%} splice('foo 42) compile call .= 'foo:42}
 check {'{(% 3 %)} splice(1 5) compile call .= (1 3 5)}
 
@@ -90,6 +91,29 @@ check {0.5 .+! 0.25 .= 0.7}
   check {T foo.= 1}
   check {41 foo.= 3}
   check {42 foo.= 5}
+}
+
+{
+  method foo(Int) {$drop 'ok}
+  {method foo(42) {$drop 'fail}}
+  check {42 foo.is 'ok}
+}
+
+{
+  macro foo(Int) {.* 7}
+  check {foo 6 .= 42}
+}
+
+{
+  macro foo(Int) {'{let bar %} splice ($) body}
+  foo 42
+  check {bar .= 42}
+}
+
+{
+  macro foo(Int Int) {'{%./ %} splice ($ $)}
+  macro bar(Int) {7 $swap &foo}
+  check {bar 42 .= 6}
 }
 
 check {2 hours.-{30 mins} mins.= 90}

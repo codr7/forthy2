@@ -222,7 +222,9 @@ namespace forthy2 {
     Pos p(pos);
     Form *f(read_form(cx, pos, in, false));
     if (!f) { throw ESys(p, "Invalid quote"); }
-    return f->quote(cx, p);
+    Form &out(f->quote(cx, p));
+    cx.marked.push(out.ref());
+    return out;
   }
 
   ScopeForm &read_scope(Cx &cx, Pos &pos, istream &in) {
@@ -242,12 +244,12 @@ namespace forthy2 {
         pos.col++;
         ScopeForm &prev(*out);
         out = &cx.scope_form.get(pos);
-        prev.body.push_back(out);
+        prev.body.push(out);
       } else {
         in.unget();
         Form *f(read_form(cx, pos, in, true));
         if (!f) { throw ESys(out->pos, "Open scope"); }
-        out->body.push_back(f);
+        out->body.push(f);
       }
     }
 

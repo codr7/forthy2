@@ -553,9 +553,9 @@ Lambdas and methods both support forwarding calls without creating additional fr
 ```
 
 ### quoting
-Any form may be quoted by prefixing with `'`.
+Anything may be quoted by prefixing with `'`.
 
-Quoted literals are evaluated as usual,
+Quoted literals are evaluated as usual;
 
 ```
   '42
@@ -576,7 +576,7 @@ and scopes become forms.
 ```
   '{6.* 7}
 
-Scope@0x2527cc0
+'{6.* 7}
 ```
 
 Scopes may be turned into lambdas using `compile`.
@@ -585,23 +585,34 @@ Scopes may be turned into lambdas using `compile`.
   '{6.* 7} compile
 
 Lambda@0x252dab0
-
   call
 
 42
 ```
 
-Scopes may contain placeholders to allow splicing external values. Values may be specified inline, or popped from stack using `$`.
+Scope bodies are regular stacks of forms.
+
+```
+  '{1 3 5} body
+
+'{1 3 5} ('1 '3 '5)
+  drop
+  
+'{1 3} ('1 '3)
+  $drop compile call
+
+1 3
+```
+
+Scopes may contain placeholders for splicing external values. Values may be specified inline, or popped from stack using `$`.
 
 ```
   42 '{%./ %}
 
-42 Scope@0x252dcd0
-
+42 '{%./ %}
   splice($ 7)
 
-Scope@0x252dcd0
-
+'{42./ 7}
   compile call
 
 6
@@ -611,17 +622,17 @@ Scope@0x252dcd0
 `say` may be used to pretty-print any value to `STDOUT` followed by newline.
 
 ```
-  '{6.* 7} say
+  'hello say
 
-{6.* 7}
+hello
 ```
 
 `dump` is similar, but prints raw values without formatting.
 
 ```
-  '{6.* 7} dump
+  'hello dump
 
-Form@0x21abd00
+'hello
 ```
 
 ### time
@@ -649,7 +660,7 @@ Time@5400000000000
 1 2 3
 ```
 
-`check` may be used to trigger informative errors when a condition doesn't hold.
+`check` may be used to trigger informative errors when the specified condition doesn't hold.
 
 ```
   check {6.* 7 .is 41}
@@ -736,8 +747,8 @@ and `mark-sweep` allows performing both phases as one.
 ### license
 [MIT](https://github.com/codr7/forthy2/blob/master/LICENSE.txt)
 
-### support
-Please consider donating if you would like to support the project, every contribution helps.
+### donations
+[forthy2](https://github.com/codr7/forthy2) is still very much a one man show on a tight budget. Please consider a donation if you would like to support the project, every contribution helps.
 
 Etherium: 0x423Ca3edCb65d560b881960316FC5DB8D30E9802
 

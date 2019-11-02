@@ -51,7 +51,8 @@ namespace forthy2 {
 
     void sweep(Cx &cx) override { deref(cx); }
 
-    Type &type(Cx &cx) override;
+    virtual Type &type(Cx &cx) override;
+    virtual Val &unquote(Cx &cx);
     virtual void write(ostream &out) = 0;
   };
 

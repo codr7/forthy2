@@ -2,12 +2,14 @@
 #define FORTHY2_FORM_SCOPE_HPP
 
 #include "forthy2/form.hpp"
+#include "forthy2/stack.hpp"
 
 namespace forthy2 {
   struct ScopeForm: Form {
-    Forms body;
+    Stack body;
     
     ScopeForm(Pos pos);
+    Forms body_forms();
     Node<Op> &compile(Cx &cx, Forms &in, Node<Op> &out) override;
     Node<Op> &compile_ref(Cx &cx, Forms &in, Node<Op> &out) override;
     void dealloc(Cx &cx) override;

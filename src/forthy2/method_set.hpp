@@ -1,7 +1,8 @@
 #ifndef FORTHY2_METHOD_SET_HPP
 #define FORTHY2_METHOD_SET_HPP
 
-#include "forthy2/node.hpp"
+#include <set>
+
 #include "forthy2/val.hpp"
 
 namespace forthy2 {
@@ -11,12 +12,18 @@ namespace forthy2 {
   struct Sym;
   
   struct MethodSet: Val {
+    struct Order {
+      bool operator() (Method *x, Method *y) const;
+    };
+    
+    using Items = set<Method *, Order>;
+    using Iter = Items::iterator;
+    
     static MethodSet &get(Cx &cx, Pos pos, Scope &scope, Sym &id, int nargs);
 
-    Node<Method> root;
+    Items items;
     Sym &id;
     int nargs;
-    int _len;
 
     MethodSet(Sym &id, int nargs);
 
@@ -26,11 +33,12 @@ namespace forthy2 {
                    bool safe,
                    bool now) override;
     
+    Val &clone(Cx &cx) override;
     Method *dispatch(Cx &cx);
     void dump(ostream &out) override;
-    Len len() override { return _len; }
+    Len len() override;
     bool mark(Cx &cx) override;
-    void push(Method &m);
+    Iter push(Method &m);
     void sweep(Cx &cx) override;
     Type &type(Cx &cx) override;
   };
