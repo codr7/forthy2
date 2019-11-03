@@ -20,6 +20,8 @@ I find it mostly sad, because I just needed a tiny bit of help to turn this into
 
 Which finally brings us to the core problem in this so called civilization; until people have walked in someone else's shoes and fought the same demons, it's seems impossible for most to feel empathy. Not very civilized if you ask me.
 
+Someone suggested that I start a campaign on Gofundme, so I [did](https://www.gofundme.com/f/3gz27p-moment-of-truth?utm_source=customer&utm_medium=copy_link&utm_campaign=p_cf+share-flow-1).
+
 Anyways,<br/>
 Sayonara, and thanks for all the fish,<br/>
 it's been weird.
