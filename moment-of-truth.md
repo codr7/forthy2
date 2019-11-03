@@ -24,5 +24,7 @@ Anyways,<br/>
 Sayonara, and thanks for all the fish,<br/>
 it's been weird.
 
+PS. This is most definitely not a suicide note, I honestly didn't even consider that interpretation until people started worrying.
+
 /codr7
 
