@@ -1,5 +1,7 @@
 ![Logo](logo.png)
 
+This project is currently hanging by a very thin [thread](https://github.com/codr7/forthy2/blob/master/moment-of-truth.md), any help would be much appreciated.
+
 ### intro
 [forthy2](https://github.com/codr7/forthy2) is a higher level Forth-remix in C++.
 
