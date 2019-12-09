@@ -1,6 +1,6 @@
 ![Logo](logo.png)
 
-This project is currently hanging by a very thin [thread](https://github.com/codr7/forthy2/blob/master/moment-of-truth.md), any help would be much appreciated.
+This project is currently hanging by a thin [thread](https://www.gofundme.com/f/analogistics), please consider helping out if you want to see it reach its full potential. Thank you!
 
 ### intro
 [forthy2](https://github.com/codr7/forthy2) is a higher level Forth-remix in C++.
