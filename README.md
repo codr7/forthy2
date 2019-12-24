@@ -1,7 +1,5 @@
 ![Logo](logo.png)
 
-This project is currently hanging by a thin [thread](https://www.gofundme.com/f/analogistics), please consider helping out if you want to see it reach its full potential. Thank you!
-
 ### intro
 [forthy2](https://github.com/codr7/forthy2) is a higher level Forth-remix in C++.
 
@@ -12,7 +10,7 @@ method fib(Int) {-1! $copy fib $swap -1! fib +}
 ```
 
 ### setup
-[forthy2](https://github.com/codr7/forthy2) requires a C++17-compiler and CMake to build.
+[forthy2](https://github.com/codr7/forthy2) requires a C++17 compiler and CMake to build.
 
 ```
 $ git clone https://github.com/codr7/forthy2.git
@@ -762,8 +760,6 @@ and `mark-sweep` allows performing both phases as one.
 [MIT](https://github.com/codr7/forthy2/blob/master/LICENSE.txt)
 
 ### donations
-[forthy2](https://github.com/codr7/forthy2) is still very much a one man show on a tight budget. Please consider a donation if you would like to support the project, every contribution helps.
-
-Etherium: 0x423Ca3edCb65d560b881960316FC5DB8D30E9802
+Please consider a donation if you would like to support the project, every contribution helps.
 
 <a href="https://liberapay.com/codr7/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>
